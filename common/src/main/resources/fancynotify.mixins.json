@@ -1,0 +1,27 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "net.bivrik.fancynotify.mixin",
+  "refmap": "${mod_id}.refmap.json",
+  "compatibilityLevel": "JAVA_17",
+  "client": [
+    "ClientPacketListenerMixin",
+    "MinecraftMixin",
+    "MusicManagerMixin",
+    "RecipeToastMixin",
+    "ScreenshotMixin",
+    "SystemToastMixin",
+    "ToastComponentMixin",
+    "TutorialMixin",
+    "accessor.AdvancementToastMixinAccessor",
+    "accessor.TutorialToastMixinAccessor",
+    "accessor.WeighedSoundEventsMixinAccessor"
+  ],
+  "server": [],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "mixins": [
+    "KeyboardHandlerMixin"
+  ]
+}
