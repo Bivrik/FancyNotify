@@ -1,5 +1,6 @@
 package net.bivrik.fancynotify.screen;
 
+import net.bivrik.fancynotify.core.Common;
 import net.bivrik.fancynotify.core.Constants;
 import net.minecraft.Util;
 import net.minecraft.client.gui.GuiGraphics;
@@ -14,6 +15,8 @@ import java.awt.*;
 public class FancyNotifyScreen extends UniversalScreen {
     private static final Component TITLE = Component.literal(Constants.MOD_NAME);
 
+    private final String splash;
+
     private Button backButton;
     private Button settingsButton;
     private Button filtersButton;
@@ -21,6 +24,8 @@ public class FancyNotifyScreen extends UniversalScreen {
 
     public FancyNotifyScreen(Screen parent) {
         super(TITLE, parent);
+
+        this.splash = Common.getSplashesManager().getSplash();
     }
 
     @Override
@@ -54,7 +59,7 @@ public class FancyNotifyScreen extends UniversalScreen {
         stack.translate(x, y, 0);
         stack.scale(size, size, 1);
         stack.translate(-x, -y, 0);
-        guiGraphics.drawCenteredString(this.font, "Placeholder", this.width / 2, 12 + 9, Color.yellow.getRGB());
+        guiGraphics.drawCenteredString(this.font, splash, this.width / 2, 12 + 9, Color.yellow.getRGB());
         stack.popPose();
     }
 }

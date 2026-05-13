@@ -2,6 +2,7 @@ package net.bivrik.fancynotify.core;
 
 import net.bivrik.fancynotify.BiomeManager;
 import net.bivrik.fancynotify.NotificationManager;
+import net.bivrik.fancynotify.SplashesManager;
 import net.bivrik.fancynotify.gui.SystemNotification;
 import net.bivrik.fancynotify.platform.Services;
 import net.minecraft.client.Minecraft;
@@ -12,6 +13,7 @@ public final class Common {
     private Common() {}
 
     private static NotificationManager notificationManager;
+    private static SplashesManager splashesManager;
     private static BiomeManager biomeManager;
 
     public static void onModInit() {
@@ -23,6 +25,7 @@ public final class Common {
 
     public static void onMinecraftInit(Minecraft minecraft) {
         notificationManager = new NotificationManager(minecraft);
+        splashesManager = new SplashesManager(minecraft);
         biomeManager = new BiomeManager(minecraft, notificationManager);
     }
 
@@ -59,5 +62,9 @@ public final class Common {
 
     public static NotificationManager getNotificationManager() {
         return notificationManager;
+    }
+
+    public static SplashesManager getSplashesManager() {
+        return splashesManager;
     }
 }
