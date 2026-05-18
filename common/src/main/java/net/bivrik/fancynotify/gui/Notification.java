@@ -4,6 +4,8 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.bivrik.fancynotify.Easing;
 import net.bivrik.fancynotify.Keyframe;
 import net.bivrik.fancynotify.NotificationManager;
+import net.bivrik.fancynotify.config.ConfigManager;
+import net.bivrik.fancynotify.config.FiltersConfig;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
@@ -27,6 +29,7 @@ public abstract class Notification {
     protected List<FormattedCharSequence> messageLines;
 
     protected final NotificationManager notificationManager;
+    protected final FiltersConfig filtersConfig;
     protected final SoundManager soundManager;
     protected final Font font;
     protected final int animationDurationTicks;
@@ -45,6 +48,7 @@ public abstract class Notification {
 
     public Notification(NotificationManager manager) {
         this.notificationManager = manager;
+        this.filtersConfig = manager.getConfigManager().getFiltersConfig();
         this.font = manager.getMinecraft().font;
         this.soundManager = manager.getMinecraft().getSoundManager();
         this.animationDurationTicks = manager.getAnimationDurationTicks();

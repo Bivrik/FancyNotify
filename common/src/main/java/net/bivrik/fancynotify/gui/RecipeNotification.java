@@ -2,7 +2,6 @@ package net.bivrik.fancynotify.gui;
 
 import net.bivrik.fancynotify.NotificationManager;
 import net.bivrik.fancynotify.ResourceLocations;
-import net.bivrik.fancynotify.core.Logger;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -26,6 +25,11 @@ public class RecipeNotification extends ExpandableNotification {
 
         this.setDisplay(TITLE_TEXT, DESCRIPTION_TEXT);
         recipes.add(recipe);
+    }
+
+    @Override
+    public boolean shouldDisplay() {
+        return this.filtersConfig.isRecipeNotificationEnabled.get();
     }
 
     @Override

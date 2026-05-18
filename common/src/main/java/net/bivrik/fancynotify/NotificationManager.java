@@ -1,6 +1,7 @@
 package net.bivrik.fancynotify;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.bivrik.fancynotify.config.ConfigManager;
 import net.bivrik.fancynotify.core.Logger;
 import net.bivrik.fancynotify.gui.Notification;
 import net.minecraft.client.DeltaTracker;
@@ -17,18 +18,24 @@ public class NotificationManager {
     public static final int PADDING = 2;
 
     private final Minecraft minecraft;
+    private final ConfigManager configManager;
     private final DeltaTracker deltaTracker;
     private final List<Notification> allNotifications = new ArrayList<>();
     private final Deque<Notification> notificationQueue = new ConcurrentLinkedDeque<>();
     private final List<NotificationHolder> currentNotifications = new ArrayList<>();
 
-    public NotificationManager(Minecraft minecraft) {
+    public NotificationManager(Minecraft minecraft, ConfigManager configManager) {
         this.minecraft = minecraft;
+        this.configManager = configManager;
         this.deltaTracker = minecraft.getTimer();
     }
 
     public Minecraft getMinecraft() {
         return minecraft;
+    }
+
+    public ConfigManager getConfigManager() {
+        return configManager;
     }
 
     public void add(Notification notification) {

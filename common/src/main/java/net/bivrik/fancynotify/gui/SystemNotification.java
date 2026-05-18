@@ -6,10 +6,8 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.toasts.SystemToast;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.FormattedCharSequence;
 
 import java.awt.*;
-import java.util.List;
 import java.util.Map;
 
 public class SystemNotification extends ExpandableNotification {
@@ -30,6 +28,12 @@ public class SystemNotification extends ExpandableNotification {
         this.backgroundOffset = (this.messageLines.size() - 1) * 9;
     }
 
+    @Override
+    public boolean shouldDisplay() {
+        return this.filtersConfig.isSystemNotificationEnabled.get();
+    }
+
+    @Override
     public Identifier getId() {
         return id;
     }

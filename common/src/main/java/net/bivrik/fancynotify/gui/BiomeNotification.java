@@ -23,6 +23,11 @@ public class BiomeNotification extends ExpandableNotification {
     }
 
     @Override
+    public boolean shouldDisplay() {
+        return this.filtersConfig.isBiomeNotificationEnabled.get();
+    }
+
+    @Override
     public int getHeight() {
         return 23;
     }

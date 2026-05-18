@@ -22,6 +22,11 @@ public class MusicNotification extends Notification {
     }
 
     @Override
+    public boolean shouldDisplay() {
+        return this.filtersConfig.isMusicNotificationEnabled.get();
+    }
+
+    @Override
     public void draw(GuiGraphics guiGraphics) {
         drawSprite(guiGraphics, BACKGROUND, 0, 0, this.getWidth(), this.getHeight());
         drawText(guiGraphics, this.title, 29, 7, Color.cyan.getRGB());

@@ -30,6 +30,9 @@ public class FancyNotifyScreen extends UniversalScreen {
 
     @Override
     protected void init() {
+        backButton = Button.builder(CommonComponents.GUI_BACK, button -> setScreen(parent)).bounds(this.width / 2 - Button.BIG_WIDTH / 2, this.height - Button.DEFAULT_HEIGHT - 16, Button.BIG_WIDTH, Button.DEFAULT_HEIGHT).build();
+        addSimpleWidget(backButton);
+
         settingsButton = Button.builder(Component.literal("Settings..."), button -> setScreen(new SettingsScreen(this))).bounds(this.width / 2 - Button.BIG_WIDTH / 2, this.height / 2 - Button.DEFAULT_HEIGHT - 4, Button.BIG_WIDTH, Button.DEFAULT_HEIGHT).build();
         addSimpleWidget(settingsButton);
 
@@ -38,9 +41,6 @@ public class FancyNotifyScreen extends UniversalScreen {
 
         creditsButton = Button.builder(Component.literal("Credits"), button -> setScreen(new CreditsScreen(this))).bounds(this.width / 2 + 4, this.height / 2 + 4, 96, Button.DEFAULT_HEIGHT).build();
         addSimpleWidget(creditsButton);
-
-        backButton = Button.builder(CommonComponents.GUI_BACK, button -> setScreen(parent)).bounds(this.width / 2 - Button.BIG_WIDTH / 2, this.height - Button.DEFAULT_HEIGHT - 16, Button.BIG_WIDTH, Button.DEFAULT_HEIGHT).build();
-        addSimpleWidget(backButton);
     }
 
     @Override

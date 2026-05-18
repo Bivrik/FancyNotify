@@ -3,6 +3,7 @@ package net.bivrik.fancynotify.core;
 import net.bivrik.fancynotify.BiomeManager;
 import net.bivrik.fancynotify.NotificationManager;
 import net.bivrik.fancynotify.SplashesManager;
+import net.bivrik.fancynotify.config.ConfigManager;
 import net.bivrik.fancynotify.gui.SystemNotification;
 import net.bivrik.fancynotify.platform.Services;
 import net.minecraft.client.Minecraft;
@@ -12,6 +13,7 @@ import org.lwjgl.glfw.GLFW;
 public final class Common {
     private Common() {}
 
+    private static ConfigManager configManager;
     private static NotificationManager notificationManager;
     private static SplashesManager splashesManager;
     private static BiomeManager biomeManager;
@@ -24,7 +26,8 @@ public final class Common {
     }
 
     public static void onMinecraftInit(Minecraft minecraft) {
-        notificationManager = new NotificationManager(minecraft);
+        configManager = new ConfigManager();
+        notificationManager = new NotificationManager(minecraft, configManager);
         splashesManager = new SplashesManager(minecraft);
         biomeManager = new BiomeManager(minecraft, notificationManager);
     }
@@ -66,5 +69,9 @@ public final class Common {
 
     public static SplashesManager getSplashesManager() {
         return splashesManager;
+    }
+
+    public static ConfigManager getConfigManager() {
+        return configManager;
     }
 }

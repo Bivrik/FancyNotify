@@ -11,4 +11,8 @@ public final class ResourceLocations {
     public static ResourceLocation of(String path) {
         return ResourceLocation.fromNamespaceAndPath(NAMESPACE, path);
     }
+
+    public static ResourceLocation parse(String asString) {
+        return null;
+    }
 }

@@ -28,6 +28,11 @@ public class WeatherNotification extends ExpandableNotification {
     }
 
     @Override
+    public boolean shouldDisplay() {
+        return this.filtersConfig.isWeatherNotificationEnabled.get();
+    }
+
+    @Override
     public int getHeight() {
         return 23;
     }

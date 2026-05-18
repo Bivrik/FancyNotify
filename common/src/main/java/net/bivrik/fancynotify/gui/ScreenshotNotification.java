@@ -30,6 +30,11 @@ public class ScreenshotNotification extends ExpandableNotification {
     }
 
     @Override
+    public boolean shouldDisplay() {
+        return this.filtersConfig.isScreenshotNotificationEnabled.get();
+    }
+
+    @Override
     protected void onRemoval() {
         textureManager.release(SCREENSHOT_PREVIEW);
     }

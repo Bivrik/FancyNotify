@@ -36,6 +36,11 @@ public class AdvancementNotification extends Notification {
     }
 
     @Override
+    public boolean shouldDisplay() {
+        return this.filtersConfig.isAdvancementNotificationEnabled.get();
+    }
+
+    @Override
     public int getHeight() {
         return super.getHeight() + backgroundOffset;
     }
