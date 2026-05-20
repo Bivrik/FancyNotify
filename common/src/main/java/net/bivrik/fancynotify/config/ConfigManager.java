@@ -11,17 +11,15 @@ import java.util.Optional;
 
 public class ConfigManager {
     private static final org.slf4j.Logger LOGGER = Logger.getSpecificLogger(ConfigManager.class);
-    private static final String CONFIG_FOLDER_PATH = "./config/" + Constants.MOD_ID + "/";
-    private static final String GENERAL_CONFIG_PATH = CONFIG_FOLDER_PATH + "general.json";
-    private static final String FILTERS_CONFIG_PATH = CONFIG_FOLDER_PATH + "filters.json";
 
+    public static final String CONFIG_FOLDER_PATH = "./config/" + Constants.MOD_ID + "/";
     private static final File CONFIG_FOLDER = new File(CONFIG_FOLDER_PATH);
 
     private final Map<Class<? extends Config>, Config> configs = new HashMap<>();
 
     public ConfigManager() {
-        load(new GeneralConfig(GENERAL_CONFIG_PATH));
-        load(new FiltersConfig(FILTERS_CONFIG_PATH));
+        load(new GeneralConfig());
+        load(new FiltersConfig());
     }
 
     public GeneralConfig getGeneralConfig() {
@@ -42,7 +40,7 @@ public class ConfigManager {
         Class<T> configClass = (Class<T>) config.getClass();
         if (!configFile.exists()) {
             LOGGER.info("Creating new config {}", configClass.getSimpleName());
-            write(config);
+            write(configClass);
             return config;
         }
         Optional<T> optionalConfig = JsonHelper.tryToRead(configFile, configClass);
@@ -55,19 +53,24 @@ public class ConfigManager {
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
-    public <T extends Config> void write(T reference) {
+    public <T extends Config> void write(Class<T> configClass) {
         if (!CONFIG_FOLDER.exists()) {
             CONFIG_FOLDER.mkdir();
         }
-        Config config = configs.get(reference.getClass());
-        if (config == null) {
-            config = reference;
-        }
+        Config config = configs.getOrDefault(configClass, tryGetInstance(configClass));
         boolean isSuccessful = JsonHelper.tryToWrite(new File(config.getPath()), config);
         if (!isSuccessful) {
-            LOGGER.error("Could not write config {} in {}", reference.getClass().getSimpleName(), config.getPath());
+            LOGGER.error("Could not write config {} in {}", configClass.getSimpleName(), config.getPath());
         } else {
-            LOGGER.info("Successfully wrote config {} in {}", reference.getClass().getSimpleName(), config.getPath());
+            LOGGER.info("Successfully wrote config {} in {}", configClass.getSimpleName(), config.getPath());
+        }
+    }
+
+    private <T extends Config> T tryGetInstance(Class<T> configClass) {
+        try {
+            return configClass.getConstructor().newInstance();
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to create an instance of " + configClass.getSimpleName() + ": " + e);
         }
     }
 }

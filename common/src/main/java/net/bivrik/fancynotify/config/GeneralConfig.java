@@ -1,29 +1,18 @@
 package net.bivrik.fancynotify.config;
 
-import net.minecraft.network.chat.Component;
-
 public class GeneralConfig extends Config {
-    public GeneralConfig(String path) {
-        super(path);
+    private static final String GENERAL_CONFIG_PATH = ConfigManager.CONFIG_FOLDER_PATH + "general.json";
+
+    public GeneralConfig() {
+        super(GENERAL_CONFIG_PATH);
     }
 
-    public Setting<Float> notificationTransparency = new Setting<>(1.0f);
-    public Setting<Test> testSetting = new Setting<>(Test.POMIDOR);
-
-    public enum Test {
-        VISIBLE,
-        HIDDEN,
-        POMIDOR;
-
-        public Component getDisplayName() {
-            return Component.literal(this.name().toLowerCase());
-        }
-    }
+    public Setting<Float> notificationsTransparency = new Setting<>(1.0f);
 
     @Override
     public String toString() {
         return super.toString().replace("}", ", ") + String.format(
-                "notificationTransparency='%s', testSetting='%s'}",
-                notificationTransparency, testSetting);
+                "notificationTransparency='%s'}",
+                notificationsTransparency);
     }
 }

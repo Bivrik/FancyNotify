@@ -1,8 +1,10 @@
 package net.bivrik.fancynotify.config;
 
 public class FiltersConfig extends Config {
-    public FiltersConfig(String path) {
-        super(path);
+    private static final String FILTERS_CONFIG_PATH = ConfigManager.CONFIG_FOLDER_PATH + "filters.json";
+
+    public FiltersConfig() {
+        super(FILTERS_CONFIG_PATH);
     }
 
     public Setting<Boolean> isAdvancementNotificationEnabled = new Setting<>(true);

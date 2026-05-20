@@ -5,15 +5,20 @@ import net.bivrik.fancynotify.core.Constants;
 import net.minecraft.Util;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.PlainTextButton;
+import net.minecraft.client.gui.screens.ConfirmLinkScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
+import java.net.URI;
 
 public class FancyNotifyScreen extends UniversalScreen {
     private static final Component TITLE = Component.literal(Constants.MOD_NAME);
+    private static final Component SUPPORT_LABEL = Component.literal("News, polls, and other stuff on my Boosty blog!");
+    private static final URI BOOSTY_URI = URI.create("https://boosty.to/bivrik");
 
     private final String splash;
 
@@ -21,6 +26,7 @@ public class FancyNotifyScreen extends UniversalScreen {
     private Button settingsButton;
     private Button filtersButton;
     private Button creditsButton;
+    private PlainTextButton supportButton;
 
     public FancyNotifyScreen(Screen parent) {
         super(TITLE, parent);
@@ -30,17 +36,22 @@ public class FancyNotifyScreen extends UniversalScreen {
 
     @Override
     protected void init() {
-        backButton = Button.builder(CommonComponents.GUI_BACK, button -> setScreen(parent)).bounds(this.width / 2 - Button.BIG_WIDTH / 2, this.height - Button.DEFAULT_HEIGHT - 16, Button.BIG_WIDTH, Button.DEFAULT_HEIGHT).build();
-        addSimpleWidget(backButton);
+        backButton = Button.builder(CommonComponents.GUI_BACK, button -> setScreen(parent)).bounds(this.width / 2 - Button.BIG_WIDTH / 2, this.height / 2 + 4 + Button.DEFAULT_HEIGHT + 8, Button.BIG_WIDTH, Button.DEFAULT_HEIGHT).build();
+        this.addSimpleWidget(backButton);
 
         settingsButton = Button.builder(Component.literal("Settings..."), button -> setScreen(new SettingsScreen(this))).bounds(this.width / 2 - Button.BIG_WIDTH / 2, this.height / 2 - Button.DEFAULT_HEIGHT - 4, Button.BIG_WIDTH, Button.DEFAULT_HEIGHT).build();
-        addSimpleWidget(settingsButton);
+        this.addSimpleWidget(settingsButton);
 
         filtersButton = Button.builder(Component.literal("Filters..."), button -> setScreen(new FiltersScreen(this))).bounds(this.width / 2 - 100, this.height / 2 + 4, 96, Button.DEFAULT_HEIGHT).build();
-        addSimpleWidget(filtersButton);
+        this.addSimpleWidget(filtersButton);
 
         creditsButton = Button.builder(Component.literal("Credits"), button -> setScreen(new CreditsScreen(this))).bounds(this.width / 2 + 4, this.height / 2 + 4, 96, Button.DEFAULT_HEIGHT).build();
-        addSimpleWidget(creditsButton);
+        this.addSimpleWidget(creditsButton);
+
+        int supportButtonWidth = this.font.width(SUPPORT_LABEL);
+        Button.OnPress supportButtonAction = ConfirmLinkScreen.confirmLink(this, BOOSTY_URI);
+        supportButton = new PlainTextButton(this.width - supportButtonWidth - 3, this.height - 7, supportButtonWidth, 9, SUPPORT_LABEL, supportButtonAction, this.font);
+        this.addSimpleWidget(supportButton);
     }
 
     @Override
