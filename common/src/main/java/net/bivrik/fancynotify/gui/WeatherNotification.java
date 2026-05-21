@@ -47,7 +47,7 @@ public class WeatherNotification extends ExpandableNotification {
     @Override
     public void draw(GuiGraphics guiGraphics) {
         drawSprite(guiGraphics, BACKGROUND, 0, 0, this.getWidth(), this.getHeight());
-        drawText(guiGraphics, title, 29, 8, COLOR);
+        drawText(guiGraphics, title, this.getTextOffset(), 8, COLOR);
         drawSprite(guiGraphics, icon, 5, 1, 20, 20);
     }
 }

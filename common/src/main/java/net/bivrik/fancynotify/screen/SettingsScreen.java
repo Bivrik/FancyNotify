@@ -1,11 +1,11 @@
 package net.bivrik.fancynotify.screen;
 
+import net.bivrik.fancynotify.IntegerEditBox;
 import net.bivrik.fancynotify.Slider;
 import net.bivrik.fancynotify.config.ConfigManager;
 import net.bivrik.fancynotify.config.GeneralConfig;
 import net.bivrik.fancynotify.config.Setting;
 import net.bivrik.fancynotify.core.Common;
-import net.minecraft.client.OptionInstance;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
@@ -15,6 +15,7 @@ import net.minecraft.network.chat.Component;
 public class SettingsScreen extends UniversalScreen {
     private static final Component TITLE = Component.literal("Settings");
     private static final Component TRANSPARENCY_TITLE = Component.literal("Notifications Transparency");
+    private static final Component WIDTH_TITLE = Component.literal("Notifications Width");
     private static final Component DISPLAY_TIME_TITLE = Component.literal("Notifications Time");
     private static final Component DISPLAY_TIME_TOOLTIP = Component.translatable("options.notifications.display_time.tooltip");;
 
@@ -22,6 +23,7 @@ public class SettingsScreen extends UniversalScreen {
 
     private Button backButton;
     private Slider transparencySlider;
+    private IntegerEditBox widthEditBox;
     private Slider displayTimeSlider;
 
     protected SettingsScreen(Screen parent) {
@@ -44,6 +46,11 @@ public class SettingsScreen extends UniversalScreen {
         transparencySlider.setDisplayer(value -> Component.literal(Math.round(value * 100) + "%"));
         transparencySlider.setResponder(notificationTransparency::set);
         list.addElement(transparencySlider, SettingsList.WidgetWidth.BIG);
+
+        Setting<Integer> notificationWidth = configManager.getGeneralConfig().notificationsWidth;
+        widthEditBox = new IntegerEditBox(this.font, 0, 0, SettingsList.WidgetWidth.MEDIUM.getWidth(), Button.DEFAULT_HEIGHT, widthEditBox, WIDTH_TITLE, notificationWidth.get());
+        widthEditBox.setResponder(value -> widthEditBox.setIntegerResponder(notificationWidth::set));
+        list.addElement(widthEditBox);
 
         displayTimeSlider = new Slider(0, 0, SettingsList.WidgetWidth.MEDIUM.getWidth(), Button.DEFAULT_HEIGHT, DISPLAY_TIME_TITLE, Math.round(this.minecraft.options.notificationDisplayTime().get() * 10) / 10f, 0.5f, 10.0f, 0.0f);
         displayTimeSlider.setDisplayer(value -> Component.literal(Math.round(value * 10) / 10d + "x"));

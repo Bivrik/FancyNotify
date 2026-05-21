@@ -8,6 +8,7 @@ public class GeneralConfig extends Config {
     }
 
     public Setting<Float> notificationsTransparency = new Setting<>(1.0f);
+    public Setting<Integer> notificationsWidth = new Setting<>(160);
 
     @Override
     public String toString() {

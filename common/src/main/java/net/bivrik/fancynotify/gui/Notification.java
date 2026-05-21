@@ -5,6 +5,8 @@ import net.bivrik.fancynotify.Easing;
 import net.bivrik.fancynotify.Keyframe;
 import net.bivrik.fancynotify.NotificationManager;
 import net.bivrik.fancynotify.config.FiltersConfig;
+import net.bivrik.fancynotify.config.GeneralConfig;
+import net.bivrik.fancynotify.core.Common;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
@@ -65,7 +67,11 @@ public abstract class Notification {
         if (title != null && font != null) {
             titleWidth = font.width(title);
         }
-        return Math.max(titleWidth + 36, 160);
+        return Math.max(titleWidth + getTextOffset() + 7, Common.getConfigManager().getGeneralConfig().notificationsWidth.get());
+    }
+
+    protected int getTextOffset() {
+        return 29;
     }
 
     public int getHeight() {

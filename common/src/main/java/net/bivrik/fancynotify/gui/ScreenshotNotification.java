@@ -40,10 +40,15 @@ public class ScreenshotNotification extends ExpandableNotification {
     }
 
     @Override
+    protected int getTextOffset() {
+        return super.getTextOffset() + 17;
+    }
+
+    @Override
     public void draw(GuiGraphics guiGraphics) {
         drawSprite(guiGraphics, BACKGROUND, 0, 0, this.getWidth(), this.getHeight());
-        drawText(guiGraphics, this.title, 29 + 17, 7, new Color(43, 181, 43).getRGB());
-        drawText(guiGraphics, this.message, 29 + 17, 18, -1);
+        drawText(guiGraphics, this.title, this.getTextOffset(), 7, new Color(43, 181, 43).getRGB());
+        drawText(guiGraphics, this.message, this.getTextOffset(), 18, -1);
         int width = 38;
         int height = 22;
         drawTexture(guiGraphics, SCREENSHOT_PREVIEW, 5, 5, width, height, width * 4, height * 4, ((width * 4) - width) / 2, ((height * 4) - height) / 2);

@@ -44,8 +44,8 @@ public class RecipeNotification extends ExpandableNotification {
     public void draw(GuiGraphics guiGraphics) {
         countTemp += 1 / 2f;
         drawSprite(guiGraphics, BACKGROUND, 0, 0, this.getWidth(), this.getHeight());
-        drawText(guiGraphics, this.title, 29, 7, color);
-        drawText(guiGraphics, this.message, 29, 18, Color.black.getRGB());
+        drawText(guiGraphics, this.title, this.getTextOffset(), 7, color);
+        drawText(guiGraphics, this.message, this.getTextOffset(), 18, Color.black.getRGB());
         int orderedIndex = (int) (countTemp / Math.max(1f, (double) this.getLifeTimeTicks() / recipes.size()) % recipes.size());
         var recipe = recipes.get(orderedIndex).value();
         var stack = guiGraphics.pose();

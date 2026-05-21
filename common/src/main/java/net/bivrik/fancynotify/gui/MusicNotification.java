@@ -29,8 +29,8 @@ public class MusicNotification extends Notification {
     @Override
     public void draw(GuiGraphics guiGraphics) {
         drawSprite(guiGraphics, BACKGROUND, 0, 0, this.getWidth(), this.getHeight());
-        drawText(guiGraphics, this.title, 29, 7, Color.cyan.getRGB());
-        drawText(guiGraphics, this.message, 29, 18, -1);
+        drawText(guiGraphics, this.title, this.getTextOffset(), 7, Color.cyan.getRGB());
+        drawText(guiGraphics, this.message, this.getTextOffset(), 18, -1);
         drawSprite(guiGraphics, ICON, 4, this.getCenterY() - 10, 21, 21);
     }
 }

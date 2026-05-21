@@ -54,10 +54,10 @@ public class SystemNotification extends ExpandableNotification {
     public void draw(GuiGraphics guiGraphics) {
         drawSprite(guiGraphics, BACKGROUND, 0, 0, this.getWidth(), this.getHeight());
         int alignment = Math.min(this.messageLines.size(), 1);
-        drawText(guiGraphics, title, 29, 8 - alignment, Color.yellow.getRGB());
+        drawText(guiGraphics, title, this.getTextOffset(), 8 - alignment, Color.yellow.getRGB());
         for (int i = 0; i < this.messageLines.size(); i++) {
             var line = this.messageLines.get(i);
-            drawText(guiGraphics, line, 29, 18 + i * 9, -1);
+            drawText(guiGraphics, line, this.getTextOffset(), 18 + i * 9, -1);
         }
         drawSprite(guiGraphics, id.sprite, 6, this.getCenterY() - 10, 20, 20);
     }

@@ -65,15 +65,15 @@ public class AdvancementNotification extends Notification {
     @Override
     public void draw(GuiGraphics guiGraphics) {
         drawSprite(guiGraphics, BACKGROUND, 0, 0, this.getWidth(), this.getHeight());
-        drawText(guiGraphics, this.title, 29, 7, color);
+        drawText(guiGraphics, this.title, this.getTextOffset(), 7, color);
         for (int i = 0; i < Math.min(this.messageLines.size(), MAX_LINES); i++) {
             var line = this.messageLines.get(i);
-            drawText(guiGraphics, line, 29, 18 + i * 9, -1);
+            drawText(guiGraphics, line, this.getTextOffset(), 18 + i * 9, -1);
         }
         if (this.messageLines.size() > MAX_LINES) {
             int index = MAX_LINES - 1;
             var line = this.messageLines.get(index);
-            drawText(guiGraphics, Component.literal("..."), 29 + this.font.width(line), 18 + index * 9 , -1);
+            drawText(guiGraphics, Component.literal("..."), this.getTextOffset() + this.font.width(line), 18 + index * 9 , -1);
         }
         guiGraphics.renderFakeItem(icon, 8, this.getCenterY() - 8);
     }
