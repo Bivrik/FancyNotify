@@ -50,7 +50,7 @@ public class FancyNotifyScreen extends UniversalScreen {
 
         int supportButtonWidth = this.font.width(SUPPORT_LABEL);
         Button.OnPress supportButtonAction = ConfirmLinkScreen.confirmLink(this, BOOSTY_URI);
-        supportButton = new PlainTextButton(this.width - supportButtonWidth - 3, this.height - 7, supportButtonWidth, 9, SUPPORT_LABEL, supportButtonAction, this.font);
+        supportButton = new PlainTextButton(this.width - supportButtonWidth - 4, this.height - 13, supportButtonWidth, 9, SUPPORT_LABEL, supportButtonAction, this.font);
         this.addSimpleWidget(supportButton);
     }
 
