@@ -4,7 +4,6 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.bivrik.fancynotify.Easing;
 import net.bivrik.fancynotify.Keyframe;
 import net.bivrik.fancynotify.NotificationManager;
-import net.bivrik.fancynotify.config.ConfigManager;
 import net.bivrik.fancynotify.config.FiltersConfig;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -33,6 +32,7 @@ public abstract class Notification {
     protected final SoundManager soundManager;
     protected final Font font;
     protected final int animationDurationTicks;
+    private final float maxAlpha;
 
     protected float timeTicks = 0;
     protected float offsetTicks = 0;
@@ -52,6 +52,7 @@ public abstract class Notification {
         this.font = manager.getMinecraft().font;
         this.soundManager = manager.getMinecraft().getSoundManager();
         this.animationDurationTicks = manager.getAnimationDurationTicks();
+        this.maxAlpha = manager.getConfigManager().getGeneralConfig().notificationsTransparency.get();
     }
 
     protected void setDisplay(Component title, @Nullable Component message) {
@@ -122,7 +123,7 @@ public abstract class Notification {
         LOGGER.info("Showing...");
 
         float endX = 0;
-        float endAlpha = 1;
+        float endAlpha = maxAlpha;
 
         float showingProgress = Keyframe.getProgress(timeTicks, 0, animationDurationTicks);
         if (Keyframe.isActive(showingProgress)) {
@@ -143,11 +144,10 @@ public abstract class Notification {
         float endX = getWidth() + NotificationManager.PADDING;
         float endAlpha = 0;
 
-
         float hidingProgress = Keyframe.getProgress(timeTicks, (int) hidingTimingTicks, animationDurationTicks);
         if (Keyframe.isActive(hidingProgress)) {
             x = Easing.SINE_IN.lerp(0, endX, hidingProgress);
-            alpha = Easing.SINE_IN.lerp(1, endAlpha, hidingProgress);
+            alpha = Easing.SINE_IN.lerp(maxAlpha, endAlpha, hidingProgress);
         }
 
         if (timeTicks >= hidingTimingTicks + animationDurationTicks) {
@@ -234,7 +234,9 @@ public abstract class Notification {
             return;
         }
 
-        guiGraphics.drawString(font, text, x, y, FastColor.ABGR32.color((int) Math.clamp(alpha * 255, 0, 255), color), false);
+        int iAlpha = (int) (alpha * 255);
+        int alphaColor = (iAlpha << 24) | (color & 0x00FFFFFF);
+        guiGraphics.drawString(font, text, x, y, alphaColor, false);
     }
 
     protected void drawText(GuiGraphics guiGraphics, Component text, int x, int y, int color) {

@@ -1,5 +1,6 @@
 package net.bivrik.fancynotify.screen;
 
+import net.bivrik.fancynotify.Slider;
 import net.bivrik.fancynotify.config.ConfigManager;
 import net.bivrik.fancynotify.config.GeneralConfig;
 import net.bivrik.fancynotify.core.Common;
@@ -10,10 +11,12 @@ import net.minecraft.network.chat.Component;
 
 public class SettingsScreen extends UniversalScreen {
     private static final Component TITLE = Component.literal("Settings");
+    private static final Component TRANSPARENCY_TITLE = Component.literal("Notifications Transparency");
 
     private final ConfigManager configManager;
 
     private Button backButton;
+    private Slider transparencySlider;
 
     protected SettingsScreen(Screen parent) {
         super(TITLE, parent);
@@ -30,7 +33,10 @@ public class SettingsScreen extends UniversalScreen {
         SettingsList list = new SettingsList(this.minecraft, this.width, this.height - 64 - 2, 32, 25, this);
         this.addSimpleWidget(list);
 
-        // TODO: add settings
+        transparencySlider = new Slider(0, 0, SettingsList.WidgetWidth.BIG.getWidth(), Button.DEFAULT_HEIGHT, TRANSPARENCY_TITLE, configManager.getGeneralConfig().notificationsTransparency.get(), 1.0f);
+        transparencySlider.setDisplayer(value -> Component.literal(Math.round(value * 100) + "%"));
+        transparencySlider.setResponder(value -> configManager.getGeneralConfig().notificationsTransparency.set(value));
+        list.addElement(transparencySlider, SettingsList.WidgetWidth.BIG);
 
         list.alignElements();
     }
