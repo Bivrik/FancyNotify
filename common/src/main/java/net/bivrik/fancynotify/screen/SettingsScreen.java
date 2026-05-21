@@ -49,7 +49,7 @@ public class SettingsScreen extends UniversalScreen {
 
         Setting<Integer> notificationWidth = configManager.getGeneralConfig().notificationsWidth;
         widthEditBox = new IntegerEditBox(this.font, 0, 0, SettingsList.WidgetWidth.MEDIUM.getWidth(), Button.DEFAULT_HEIGHT, widthEditBox, WIDTH_TITLE, notificationWidth.get());
-        widthEditBox.setResponder(value -> widthEditBox.setIntegerResponder(notificationWidth::set));
+        widthEditBox.setResponder(value -> widthEditBox.setIntegerResponder(iValue -> notificationWidth.set(Math.clamp(iValue, 0, this.width - 4))));
         list.addElement(widthEditBox);
 
         displayTimeSlider = new Slider(0, 0, SettingsList.WidgetWidth.MEDIUM.getWidth(), Button.DEFAULT_HEIGHT, DISPLAY_TIME_TITLE, Math.round(this.minecraft.options.notificationDisplayTime().get() * 10) / 10f, 0.5f, 10.0f, 0.0f);

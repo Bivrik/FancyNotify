@@ -35,6 +35,7 @@ public abstract class Notification {
     protected final Font font;
     protected final int animationDurationTicks;
     private final float maxAlpha;
+    private final int minWidth;
 
     protected float timeTicks = 0;
     protected float offsetTicks = 0;
@@ -42,7 +43,7 @@ public abstract class Notification {
     private float showingTimingTicks;
     private int titleWidth;
 
-    private float x = getWidth() + NotificationManager.PADDING;
+    private float x = 0;
     private float y = 0;
     private float alpha = 0;
 
@@ -51,6 +52,7 @@ public abstract class Notification {
     public Notification(NotificationManager manager) {
         this.notificationManager = manager;
         this.filtersConfig = manager.getConfigManager().getFiltersConfig();
+        this.minWidth = manager.getConfigManager().getGeneralConfig().notificationsWidth.get();
         this.font = manager.getMinecraft().font;
         this.soundManager = manager.getMinecraft().getSoundManager();
         this.animationDurationTicks = manager.getAnimationDurationTicks();
@@ -67,7 +69,7 @@ public abstract class Notification {
         if (title != null && font != null) {
             titleWidth = font.width(title);
         }
-        return Math.max(titleWidth + getTextOffset() + 7, Common.getConfigManager().getGeneralConfig().notificationsWidth.get());
+        return Math.max(titleWidth + getTextOffset() + 7, minWidth);
     }
 
     protected int getTextOffset() {
