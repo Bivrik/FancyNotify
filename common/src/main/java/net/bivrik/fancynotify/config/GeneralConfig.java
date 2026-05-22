@@ -9,6 +9,14 @@ public class GeneralConfig extends Config {
 
     public Setting<Float> notificationsTransparency = new Setting<>(1.0f);
     public Setting<Integer> notificationsWidth = new Setting<>(160);
+    public Setting<Anchor> anchor = new Setting<>(Anchor.TOP_RIGHT);
+
+    public enum Anchor {
+        TOP_LEFT,
+        TOP_RIGHT,
+        BOTTOM_LEFT,
+        BOTTOM_RIGHT;
+    }
 
     @Override
     public String toString() {
