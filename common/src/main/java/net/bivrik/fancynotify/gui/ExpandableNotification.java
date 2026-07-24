@@ -1,10 +1,11 @@
 package net.bivrik.fancynotify.gui;
 
 import net.bivrik.fancynotify.NotificationManager;
+import net.minecraft.network.chat.Component;
 
 public abstract class ExpandableNotification extends Notification {
-    public ExpandableNotification(NotificationManager manager) {
-        super(manager);
+    public ExpandableNotification(NotificationManager manager, Component title, Component message) {
+        super(manager, title, message);
     }
 
     protected void expand(ExpandableNotification expansion) {}

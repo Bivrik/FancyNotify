@@ -13,18 +13,16 @@ import java.awt.*;
 import java.util.Random;
 
 public class ScreenshotNotification extends ExpandableNotification {
-    private static final Random random = new Random();
+    private static final Random RANDOM = new Random();
+    private static final Component TITLE = Component.translatable("fancynotify.gui.screenshot.title");
     private static final ResourceLocation BACKGROUND = ResourceLocations.of("notifications/screenshot");
     private static final ResourceLocation SCREENSHOT_PREVIEW = ResourceLocations.of("screenshot_preview");
     private final TextureManager textureManager;
 
     public ScreenshotNotification(NotificationManager manager, NativeImage screenshotImage) {
-        super(manager);
+        super(manager, TITLE, Component.translatable("fancynotify.gui.screenshot." + RANDOM.nextInt(3)));
 
-        var title = Component.translatable("fancynotify.gui.screenshot.title");
-        var message = Component.translatable("fancynotify.gui.screenshot." + random.nextInt(3));
-        this.setDisplay(title, message);
-        this.textureManager = this.notificationManager.getMinecraft().getTextureManager();
+        this.textureManager = this.minecraft.getTextureManager();
         DynamicTexture screenshotPreview = new DynamicTexture(screenshotImage);
         this.textureManager.register(SCREENSHOT_PREVIEW, screenshotPreview);
     }

@@ -25,13 +25,11 @@ public class AdvancementNotification extends Notification {
     private boolean isSoundPlayed;
 
     public AdvancementNotification(NotificationManager manager, DisplayInfo display) {
-        super(manager);
+        super(manager, display.getType().getDisplayName(), display.getTitle());
 
-        AdvancementType type = display.getType();
-        this.setDisplay(type.getDisplayName(), display.getTitle());
         this.icon = display.getIcon();
         this.backgroundOffset = Math.min(this.messageLines.size() - 1, MAX_LINES - 1) * 9;
-        this.isChallenge = type == AdvancementType.CHALLENGE;
+        this.isChallenge = display.getType() == AdvancementType.CHALLENGE;
         this.color = this.isChallenge ? new Color(255, 119, 255).getRGB() : Color.yellow.getRGB();
     }
 
@@ -51,13 +49,11 @@ public class AdvancementNotification extends Notification {
     }
 
     @Override
-    public void update(float deltaTicks) {
-        super.update(deltaTicks);
-
-        if (!isSoundPlayed && this.timeTicks >= this.animationDurationTicks - this.animationDurationTicks / 2f) {
+    public void onUpdate() {
+        if (!isSoundPlayed && this.timeTicks >= getAnimationDurationTicks() - getAnimationDurationTicks() / 2f) {
             isSoundPlayed = true;
             if (isChallenge) {
-                this.soundManager.play(SimpleSoundInstance.forUI(SoundEvents.UI_TOAST_CHALLENGE_COMPLETE, 1, 1));
+                this.minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_TOAST_CHALLENGE_COMPLETE, 1, 1));
             }
         }
     }
@@ -73,7 +69,7 @@ public class AdvancementNotification extends Notification {
         if (this.messageLines.size() > MAX_LINES) {
             int index = MAX_LINES - 1;
             var line = this.messageLines.get(index);
-            drawText(guiGraphics, Component.literal("..."), this.getTextOffset() + this.font.width(line), 18 + index * 9 , -1);
+            drawText(guiGraphics, Component.literal("..."), this.getTextOffset() + this.minecraft.font.width(line), 18 + index * 9 , -1);
         }
         guiGraphics.renderFakeItem(icon, 8, this.getCenterY() - 8);
     }

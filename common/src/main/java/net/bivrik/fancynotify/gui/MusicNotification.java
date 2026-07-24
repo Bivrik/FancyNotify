@@ -12,13 +12,8 @@ public class MusicNotification extends Notification {
     private static final ResourceLocation BACKGROUND = ResourceLocations.of("notifications/music");
     private static final ResourceLocation ICON = ResourceLocations.of("icons/music");
 
-    public MusicNotification(NotificationManager manager, Component musicText) {
-        super(manager);
-
-        String[] musicInfo = musicText.getString().split(" - ");
-        Component artist = Component.literal(musicInfo[0]);
-        Component title = Component.literal(musicInfo[1]);
-        this.setDisplay(artist, title);
+    public MusicNotification(NotificationManager manager, Component title, Component message) {
+        super(manager, title, message);
     }
 
     @Override
@@ -28,9 +23,9 @@ public class MusicNotification extends Notification {
 
     @Override
     public void draw(GuiGraphics guiGraphics) {
-        drawSprite(guiGraphics, BACKGROUND, 0, 0, this.getWidth(), this.getHeight());
-        drawText(guiGraphics, this.title, this.getTextOffset(), 7, Color.cyan.getRGB());
-        drawText(guiGraphics, this.message, this.getTextOffset(), 18, -1);
-        drawSprite(guiGraphics, ICON, 4, this.getCenterY() - 10, 21, 21);
+        drawSprite(guiGraphics, BACKGROUND, 0, 0, getWidth(), getHeight());
+        drawText(guiGraphics, this.title, getTextOffset(), 7, Color.cyan.getRGB());
+        drawText(guiGraphics, this.message, getTextOffset(), 18, -1);
+        drawSprite(guiGraphics, ICON, 4, getCenterY() - 10, 21, 21);
     }
 }

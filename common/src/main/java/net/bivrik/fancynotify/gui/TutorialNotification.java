@@ -16,7 +16,7 @@ public class TutorialNotification extends Notification {
     private final Component descriptionText;*/
 
     public TutorialNotification(NotificationManager manager, TutorialToast.Icons icon, Component titleText, Component descriptionText) {
-        super(manager);
+        super(manager, titleText, descriptionText);
 
         /*this.icon = icon;
         this.titleText = titleText;

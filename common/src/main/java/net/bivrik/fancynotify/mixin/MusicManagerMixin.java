@@ -32,9 +32,14 @@ public class MusicManagerMixin {
         if (this.currentMusic != null && this.minecraft.options.getSoundSourceVolume(SoundSource.MUSIC) > 0) {
             Sound musicSound = this.currentMusic.getSound();
             if (musicSound != SoundManager.EMPTY_SOUND) {
-                String musicName = musicSound.getLocation().toShortLanguageKey().replace("/", ".");
+                Component musicName = Component.translatable(musicSound.getLocation().toShortLanguageKey().replace("/", "."));
+
+                String[] musicInfo = musicName.getString().split(" - ");
+                Component artist = Component.literal(musicInfo[0]);
+                Component title = Component.literal(musicInfo[1]);
+
                 NotificationManager manager = Common.getNotificationManager();
-                manager.add(new MusicNotification(manager, Component.translatable(musicName)));
+                manager.add(new MusicNotification(manager, artist, title));
             }
         }
     }

@@ -21,9 +21,8 @@ public class RecipeNotification extends ExpandableNotification {
     private final int color = new Color(119, 0, 119).getRGB();
 
     public RecipeNotification(NotificationManager manager, RecipeHolder<?> recipe) {
-        super(manager);
+        super(manager, TITLE_TEXT, DESCRIPTION_TEXT);
 
-        this.setDisplay(TITLE_TEXT, DESCRIPTION_TEXT);
         recipes.add(recipe);
     }
 
@@ -54,6 +53,6 @@ public class RecipeNotification extends ExpandableNotification {
         stack.translate(0, 0, -20);
         guiGraphics.renderFakeItem(recipe.getToastSymbol(), 9, getCenterY());
         stack.popPose();
-        guiGraphics.renderFakeItem(recipe.getResultItem(Objects.requireNonNull(this.notificationManager.getMinecraft().level).registryAccess()), 6, getCenterY() - 12);
+        guiGraphics.renderFakeItem(recipe.getResultItem(Objects.requireNonNull(this.minecraft.level).registryAccess()), 6, getCenterY() - 12);
     }
 }

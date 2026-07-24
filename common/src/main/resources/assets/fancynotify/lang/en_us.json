@@ -7,6 +7,10 @@
   "fancynotify.gui.weather.rain": "It's raining",
   "fancynotify.gui.weather.thunder": "Be ware of thunder!",
   "fancynotify.gui.biome.unknown": "Unknown (%s)",
+  "fancynotify.gui.anchor.top_left": "Top Left",
+  "fancynotify.gui.anchor.top_right": "Top Right",
+  "fancynotify.gui.anchor.bottom_left": "Bottom Left",
+  "fancynotify.gui.anchor.bottom_right": "Bottom Right",
 
   "music.menu.beginning_2": "C418 - Beginning 2",
   "music.menu.floating_trees": "C418 - Floating Trees",

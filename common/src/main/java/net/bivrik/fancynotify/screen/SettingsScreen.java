@@ -7,6 +7,7 @@ import net.bivrik.fancynotify.config.GeneralConfig;
 import net.bivrik.fancynotify.config.Setting;
 import net.bivrik.fancynotify.core.Common;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.CycleButton;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.CommonComponents;
@@ -18,6 +19,8 @@ public class SettingsScreen extends UniversalScreen {
     private static final Component WIDTH_TITLE = Component.literal("Notifications Width");
     private static final Component DISPLAY_TIME_TITLE = Component.literal("Notifications Time");
     private static final Component DISPLAY_TIME_TOOLTIP = Component.translatable("options.notifications.display_time.tooltip");;
+    private static final Component ANCHOR_TITLE = Component.literal("Anchor");
+    private static final Component ANCHOR_TOOLTIP = Component.literal("Represents position where notifications will be shown");
 
     private final ConfigManager configManager;
 
@@ -25,6 +28,7 @@ public class SettingsScreen extends UniversalScreen {
     private Slider transparencySlider;
     private IntegerEditBox widthEditBox;
     private Slider displayTimeSlider;
+    private CycleButton<GeneralConfig.Anchor> anchorCycleButton;
 
     protected SettingsScreen(Screen parent) {
         super(TITLE, parent);
@@ -52,6 +56,14 @@ public class SettingsScreen extends UniversalScreen {
         widthEditBox.setResponder(value -> widthEditBox.setIntegerResponder(iValue -> notificationWidth.set(Math.clamp(iValue, 0, this.width - 4))));
         list.addElement(widthEditBox);
 
+        Setting<GeneralConfig.Anchor> anchor = configManager.getGeneralConfig().anchor;
+        anchorCycleButton = CycleButton.builder(GeneralConfig.Anchor::getDisplayName)
+                .withValues(GeneralConfig.Anchor.values())
+                .withInitialValue(anchor.get())
+                .withTooltip(value -> Tooltip.create(ANCHOR_TOOLTIP))
+                .create(0, 0, Button.DEFAULT_WIDTH, Button.DEFAULT_HEIGHT, ANCHOR_TITLE, (button, value) -> anchor.set(value));
+        list.addElement(anchorCycleButton);
+
         displayTimeSlider = new Slider(0, 0, SettingsList.WidgetWidth.MEDIUM.getWidth(), Button.DEFAULT_HEIGHT, DISPLAY_TIME_TITLE, Math.round(this.minecraft.options.notificationDisplayTime().get() * 10) / 10f, 0.5f, 10.0f, 0.0f);
         displayTimeSlider.setDisplayer(value -> Component.literal(Math.round(value * 10) / 10d + "x"));
         displayTimeSlider.setResponder(value -> this.minecraft.options.notificationDisplayTime().set(Math.round(value * 10) / 10d));
@@ -64,6 +76,7 @@ public class SettingsScreen extends UniversalScreen {
     @Override
     public void onClose() {
         configManager.write(GeneralConfig.class);
+        this.minecraft.options.save();
         super.onClose();
     }
 }

@@ -41,6 +41,14 @@ repositories {
         name = 'BlameJared'
         url = 'https://maven.blamejared.com'
     }
+    maven {
+        name = 'CurseMaven'
+        url = 'https://cursemaven.com'
+    }
+    maven {
+        name = 'ModrinthMaven'
+        url = 'https://api.modrinth.com/maven'
+    }
 }
 
 // Declare capabilities on the outgoing configurations.

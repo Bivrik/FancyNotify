@@ -38,26 +38,26 @@ public class NotificationManager {
         return configManager;
     }
 
-    public void add(Notification notification) {
-        if (!notification.shouldDisplay()) {
+    public void add(Notification newNotification) {
+        if (!newNotification.shouldDisplay()) {
             return;
         }
 
         for (Notification n : allNotifications) {
-            if (n.tryMerge(notification)) {
+            if (n.tryMerge(newNotification)) {
                 Logger.info("Expanded notification");
                 return;
             }
         }
 
         if (hasCurrentSlots()) {
-            currentNotifications.add(new NotificationHolder(notification, getLastPosition()));
+            currentNotifications.add(new NotificationHolder(newNotification, this, getLastPosition()));
             Logger.info("Showing new notification");
         } else {
-            notificationQueue.add(notification);
+            notificationQueue.add(newNotification);
             Logger.info("Added new notification to queue");
         }
-        allNotifications.add(notification);
+        allNotifications.add(newNotification);
     }
 
     public void clear() {
@@ -72,10 +72,6 @@ public class NotificationManager {
 
     public boolean isCurrentEmpty() {
         return currentNotifications.isEmpty();
-    }
-
-    public int getAnimationDurationTicks() {
-        return 15;
     }
 
     public void update() {
@@ -105,7 +101,7 @@ public class NotificationManager {
         while (!notificationQueue.isEmpty() && hasCurrentSlots()) {
             Notification next = notificationQueue.pollFirst();
             if (next != null) {
-                currentNotifications.add(new NotificationHolder(next, getLastPosition()));
+                currentNotifications.add(new NotificationHolder(next, this, getLastPosition()));
                 Logger.info("Showing next notification");
             }
         }
@@ -148,6 +144,7 @@ public class NotificationManager {
 
     private static class NotificationHolder {
         private final Notification notification;
+        private final NotificationManager manager;
 
         private float timeTicks;
         private float y;
@@ -155,8 +152,9 @@ public class NotificationManager {
         private float newY;
         private float yLastChangedTicks;
 
-        private NotificationHolder(Notification notification, float y) {
+        private NotificationHolder(Notification notification, NotificationManager manager, float y) {
             this.notification = notification;
+            this.manager = manager;
 
             this.y = y;
             this.newY = y;
@@ -175,7 +173,7 @@ public class NotificationManager {
                 oldY = this.y;
                 newY = y;
                 yLastChangedTicks = timeTicks;
-                Logger.error("Updated (new " + this.y + ", current " + y + ")");
+                Logger.info("Updated (new " + this.y + ", current " + y + ")");
             }
         }
 
@@ -184,7 +182,7 @@ public class NotificationManager {
             timeTicks += deltaTicks;
 
             if (y != newY) {
-                y = Easing.OCT_EASE_OUT.lerp(oldY, newY, Keyframe.getProgress(timeTicks, (int) Math.ceil(yLastChangedTicks), 10));
+                y = Easing.OCT_EASE_OUT.lerp(oldY, newY, Keyframe.getProgress(timeTicks, yLastChangedTicks, 10));
             }
         }
 
@@ -193,7 +191,7 @@ public class NotificationManager {
             stack.pushPose();
             stack.translate(0, y, 0);
             notification.render(guiGraphics);
-            stack.popPose();;
+            stack.popPose();
         }
     }
 }

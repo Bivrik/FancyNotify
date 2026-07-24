@@ -16,10 +16,9 @@ public class BiomeNotification extends ExpandableNotification {
     private ItemStack icon;
 
     public BiomeNotification(NotificationManager manager, Component biomeName, ItemStack icon) {
-        super(manager);
+        super(manager, biomeName, Component.empty());
 
         this.icon = icon;
-        this.setDisplay(biomeName, null);
     }
 
     @Override
@@ -35,7 +34,7 @@ public class BiomeNotification extends ExpandableNotification {
     @Override
     protected void expand(ExpandableNotification expansion) {
         if (expansion instanceof BiomeNotification biomeNotification) {
-            this.setDisplay(biomeNotification.title, null);
+            this.setDisplay(biomeNotification.title, Component.empty());
             this.icon = biomeNotification.icon;
         }
     }
