@@ -3,7 +3,7 @@ package net.bivrik.fancynotify.mixin;
 import net.bivrik.fancynotify.IAdvancementHolderAccessor;
 import net.bivrik.fancynotify.NotificationManager;
 import net.bivrik.fancynotify.core.Common;
-import net.bivrik.fancynotify.core.Logger;
+import net.bivrik.fancynotify.core.Log;
 import net.bivrik.fancynotify.gui.AdvancementNotification;
 import net.minecraft.advancements.DisplayInfo;
 import net.minecraft.client.gui.GuiGraphics;
@@ -32,13 +32,13 @@ public class ToastComponentMixin {
         // System Notifications
         else if (toast instanceof SystemToast) {
             // Just ignoring system toast because it should've been transformed into system notification before
-            Logger.info("Just ignoring system toast because it should've been transformed into system notification before");
+            Log.info("Just ignoring system toast because it should've been transformed into system notification before");
         }
         // Catch all unique toasts here and warn
         else if (toast != null) {
-            Logger.warn("Failed to create a notification from toast: {} ({})", toast.getClass(), toast);
+            Log.warn("Failed to create a notification from toast: {} ({})", toast.getClass(), toast);
         } else {
-            Logger.warn("Null toast???");
+            Log.warn("Null toast???");
         }
     }
 

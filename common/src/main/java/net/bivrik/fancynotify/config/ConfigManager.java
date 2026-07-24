@@ -2,7 +2,7 @@ package net.bivrik.fancynotify.config;
 
 import net.bivrik.fancynotify.JsonHelper;
 import net.bivrik.fancynotify.core.Constants;
-import net.bivrik.fancynotify.core.Logger;
+import net.bivrik.fancynotify.core.Log;
 
 import java.io.File;
 import java.util.HashMap;
@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Optional;
 
 public class ConfigManager {
-    private static final org.slf4j.Logger LOGGER = Logger.getSpecificLogger(ConfigManager.class);
+    private static final org.slf4j.Logger LOGGER = Log.getSpecificLogger(ConfigManager.class);
 
     public static final String CONFIG_FOLDER_PATH = "./config/" + Constants.MOD_ID + "/";
     private static final File CONFIG_FOLDER = new File(CONFIG_FOLDER_PATH);

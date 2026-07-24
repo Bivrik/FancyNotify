@@ -5,8 +5,8 @@ import org.slf4j.LoggerFactory;
 /**
  * Utility class for easier logging. Wrapper of {@link org.slf4j.Logger}.
  */
-public final class Logger {
-    private Logger() {}
+public final class Log {
+    private Log() {}
     // Standard logger with constant mod id that is used by default
     private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(Constants.MOD_NAME);
 
@@ -75,24 +75,5 @@ public final class Logger {
      */
     public static void error(String msg, Object... args) {
         LOGGER.error(msg, args);
-    }
-
-    /**
-     * Logs a message at the DEBUG level.
-     * @param msg message to log.
-     * @see org.slf4j.Logger#debug(String)
-     */
-    public static void debug(String msg) {
-        LOGGER.debug(msg);
-    }
-
-    /**
-     * Logs a message with arguments at the DEBUG level.
-     * @param msg message to log.
-     * @param args arguments to log.
-     * @see org.slf4j.Logger#debug(String, Object...)
-     */
-    public static void debug(String msg, Object... args) {
-        LOGGER.debug(msg, args);
     }
 }

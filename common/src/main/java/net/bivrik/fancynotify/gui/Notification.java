@@ -7,7 +7,7 @@ import net.bivrik.fancynotify.NotificationManager;
 import net.bivrik.fancynotify.config.ConfigManager;
 import net.bivrik.fancynotify.config.FiltersConfig;
 import net.bivrik.fancynotify.config.GeneralConfig;
-import net.bivrik.fancynotify.core.Logger;
+import net.bivrik.fancynotify.core.Log;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
@@ -21,7 +21,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public abstract class Notification {
-    private static final org.slf4j.Logger LOGGER = Logger.getSpecificLogger(Notification.class);
+    private static final org.slf4j.Logger LOGGER = Log.getSpecificLogger(Notification.class);
     private static final Object NO_ID = new Object();
 
     protected Component title;

@@ -1,6 +1,6 @@
 package net.bivrik.fancynotify.platform;
 
-import net.bivrik.fancynotify.core.Logger;
+import net.bivrik.fancynotify.core.Log;
 import net.bivrik.fancynotify.platform.services.IPlatformHelper;
 
 import java.util.Map;
@@ -13,7 +13,7 @@ import java.util.function.Supplier;
 public final class Services {
     private Services() {}
 
-    private static final org.slf4j.Logger LOGGER = Logger.getSpecificLogger(Services.class);
+    private static final org.slf4j.Logger LOGGER = Log.getSpecificLogger(Services.class);
 
     // Must-have services. Platforms have to be loaded
     public static final IPlatformHelper PLATFORM = load(IPlatformHelper.class);

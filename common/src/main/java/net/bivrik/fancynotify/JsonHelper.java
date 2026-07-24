@@ -2,7 +2,7 @@ package net.bivrik.fancynotify;
 
 import com.google.gson.*;
 import net.bivrik.fancynotify.config.Setting;
-import net.bivrik.fancynotify.core.Logger;
+import net.bivrik.fancynotify.core.Log;
 import net.minecraft.resources.ResourceLocation;
 
 import java.io.File;
@@ -52,7 +52,7 @@ public final class JsonHelper {
             T data = GSON.fromJson(reader, classReference);
             return Optional.of(data);
         } catch (Exception e) {
-            Logger.error("Could not read json file {}: {}", jsonFile.getName(), e.getMessage());
+            Log.error("Could not read json file {}: {}", jsonFile.getName(), e.getMessage());
             return Optional.empty();
         }
     }
@@ -62,7 +62,7 @@ public final class JsonHelper {
             GSON.toJson(data, writer);
             return true;
         } catch (Exception e) {
-            Logger.error("Could not write json file {}: {}", jsonFile.getName(), e.getMessage());
+            Log.error("Could not write json file {}: {}", jsonFile.getName(), e.getMessage());
             return false;
         }
     }

@@ -22,7 +22,7 @@ public final class Common {
         if (!Services.PLATFORM.isModLoaded(Constants.MOD_ID)) {
             return;
         }
-        Logger.info("Initialized on {} in a {} environment", Services.PLATFORM.getName(), Services.PLATFORM.getEnvironmentName());
+        Log.info("Initialized on {} in a {} environment", Services.PLATFORM.getName(), Services.PLATFORM.getEnvironmentName());
     }
 
     public static void onMinecraftInit(Minecraft minecraft) {

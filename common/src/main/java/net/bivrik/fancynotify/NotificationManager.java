@@ -2,7 +2,7 @@ package net.bivrik.fancynotify;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.bivrik.fancynotify.config.ConfigManager;
-import net.bivrik.fancynotify.core.Logger;
+import net.bivrik.fancynotify.core.Log;
 import net.bivrik.fancynotify.gui.Notification;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
@@ -45,17 +45,17 @@ public class NotificationManager {
 
         for (Notification n : allNotifications) {
             if (n.tryMerge(newNotification)) {
-                Logger.info("Expanded notification");
+                Log.info("Expanded notification");
                 return;
             }
         }
 
         if (hasCurrentSlots()) {
             currentNotifications.add(new NotificationHolder(newNotification, this, getLastPosition()));
-            Logger.info("Showing new notification");
+            Log.info("Showing new notification");
         } else {
             notificationQueue.add(newNotification);
-            Logger.info("Added new notification to queue");
+            Log.info("Added new notification to queue");
         }
         allNotifications.add(newNotification);
     }
@@ -83,7 +83,7 @@ public class NotificationManager {
                 if (notification.shouldRemove()) {
                     iterator.remove();
                     allNotifications.remove(notification);
-                    Logger.info("Removed visible notification");
+                    Log.info("Removed visible notification");
                     continue;
                 }
 
@@ -102,7 +102,7 @@ public class NotificationManager {
             Notification next = notificationQueue.pollFirst();
             if (next != null) {
                 currentNotifications.add(new NotificationHolder(next, this, getLastPosition()));
-                Logger.info("Showing next notification");
+                Log.info("Showing next notification");
             }
         }
     }
@@ -173,7 +173,7 @@ public class NotificationManager {
                 oldY = this.y;
                 newY = y;
                 yLastChangedTicks = timeTicks;
-                Logger.info("Updated (new " + this.y + ", current " + y + ")");
+                Log.info("Updated (new " + this.y + ", current " + y + ")");
             }
         }
 
