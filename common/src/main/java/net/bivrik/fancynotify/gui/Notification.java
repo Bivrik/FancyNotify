@@ -132,18 +132,18 @@ public abstract class Notification {
         float startAlpha = 0;
 
         float endX = 0;
-        float endAlpha = generalConfig.notificationsTransparency.get();
+        float endAlpha = 1;
 
         float showingProgress = Keyframe.getProgress(timeTicks, animationTimingTicks, getAnimationDurationTicks());
         if (Keyframe.isActive(showingProgress)) {
             x = Easing.SINE_OUT.lerp(startX, endX, showingProgress);
-            alpha = Easing.SINE_OUT.lerp(startAlpha, endAlpha, showingProgress);
+            setAlpha(Easing.SINE_OUT.lerp(startAlpha, endAlpha, showingProgress));
         }
 
         if (timeTicks >= animationTimingTicks + getAnimationDurationTicks()) {
             setVisibility(Visibility.VISIBLE);
             x = endX;
-            alpha = endAlpha;
+            setAlpha(endAlpha);
         }
     }
 
@@ -151,7 +151,7 @@ public abstract class Notification {
         LOGGER.info("Hiding...");
 
         float startX = 0;
-        float startAlpha = generalConfig.notificationsTransparency.get();
+        float startAlpha = 1;
 
         float endX = getWidth() + NotificationManager.PADDING;
         float endAlpha = 0;
@@ -159,19 +159,24 @@ public abstract class Notification {
         float hidingProgress = Keyframe.getProgress(timeTicks, animationTimingTicks, getAnimationDurationTicks());
         if (Keyframe.isActive(hidingProgress)) {
             x = Easing.SINE_IN.lerp(startX, endX, hidingProgress);
-            alpha = Easing.SINE_IN.lerp(startAlpha, endAlpha, hidingProgress);
+            setAlpha(Easing.SINE_IN.lerp(startAlpha, endAlpha, hidingProgress));
         }
 
         if (timeTicks >= animationTimingTicks + getAnimationDurationTicks()) {
             setVisibility(Visibility.REMOVAL);
             x = endX;
-            alpha = endAlpha;
+            setAlpha(endAlpha);
             onRemoval();
         }
     }
 
+    private void setAlpha(float alpha) {
+        this.alpha = alpha * generalConfig.notificationsTransparency.get();
+    }
+
     public void update(float deltaTicks) {
         timeTicks += deltaTicks;
+        Log.info("{}", alpha);
 
         updateState();
         checkState();
@@ -202,7 +207,7 @@ public abstract class Notification {
         LOGGER.info("State: {}", state);
     }
 
-    public void render(GuiGraphics guiGraphics) {
+    public final void render(GuiGraphics guiGraphics) {
         if (state == Visibility.HIDDEN || state == Visibility.REMOVAL) {
             return;
         }
@@ -251,9 +256,11 @@ public abstract class Notification {
             return;
         }
 
-        int iAlpha = (int) (alpha * 255);
-        int alphaColor = (iAlpha << 24) | (color & 0x00FFFFFF);
-        guiGraphics.drawString(minecraft.font, text, x, y, alphaColor, false);
+        RenderSystem.enableBlend();
+        guiGraphics.setColor(1, 1, 1, alpha);
+        guiGraphics.drawString(minecraft.font, text, x, y, color, false);
+        guiGraphics.setColor(1, 1, 1, 1);
+        RenderSystem.disableBlend();
     }
 
     protected void drawText(GuiGraphics guiGraphics, Component text, int x, int y, int color) {

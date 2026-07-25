@@ -151,7 +151,8 @@ public class NotificationManager {
         stack.pushPose();
         GeneralConfig config = configManager.getGeneralConfig();
         GeneralConfig.Anchor anchor = config.anchor.get();
-        stack.translate(anchor.isLeft() ? PADDING : guiGraphics.guiWidth() - PADDING, anchor.isTop() ? PADDING : guiGraphics.guiHeight() - PADDING, 800);
+        //stack.translate(anchor.isLeft() ? PADDING : guiGraphics.guiWidth() - PADDING, anchor.isTop() ? PADDING : guiGraphics.guiHeight() - PADDING, 800);
+        stack.translate(guiGraphics.guiWidth() / 2.0, guiGraphics.guiHeight() / 2.0, 800);
 
         if (config.debug.get()) {
             guiGraphics.fill(-500, 0, 500, 1, -58254424);
