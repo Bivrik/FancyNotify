@@ -11,22 +11,51 @@ public class GeneralConfig extends Config {
 
     public Setting<Float> notificationsTransparency = new Setting<>(1.0f);
     public Setting<Integer> notificationsWidth = new Setting<>(150);
+    public Setting<Orientation> orientation = new Setting<>(Orientation.VERTICAL);
     public Setting<Anchor> anchor = new Setting<>(Anchor.TOP_RIGHT);
+    public Setting<Boolean> debug = new Setting<>(false);
 
-    public enum Anchor {
-        TOP_LEFT("top_left"),
-        TOP_RIGHT("top_right"),
-        BOTTOM_LEFT("bottom_left"),
-        BOTTOM_RIGHT("bottom_right");
+    public enum Orientation {
+        VERTICAL("vertical"),
+        HORIZONTAL("horizontal");
 
         private final Component displayName;
 
-        Anchor(String name) {
-            this.displayName = Component.translatable("fancynotify.gui.anchor." + name);
+        Orientation(String name) {
+            this.displayName = Component.translatable("fancynotify.gui.orientation." + name);
         }
 
         public Component getDisplayName() {
             return displayName;
+        }
+    }
+
+    public enum Anchor {
+        TOP_LEFT("top_left", true, true),
+        TOP_RIGHT("top_right", false, true),
+        BOTTOM_LEFT("bottom_left", true, false),
+        BOTTOM_RIGHT("bottom_right", false, false);
+
+        private final Component displayName;
+        private final boolean isLeft;
+        private final boolean isTop;
+
+        Anchor(String name, boolean isLeft, boolean isTop) {
+            this.displayName = Component.translatable("fancynotify.gui.anchor." + name);
+            this.isLeft = isLeft;
+            this.isTop = isTop;
+        }
+
+        public Component getDisplayName() {
+            return displayName;
+        }
+
+        public boolean isLeft() {
+            return isLeft;
+        }
+
+        public boolean isTop() {
+            return isTop;
         }
     }
 

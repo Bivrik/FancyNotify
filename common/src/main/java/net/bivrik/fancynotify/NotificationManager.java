@@ -2,6 +2,7 @@ package net.bivrik.fancynotify;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.bivrik.fancynotify.config.ConfigManager;
+import net.bivrik.fancynotify.config.GeneralConfig;
 import net.bivrik.fancynotify.core.Log;
 import net.bivrik.fancynotify.gui.Notification;
 import net.minecraft.client.DeltaTracker;
@@ -20,6 +21,7 @@ public class NotificationManager {
     private final Minecraft minecraft;
     private final ConfigManager configManager;
     private final DeltaTracker deltaTracker;
+
     private final List<Notification> allNotifications = new ArrayList<>();
     private final Deque<Notification> notificationQueue = new ConcurrentLinkedDeque<>();
     private final List<NotificationHolder> currentNotifications = new ArrayList<>();
@@ -51,7 +53,7 @@ public class NotificationManager {
         }
 
         if (hasCurrentSlots()) {
-            currentNotifications.add(new NotificationHolder(newNotification, this, getLastPosition()));
+            currentNotifications.add(new NotificationHolder(newNotification, 0, 0));
             Log.info("Showing new notification");
         } else {
             notificationQueue.add(newNotification);
@@ -74,6 +76,31 @@ public class NotificationManager {
         return currentNotifications.isEmpty();
     }
 
+    private void place(List<NotificationHolder> holders, GeneralConfig.Orientation orientation, GeneralConfig.Anchor anchor) {
+        boolean isVertical = orientation == GeneralConfig.Orientation.VERTICAL;
+        int x = 0;
+        int y = 0;
+        for (var h : holders) {
+            int width = h.getWidth();
+            int height = h.getHeight();
+
+            int xOffset = anchor.isLeft() ? (isVertical ? 0 : -width) : (isVertical ? -width : 0);
+            int yOffset = anchor.isTop() ? (isVertical ? -height : 0) : (isVertical ? 0 : -height);
+
+            x += isVertical ? 0 : (anchor.isLeft() ? width : -width);
+            y += isVertical ? (anchor.isTop() ? height : -height) : 0;
+
+            h.setX(x + xOffset);
+            h.setY(y + yOffset);
+
+            if (isVertical) {
+                y += anchor.isTop() ? PADDING : -PADDING;
+            } else {
+                x += anchor.isLeft() ? PADDING : -PADDING;
+            }
+        }
+    }
+
     public void update() {
         if (!isCurrentEmpty()) {
             for (var iterator = currentNotifications.iterator(); iterator.hasNext();) {
@@ -90,18 +117,14 @@ public class NotificationManager {
                 notificationHolder.update(deltaTracker.getGameTimeDeltaTicks());
             }
 
-            // uuhh
-            int y = PADDING;
-            for (var notificationHandler : currentNotifications) {
-                notificationHandler.setY(y);
-                y += notificationHandler.getNotification().getHeight() + PADDING;
-            }
+            GeneralConfig config = configManager.getGeneralConfig();
+            place(currentNotifications, config.orientation.get(), config.anchor.get());
         }
 
         while (!notificationQueue.isEmpty() && hasCurrentSlots()) {
             Notification next = notificationQueue.pollFirst();
             if (next != null) {
-                currentNotifications.add(new NotificationHolder(next, this, getLastPosition()));
+                currentNotifications.add(new NotificationHolder(next, 0, 0));
                 Log.info("Showing next notification");
             }
         }
@@ -121,41 +144,56 @@ public class NotificationManager {
         }
     }
 
-    private float getLastPosition() {
-        if (!currentNotifications.isEmpty()) {
-            var notificationHolder = currentNotifications.getLast();
-            return notificationHolder.getY() + notificationHolder.getNotification().getHeight() + PADDING;
-        }
-
-        return PADDING;
-    }
-
     public void render(GuiGraphics guiGraphics) {
         if (currentNotifications.isEmpty() || minecraft.options.hideGui) return;
 
-        for (var notificationHolder : currentNotifications) {
-            PoseStack stack = guiGraphics.pose();
-            stack.pushPose();
-            stack.translate(guiGraphics.guiWidth() - notificationHolder.getNotification().getWidth() - PADDING, 0, 800);
-            notificationHolder.render(guiGraphics);
-            stack.popPose();
+        PoseStack stack = guiGraphics.pose();
+        stack.pushPose();
+        GeneralConfig config = configManager.getGeneralConfig();
+        GeneralConfig.Anchor anchor = config.anchor.get();
+        stack.translate(anchor.isLeft() ? PADDING : guiGraphics.guiWidth() - PADDING, anchor.isTop() ? PADDING : guiGraphics.guiHeight() - PADDING, 800);
+
+        if (config.debug.get()) {
+            guiGraphics.fill(-500, 0, 500, 1, -58254424);
+            guiGraphics.fill(0, -500, 1, 500, -58254424);
+
+            guiGraphics.fill(-500, -1, 500, 0, -812254424);
+            guiGraphics.fill(-1, -500, 0, 500, -812254424);
+
+            guiGraphics.drawString(minecraft.font, "(-1, 1)", -37, 6, -1);
+            guiGraphics.drawString(minecraft.font, "(1, -1)", 6, -13, -1);
+            guiGraphics.drawString(minecraft.font, "(0, 0)", -13, -3, -1);
         }
+
+        for (var notificationHolder : currentNotifications) {
+            notificationHolder.render(guiGraphics);
+        }
+
+        stack.popPose();
     }
 
     private static class NotificationHolder {
+        private final static int ANIMATION_SPEED = 20;
+
         private final Notification notification;
-        private final NotificationManager manager;
 
         private float timeTicks;
+
+        private float x;
+        private float oldX;
+        private float newX;
+        private float xLastChangedTicks;
+
         private float y;
         private float oldY;
         private float newY;
         private float yLastChangedTicks;
 
-        private NotificationHolder(Notification notification, NotificationManager manager, float y) {
+        private NotificationHolder(Notification notification, float x, float y) {
             this.notification = notification;
-            this.manager = manager;
 
+            this.x = x;
+            this.newX = x;
             this.y = y;
             this.newY = y;
         }
@@ -164,8 +202,21 @@ public class NotificationManager {
             return notification;
         }
 
-        private float getY() {
-            return y;
+        private int getWidth() {
+            return notification.getWidth();
+        }
+
+        private void setX(float x) {
+            if (x != newX) {
+                oldX = this.x;
+                newX = x;
+                xLastChangedTicks = timeTicks;
+                Log.info("Updated X (new " + this.x + ", current " + x + ")");
+            }
+        }
+
+        private int getHeight() {
+            return notification.getHeight();
         }
 
         private void setY(float y) {
@@ -173,7 +224,7 @@ public class NotificationManager {
                 oldY = this.y;
                 newY = y;
                 yLastChangedTicks = timeTicks;
-                Log.info("Updated (new " + this.y + ", current " + y + ")");
+                Log.info("Updated Y (new " + this.y + ", current " + y + ")");
             }
         }
 
@@ -181,15 +232,18 @@ public class NotificationManager {
             notification.update(deltaTicks);
             timeTicks += deltaTicks;
 
+            if (x != newX) {
+                x = Easing.OCT_EASE_OUT.lerp(oldX, newX, Keyframe.getProgress(timeTicks, xLastChangedTicks, ANIMATION_SPEED));
+            }
             if (y != newY) {
-                y = Easing.OCT_EASE_OUT.lerp(oldY, newY, Keyframe.getProgress(timeTicks, yLastChangedTicks, 10));
+                y = Easing.OCT_EASE_OUT.lerp(oldY, newY, Keyframe.getProgress(timeTicks, yLastChangedTicks, ANIMATION_SPEED));
             }
         }
 
         private void render(GuiGraphics guiGraphics) {
             PoseStack stack = guiGraphics.pose();
             stack.pushPose();
-            stack.translate(0, y, 0);
+            stack.translate(x, y, 0);
             notification.render(guiGraphics);
             stack.popPose();
         }

@@ -19,6 +19,8 @@ public class SettingsScreen extends UniversalScreen {
     private static final Component WIDTH_TITLE = Component.literal("Notifications Width");
     private static final Component DISPLAY_TIME_TITLE = Component.literal("Notifications Time");
     private static final Component DISPLAY_TIME_TOOLTIP = Component.translatable("options.notifications.display_time.tooltip");;
+    private static final Component ORIENTATION_TITLE = Component.literal("Orientation");
+    private static final Component ORIENTATION_TOOLTIP = Component.literal("Represents how notifications will be shown");
     private static final Component ANCHOR_TITLE = Component.literal("Anchor");
     private static final Component ANCHOR_TOOLTIP = Component.literal("Represents position where notifications will be shown");
 
@@ -28,7 +30,9 @@ public class SettingsScreen extends UniversalScreen {
     private Slider transparencySlider;
     private IntegerEditBox widthEditBox;
     private Slider displayTimeSlider;
+    private CycleButton<GeneralConfig.Orientation> orientationCycleButton;
     private CycleButton<GeneralConfig.Anchor> anchorCycleButton;
+    private CycleButton<Boolean> debugCycleButton;
 
     protected SettingsScreen(Screen parent) {
         super(TITLE, parent);
@@ -56,6 +60,14 @@ public class SettingsScreen extends UniversalScreen {
         widthEditBox.setResponder(value -> widthEditBox.setIntegerResponder(iValue -> notificationWidth.set(Math.clamp(iValue, 0, this.width - 4))));
         list.addElement(widthEditBox);
 
+        Setting<GeneralConfig.Orientation> orientation = configManager.getGeneralConfig().orientation;
+        orientationCycleButton = CycleButton.builder(GeneralConfig.Orientation::getDisplayName)
+                .withValues(GeneralConfig.Orientation.values())
+                .withInitialValue(orientation.get())
+                .withTooltip(value -> Tooltip.create(ORIENTATION_TOOLTIP))
+                .create(0, 0, Button.DEFAULT_WIDTH, Button.DEFAULT_HEIGHT, ORIENTATION_TITLE, (button, value) -> orientation.set(value));
+        list.addElement(orientationCycleButton);
+
         Setting<GeneralConfig.Anchor> anchor = configManager.getGeneralConfig().anchor;
         anchorCycleButton = CycleButton.builder(GeneralConfig.Anchor::getDisplayName)
                 .withValues(GeneralConfig.Anchor.values())
@@ -69,6 +81,12 @@ public class SettingsScreen extends UniversalScreen {
         displayTimeSlider.setResponder(value -> this.minecraft.options.notificationDisplayTime().set(Math.round(value * 10) / 10d));
         displayTimeSlider.setTooltip(Tooltip.create(DISPLAY_TIME_TOOLTIP));
         list.addElement(displayTimeSlider);
+
+        Setting<Boolean> debug = configManager.getGeneralConfig().debug;
+        debugCycleButton = CycleButton.onOffBuilder()
+                .withInitialValue(debug.get())
+                .create(0, 0, Button.DEFAULT_WIDTH, Button.DEFAULT_HEIGHT, Component.literal("debug"), (button, value) -> debug.set(value));
+        list.addElement(debugCycleButton);
 
         list.alignElements();
     }
