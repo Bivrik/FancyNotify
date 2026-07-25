@@ -151,10 +151,10 @@ public class NotificationManager {
         stack.pushPose();
         GeneralConfig config = configManager.getGeneralConfig();
         GeneralConfig.Anchor anchor = config.anchor.get();
-        //stack.translate(anchor.isLeft() ? PADDING : guiGraphics.guiWidth() - PADDING, anchor.isTop() ? PADDING : guiGraphics.guiHeight() - PADDING, 800);
-        stack.translate(guiGraphics.guiWidth() / 2.0, guiGraphics.guiHeight() / 2.0, 800);
 
         if (config.debug.get()) {
+            stack.translate(guiGraphics.guiWidth() / 2.0, guiGraphics.guiHeight() / 2.0, 800);
+
             guiGraphics.fill(-500, 0, 500, 1, -58254424);
             guiGraphics.fill(0, -500, 1, 500, -58254424);
 
@@ -164,6 +164,8 @@ public class NotificationManager {
             guiGraphics.drawString(minecraft.font, "(-1, 1)", -37, 6, -1);
             guiGraphics.drawString(minecraft.font, "(1, -1)", 6, -13, -1);
             guiGraphics.drawString(minecraft.font, "(0, 0)", -13, -3, -1);
+        } else {
+            stack.translate(anchor.isLeft() ? PADDING : guiGraphics.guiWidth() - PADDING, anchor.isTop() ? PADDING : guiGraphics.guiHeight() - PADDING, 800);
         }
 
         for (var notificationHolder : currentNotifications) {

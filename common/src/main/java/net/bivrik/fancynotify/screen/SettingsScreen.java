@@ -85,7 +85,8 @@ public class SettingsScreen extends UniversalScreen {
         Setting<Boolean> debug = configManager.getGeneralConfig().debug;
         debugCycleButton = CycleButton.onOffBuilder()
                 .withInitialValue(debug.get())
-                .create(0, 0, Button.DEFAULT_WIDTH, Button.DEFAULT_HEIGHT, Component.literal("debug"), (button, value) -> debug.set(value));
+                .withTooltip(value -> Tooltip.create(Component.literal("Option for development")))
+                .create(0, 0, Button.DEFAULT_WIDTH, Button.DEFAULT_HEIGHT, Component.literal("Debug"), (button, value) -> debug.set(value));
         list.addElement(debugCycleButton);
 
         list.alignElements();
