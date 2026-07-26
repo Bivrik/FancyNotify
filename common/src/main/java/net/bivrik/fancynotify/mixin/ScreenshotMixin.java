@@ -23,8 +23,8 @@ public class ScreenshotMixin {
                     target = "Lnet/minecraft/client/Screenshot;takeScreenshot(Lcom/mojang/blaze3d/pipeline/RenderTarget;)Lcom/mojang/blaze3d/platform/NativeImage;"))
     private static void onScreenshotTaken(File gameDirectory, String screenshotName, RenderTarget buffer, Consumer<Component> messageConsumer, CallbackInfo info, @Local NativeImage nativeImage) {
         NotificationManager manager = Common.getNotificationManager();
-        var d = new NativeImage(nativeImage.format(), nativeImage.getWidth(), nativeImage.getHeight(), false);
-        d.copyFrom(nativeImage);
-        manager.add(new ScreenshotNotification(manager, d));
+        NativeImage imagePreview = new NativeImage(nativeImage.format(), nativeImage.getWidth(), nativeImage.getHeight(), false);
+        imagePreview.copyFrom(nativeImage);
+        manager.add(new ScreenshotNotification(manager, imagePreview));
     }
 }

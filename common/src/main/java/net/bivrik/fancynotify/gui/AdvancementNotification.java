@@ -24,12 +24,12 @@ public class AdvancementNotification extends Notification {
 
     private boolean isSoundPlayed;
 
-    public AdvancementNotification(NotificationManager manager, DisplayInfo display) {
-        super(manager, display.getType().getDisplayName(), display.getTitle());
+    public AdvancementNotification(NotificationManager manager, Component title, AdvancementType type, ItemStack icon) {
+        super(manager, type.getDisplayName(), title);
 
-        this.icon = display.getIcon();
+        this.icon = icon;
         this.backgroundOffset = Math.min(this.messageLines.size() - 1, MAX_LINES - 1) * 9;
-        this.isChallenge = display.getType() == AdvancementType.CHALLENGE;
+        this.isChallenge = type == AdvancementType.CHALLENGE;
         this.color = this.isChallenge ? new Color(255, 119, 255).getRGB() : Color.yellow.getRGB();
     }
 

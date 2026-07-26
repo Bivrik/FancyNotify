@@ -27,7 +27,7 @@ public class ToastComponentMixin {
         // Advancement Notifications
         if (toast instanceof AdvancementToast advancementToast) {
             Optional<DisplayInfo> optionalDisplay = ((IAdvancementHolderAccessor) advancementToast).getAdvancementHolder().value().display();
-            optionalDisplay.ifPresent(displayInfo -> manager.add(new AdvancementNotification(manager, displayInfo)));
+            optionalDisplay.ifPresent(displayInfo -> manager.add(new AdvancementNotification(manager, displayInfo.getTitle(), displayInfo.getType(), displayInfo.getIcon())));
         }
         // System Notifications
         else if (toast instanceof SystemToast) {
