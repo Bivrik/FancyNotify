@@ -16,7 +16,7 @@ public enum Easing {
         return 1 - (x4 * x4);
     });
 
-    private static final float THRESHOLD = 0.005f;
+    private static final float THRESHOLD = 0.004f;
 
     private final MathEasing mathEasing;
 
@@ -26,7 +26,7 @@ public enum Easing {
 
     public float lerp(float start, float end, float progress) {
         float delta = end - start;
-        float easedProgress = mathEasing.apply(progress);
+        float easedProgress = mathEasing.apply(Math.clamp(progress, 0.0f, 1.0f));
         if (easedProgress + THRESHOLD >= 1.0f) {
             return end;
         }

@@ -1,6 +1,8 @@
 package net.bivrik.fancynotify.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.Tesselator;
 import net.bivrik.fancynotify.Easing;
 import net.bivrik.fancynotify.Keyframe;
 import net.bivrik.fancynotify.NotificationManager;
@@ -9,7 +11,9 @@ import net.bivrik.fancynotify.config.FiltersConfig;
 import net.bivrik.fancynotify.config.GeneralConfig;
 import net.bivrik.fancynotify.core.Log;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -212,6 +216,13 @@ public abstract class Notification {
             return;
         }
 
+        if (state == Visibility.VISIBLE) {
+            float newAlpha = generalConfig.notificationsTransparency.get();
+            if (alpha != newAlpha) {
+                alpha = newAlpha;
+            }
+        }
+
         guiGraphics.pose().pushPose();
         guiGraphics.pose().translate(x, y, 0);
         draw(guiGraphics);
@@ -256,10 +267,25 @@ public abstract class Notification {
             return;
         }
 
+        // Am I not understanding something
+        // or why is it so complicated?
+        // I mean... why doesn't it work
+        // as intended from the start???
+        // Why without all of this there is a bug,
+        // when using guiGraphics.setColor(),
+        // it makes all the tooltips with the same color?
         RenderSystem.enableBlend();
-        guiGraphics.setColor(1, 1, 1, alpha);
-        guiGraphics.drawString(minecraft.font, text, x, y, color, false);
-        guiGraphics.setColor(1, 1, 1, 1);
+        guiGraphics.setColor(1.0f, 1.0f, 1.0f, alpha);
+        minecraft.font.drawInBatch(
+                text, x, y, color, false,
+                guiGraphics.pose().last().pose(),
+                guiGraphics.bufferSource(),
+                Font.DisplayMode.SEE_THROUGH,
+                0,
+                15728880
+        );
+        guiGraphics.bufferSource().endBatch();
+        guiGraphics.setColor(1.0f, 1.0f, 1.0f, 1.0f);
         RenderSystem.disableBlend();
     }
 

@@ -6,6 +6,6 @@ public class Keyframe {
     }
 
     public static boolean isActive(float progress) {
-        return progress > 0.0f && progress < 1.0f;
+        return progress >= 0.0f && progress < 1.0f;
     }
 }
