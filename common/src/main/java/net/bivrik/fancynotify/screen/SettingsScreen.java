@@ -67,7 +67,7 @@ public class SettingsScreen extends UniversalScreen {
 
         Setting<Integer> notificationWidth = configManager.getGeneralConfig().notificationsWidth;
         widthEditBox = new IntegerEditBox(this.font, 0, 0, SettingsList.WidgetWidth.MEDIUM.getWidth(), Button.DEFAULT_HEIGHT, widthEditBox, WIDTH_TITLE, notificationWidth.get());
-        widthEditBox.setResponder(value -> widthEditBox.setIntegerResponder(iValue -> notificationWidth.set(Math.clamp(iValue, 0, this.width - 4))));
+        widthEditBox.setResponder(value -> widthEditBox.setIntegerResponder(iValue -> notificationWidth.set(Math.clamp(iValue, 20, this.width - 4))));
         list.addElement(widthEditBox);
 
         Setting<GeneralConfig.Orientation> orientation = configManager.getGeneralConfig().orientation;
