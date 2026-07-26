@@ -15,9 +15,6 @@ import java.util.List;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
 public class NotificationManager {
-    private static final int MAX_NOTIFICATIONS = 4;
-    public static final int PADDING = 2;
-
     private final Minecraft minecraft;
     private final ConfigManager configManager;
     private final DeltaTracker deltaTracker;
@@ -69,7 +66,7 @@ public class NotificationManager {
     }
 
     private boolean hasCurrentSlots() {
-        return currentNotifications.size() < MAX_NOTIFICATIONS;
+        return currentNotifications.size() < configManager.getGeneralConfig().maxAmount.get();
     }
 
     public boolean isCurrentEmpty() {
@@ -93,10 +90,11 @@ public class NotificationManager {
             h.setX(x + xOffset);
             h.setY(y + yOffset);
 
+            int padding = configManager.getGeneralConfig().padding.get();
             if (isVertical) {
-                y += anchor.isTop() ? PADDING : -PADDING;
+                y += anchor.isTop() ? padding : -padding;
             } else {
-                x += anchor.isLeft() ? PADDING : -PADDING;
+                x += anchor.isLeft() ? padding : -padding;
             }
         }
     }
@@ -151,6 +149,7 @@ public class NotificationManager {
         stack.pushPose();
         GeneralConfig config = configManager.getGeneralConfig();
         GeneralConfig.Anchor anchor = config.anchor.get();
+        int padding = config.padding.get();
 
         if (config.debug.get()) {
             stack.translate(guiGraphics.guiWidth() / 2.0, guiGraphics.guiHeight() / 2.0, 800);
@@ -165,7 +164,7 @@ public class NotificationManager {
             guiGraphics.drawString(minecraft.font, "(1, -1)", 6, -13, -1);
             guiGraphics.drawString(minecraft.font, "(0, 0)", -13, -3, -1);
         } else {
-            stack.translate(anchor.isLeft() ? PADDING : guiGraphics.guiWidth() - PADDING, anchor.isTop() ? PADDING : guiGraphics.guiHeight() - PADDING, 800);
+            stack.translate(anchor.isLeft() ? padding : guiGraphics.guiWidth() - padding, anchor.isTop() ? padding : guiGraphics.guiHeight() - padding, 800);
         }
 
         for (var notificationHolder : currentNotifications) {

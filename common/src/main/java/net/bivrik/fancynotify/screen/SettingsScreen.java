@@ -28,6 +28,8 @@ public class SettingsScreen extends UniversalScreen {
 
     private Button backButton;
     private Slider transparencySlider;
+    private Slider paddingSlider;
+    private Slider maxAmountSlider;
     private IntegerEditBox widthEditBox;
     private Slider displayTimeSlider;
     private CycleButton<GeneralConfig.Orientation> orientationCycleButton;
@@ -67,6 +69,18 @@ public class SettingsScreen extends UniversalScreen {
                 .withTooltip(value -> Tooltip.create(ORIENTATION_TOOLTIP))
                 .create(0, 0, Button.DEFAULT_WIDTH, Button.DEFAULT_HEIGHT, ORIENTATION_TITLE, (button, value) -> orientation.set(value));
         list.addElement(orientationCycleButton);
+
+        Setting<Integer> padding = configManager.getGeneralConfig().padding;
+        paddingSlider = new Slider(0, 0, SettingsList.WidgetWidth.MEDIUM.getWidth(), Button.DEFAULT_HEIGHT, Component.literal("Padding"), padding.get(), 8);
+        paddingSlider.setDisplayer(value -> Component.literal(String.valueOf(value.intValue())));
+        paddingSlider.setResponder(value -> padding.set(value.intValue()));
+        list.addElement(paddingSlider);
+
+        Setting<Integer> maxAmount = configManager.getGeneralConfig().maxAmount;
+        maxAmountSlider = new Slider(0, 0, SettingsList.WidgetWidth.MEDIUM.getWidth(), Button.DEFAULT_HEIGHT, Component.literal("Max Amount"), maxAmount.get(), 1, 12);
+        maxAmountSlider.setDisplayer(value -> Component.literal(String.valueOf(value.intValue())));
+        maxAmountSlider.setResponder(value -> maxAmount.set(value.intValue()));
+        list.addElement(maxAmountSlider);
 
         Setting<GeneralConfig.Anchor> anchor = configManager.getGeneralConfig().anchor;
         anchorCycleButton = CycleButton.builder(GeneralConfig.Anchor::getDisplayName)

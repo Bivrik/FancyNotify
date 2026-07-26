@@ -10,6 +10,8 @@ public class GeneralConfig extends Config {
     }
 
     public Setting<Float> notificationsTransparency = new Setting<>(1.0f);
+    public Setting<Integer> padding = new Setting<>(2);
+    public Setting<Integer> maxAmount = new Setting<>(4);
     public Setting<Integer> notificationsWidth = new Setting<>(150);
     public Setting<Orientation> orientation = new Setting<>(Orientation.VERTICAL);
     public Setting<Anchor> anchor = new Setting<>(Anchor.TOP_RIGHT);

@@ -131,7 +131,7 @@ public abstract class Notification {
     public void showingAnimation() {
         LOGGER.info("Showing...");
 
-        float startX = getWidth() + NotificationManager.PADDING;
+        float startX = getWidth() + generalConfig.padding.get();
         float startAlpha = 0;
 
         float endX = 0;
@@ -156,7 +156,7 @@ public abstract class Notification {
         float startX = 0;
         float startAlpha = 1;
 
-        float endX = getWidth() + NotificationManager.PADDING;
+        float endX = getWidth() + generalConfig.padding.get();
         float endAlpha = 0;
 
         float hidingProgress = Keyframe.getProgress(timeTicks, animationTimingTicks, getAnimationDurationTicks());
