@@ -20,8 +20,5 @@
   "server": [],
   "injectors": {
     "defaultRequire": 1
-  },
-  "mixins": [
-    "KeyboardHandlerMixin"
-  ]
+  }
 }

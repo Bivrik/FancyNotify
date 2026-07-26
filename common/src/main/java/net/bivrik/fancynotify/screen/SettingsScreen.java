@@ -1,17 +1,22 @@
 package net.bivrik.fancynotify.screen;
 
 import net.bivrik.fancynotify.IntegerEditBox;
+import net.bivrik.fancynotify.NotificationManager;
 import net.bivrik.fancynotify.Slider;
 import net.bivrik.fancynotify.config.ConfigManager;
 import net.bivrik.fancynotify.config.GeneralConfig;
 import net.bivrik.fancynotify.config.Setting;
 import net.bivrik.fancynotify.core.Common;
+import net.bivrik.fancynotify.gui.SystemNotification;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.CycleButton;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
+
+import java.util.List;
+import java.util.Random;
 
 public class SettingsScreen extends UniversalScreen {
     private static final Component TITLE = Component.literal("Settings");
@@ -25,6 +30,7 @@ public class SettingsScreen extends UniversalScreen {
     private static final Component ANCHOR_TOOLTIP = Component.literal("Represents position where notifications will be shown");
 
     private final ConfigManager configManager;
+    private final NotificationManager notificationManager;
 
     private Button backButton;
     private Slider transparencySlider;
@@ -35,11 +41,13 @@ public class SettingsScreen extends UniversalScreen {
     private CycleButton<GeneralConfig.Orientation> orientationCycleButton;
     private CycleButton<GeneralConfig.Anchor> anchorCycleButton;
     private CycleButton<Boolean> debugCycleButton;
+    private Button createDummyButton;
 
     protected SettingsScreen(Screen parent) {
         super(TITLE, parent);
 
         this.configManager = Common.getConfigManager();
+        this.notificationManager = Common.getNotificationManager();
     }
 
     @Override
@@ -103,7 +111,26 @@ public class SettingsScreen extends UniversalScreen {
                 .create(0, 0, Button.DEFAULT_WIDTH, Button.DEFAULT_HEIGHT, Component.literal("Debug"), (button, value) -> debug.set(value));
         list.addElement(debugCycleButton);
 
+        createDummyButton = Button.builder(Component.literal("Send Dummy"), button -> sendDummy())
+                .bounds(0, 0, Button.DEFAULT_WIDTH, Button.DEFAULT_HEIGHT)
+                .build();
+        list.addElement(createDummyButton);
+
         list.alignElements();
+    }
+
+    private void sendDummy() {
+        List<SystemNotification> notifications = List.of(
+                new SystemNotification(notificationManager, SystemNotification.Identifier.PERIODIC_NOTIFICATION, Component.literal("Bivrik is lazy"), Component.literal("WHO WROTE THAT?!")),
+                new SystemNotification(notificationManager, SystemNotification.Identifier.CHUNK_SAVE_FAILURE, Component.literal("Some title"), Component.literal("Some error message")),
+                new SystemNotification(notificationManager, SystemNotification.Identifier.LOW_DISK_SPACE, Component.literal("Low disk space"), Component.literal("Oh no! Your disk is full of stuff! You cannot save or smth idk")),
+                new SystemNotification(notificationManager, SystemNotification.Identifier.UNSECURE_SERVER_WARNING, Component.literal("Unsecure"), Component.literal("Meow meow meow ruff ruff wtf-")),
+                new SystemNotification(notificationManager, SystemNotification.Identifier.PACK_LOAD_FAILURE, Component.literal("Resource pack failure"), Component.literal("You're a failure")),
+                new SystemNotification(notificationManager, SystemNotification.Identifier.WORLD_ACCESS_FAILURE, Component.literal("No worlds"), Component.literal("*no worlds?* hehe"))
+        );
+
+        Random random = new Random();
+        notificationManager.add(notifications.get(random.nextInt(notifications.size())));
     }
 
     @Override
