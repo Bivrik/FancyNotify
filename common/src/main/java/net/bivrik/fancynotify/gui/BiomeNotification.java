@@ -41,8 +41,8 @@ public class BiomeNotification extends ExpandableNotification {
 
     @Override
     public void draw(GuiGraphics guiGraphics) {
-        drawSprite(guiGraphics, BACKGROUND, 0, 0, this.getWidth(), this.getHeight());
-        drawText(guiGraphics, title, this.getTextOffset(), 8, COLOR);
-        guiGraphics.renderFakeItem(icon, 8, this.getCenterY() - 8);
+        drawSprite(guiGraphics, BACKGROUND, 0, 0, getWidth(), getHeight());
+        drawText(guiGraphics, title, getTextOffset(), 8, COLOR);
+        guiGraphics.renderFakeItem(icon, 8, getCenterY() - 8);
     }
 }

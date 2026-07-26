@@ -28,9 +28,10 @@ public abstract class Notification {
     private static final Object NO_ID = new Object();
 
     protected Component title;
-    protected Component message;
-    protected List<FormattedCharSequence> messageLines;
     private int titleWidth;
+    protected Component message;
+    private int messageWidth;
+    protected List<FormattedCharSequence> messageLines;
 
     protected final Minecraft minecraft;
     protected final FiltersConfig filtersConfig;
@@ -62,6 +63,7 @@ public abstract class Notification {
         this.title = title;
         this.titleWidth = minecraft.font.width(title);
         this.message = notNullMessage;
+        this.messageWidth = minecraft.font.width(notNullMessage);
         this.messageLines = getWrappedText(notNullMessage);
     }
 
@@ -71,7 +73,8 @@ public abstract class Notification {
 
     // Waittt width changes but text doesnt get wrapped properly yknow shi
     public final int getWidth() {
-        return Math.max(titleWidth + getTextOffset() + 7, generalConfig.notificationsWidth.get());
+        int width = isStretchable() ? titleWidth : Math.max(titleWidth, messageWidth);
+        return Math.max(width + getTextOffset() + 7, generalConfig.notificationsWidth.get());
     }
 
     public int getHeight() {
@@ -80,6 +83,10 @@ public abstract class Notification {
 
     protected int getCenterY() {
         return getHeight() / 2;
+    }
+
+    protected boolean isStretchable() {
+        return true;
     }
 
     protected int getTextOffset() {
@@ -179,7 +186,6 @@ public abstract class Notification {
 
     public void update(float deltaTicks) {
         timeTicks += deltaTicks;
-        Log.info("{} {}", getWidth(), getHeight());
 
         updateState();
         checkState();
