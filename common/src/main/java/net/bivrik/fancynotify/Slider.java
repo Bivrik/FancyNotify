@@ -55,8 +55,8 @@ public class Slider extends AbstractSliderButton {
         soundManager.play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
     }
 
-    public Slider(int x, int y, int width, int height, Component label, float value, float max, float threshold) {
-        this(x, y, width, height, label, value, 0.0f, max, threshold);
+    public Slider(int x, int y, int width, int height, Component label, float value, float min, float max) {
+        this(x, y, width, height, label, value, min, max, 0.0f);
     }
 
     public Slider(int x, int y, int width, int height, Component label, float value, float max) {

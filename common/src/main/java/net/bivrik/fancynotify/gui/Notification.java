@@ -1,8 +1,7 @@
 package net.bivrik.fancynotify.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.Tesselator;
+import com.mojang.blaze3d.vertex.*;
 import net.bivrik.fancynotify.Easing;
 import net.bivrik.fancynotify.Keyframe;
 import net.bivrik.fancynotify.NotificationManager;
@@ -180,7 +179,7 @@ public abstract class Notification {
 
     public void update(float deltaTicks) {
         timeTicks += deltaTicks;
-        Log.info("{}", alpha);
+        Log.info("{} {}", getWidth(), getHeight());
 
         updateState();
         checkState();
@@ -274,7 +273,8 @@ public abstract class Notification {
         // Why without all of this there is a bug,
         // when using guiGraphics.setColor(),
         // it makes all the tooltips with the same color?
-        RenderSystem.enableBlend();
+        // P.S. IT STILL DOES AFFECT TOOLTIPS WTF?
+        /*RenderSystem.enableBlend();
         guiGraphics.setColor(1.0f, 1.0f, 1.0f, alpha);
         minecraft.font.drawInBatch(
                 text, x, y, color, false,
@@ -284,8 +284,23 @@ public abstract class Notification {
                 0,
                 15728880
         );
+        guiGraphics.drawString(minecraft.font, text, x, y, color, false);
         guiGraphics.bufferSource().endBatch();
         guiGraphics.setColor(1.0f, 1.0f, 1.0f, 1.0f);
+        RenderSystem.disableBlend();*/
+        // I hate this
+        MultiBufferSource.BufferSource isolatedBuffer = MultiBufferSource.immediate(new ByteBufferBuilder(256));
+        int iAlpha = Math.max((int) (alpha * 255), 25);
+        int alphaColor = (iAlpha << 24) | (color & 0x00FFFFFF);
+        RenderSystem.enableBlend();
+        minecraft.font.drawInBatch(
+                text, x, y, alphaColor, false,
+                guiGraphics.pose().last().pose(),
+                isolatedBuffer,
+                Font.DisplayMode.NORMAL,
+                0, 15728880
+        );
+        isolatedBuffer.endBatch();
         RenderSystem.disableBlend();
     }
 

@@ -50,7 +50,7 @@ public class SettingsScreen extends UniversalScreen {
         this.addSimpleWidget(list);
 
         Setting<Float> notificationTransparency = configManager.getGeneralConfig().notificationsTransparency;
-        transparencySlider = new Slider(0, 0, SettingsList.WidgetWidth.BIG.getWidth(), Button.DEFAULT_HEIGHT, TRANSPARENCY_TITLE, notificationTransparency.get(), 1.0f);
+        transparencySlider = new Slider(0, 0, SettingsList.WidgetWidth.BIG.getWidth(), Button.DEFAULT_HEIGHT, TRANSPARENCY_TITLE, notificationTransparency.get(), 0.3f, 1.0f);
         transparencySlider.setDisplayer(value -> Component.literal(Math.round(value * 100) + "%"));
         transparencySlider.setResponder(notificationTransparency::set);
         list.addElement(transparencySlider, SettingsList.WidgetWidth.BIG);
