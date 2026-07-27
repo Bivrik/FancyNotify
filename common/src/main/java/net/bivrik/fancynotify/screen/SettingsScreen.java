@@ -42,6 +42,7 @@ public class SettingsScreen extends UniversalScreen {
     private CycleButton<GeneralConfig.Anchor> anchorCycleButton;
     private CycleButton<Boolean> debugCycleButton;
     private CycleButton<GeneralConfig.Animation> animationCycleButton;
+    private Slider animationDurationSlider;
     private Button createDummyButton;
 
     protected SettingsScreen(Screen parent) {
@@ -112,6 +113,12 @@ public class SettingsScreen extends UniversalScreen {
         displayTimeSlider.setResponder(value -> this.minecraft.options.notificationDisplayTime().set(Math.round(value * 10) / 10d));
         displayTimeSlider.setTooltip(Tooltip.create(DISPLAY_TIME_TOOLTIP));
         list.addElement(displayTimeSlider);
+
+        Setting<Integer> animationDuration = configManager.getGeneralConfig().animationDuration;
+        animationDurationSlider = new Slider(0, 0, SettingsList.WidgetWidth.MEDIUM.getWidth(), Button.DEFAULT_HEIGHT, Component.literal("Animation Duration"), animationDuration.get(), 5, 40);
+        animationDurationSlider.setDisplayer(value -> Component.literal(String.valueOf(value.intValue())));
+        animationDurationSlider.setResponder(value -> animationDuration.set(value.intValue()));
+        list.addElement(animationDurationSlider);
 
         Setting<Boolean> debug = configManager.getGeneralConfig().debug;
         debugCycleButton = CycleButton.onOffBuilder()

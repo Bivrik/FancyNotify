@@ -20,6 +20,7 @@ public class GeneralConfig extends Config {
     public Setting<Orientation> orientation = new Setting<>(Orientation.VERTICAL);
     public Setting<Anchor> anchor = new Setting<>(Anchor.TOP_RIGHT);
     public Setting<Animation> animation = new Setting<>(Animation.VANILLA);
+    public Setting<Integer> animationDuration = new Setting<>(15);
     public Setting<Boolean> debug = new Setting<>(false);
 
     public NotificationAnimator getAnimator() {

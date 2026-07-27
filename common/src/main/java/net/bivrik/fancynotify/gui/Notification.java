@@ -115,10 +115,6 @@ public abstract class Notification implements NotificationStateMachine.Listener 
         return 140;
     }
 
-    public final int getAnimationDurationTicks() {
-        return 15;
-    }
-
     @Override
     public void onShowing() {
         minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_TOAST_IN, 1, 1));
@@ -142,8 +138,8 @@ public abstract class Notification implements NotificationStateMachine.Listener 
             messageLines = getWrappedText(message);
         }
 
-        stateMachine.update(timeTicks, offsetTicks, getAnimationDurationTicks(), getLifeTimeTicks());
-        animator.update(timeTicks, stateMachine.getState(), stateMachine.getTimingTicks(), getWidth(), getHeight(), getAnimationDurationTicks());
+        stateMachine.update(timeTicks, offsetTicks, generalConfig.animationDuration.get(), getLifeTimeTicks());
+        animator.update(timeTicks, stateMachine.getState(), stateMachine.getTimingTicks(), getWidth(), getHeight(), generalConfig.animationDuration.get());
 
         onUpdate();
     }

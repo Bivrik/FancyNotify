@@ -44,7 +44,8 @@ public class AdvancementNotification extends Notification {
 
     @Override
     public void onUpdate() {
-        if (!isSoundPlayed && this.timeTicks >= getAnimationDurationTicks() - getAnimationDurationTicks() / 2f) {
+        int animationDuration = this.generalConfig.animationDuration.get();
+        if (!isSoundPlayed && this.timeTicks >= animationDuration - animationDuration / 2f) {
             isSoundPlayed = true;
             if (isChallenge) {
                 this.minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_TOAST_CHALLENGE_COMPLETE, 1, 1));
