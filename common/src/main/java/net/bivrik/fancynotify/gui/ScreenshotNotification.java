@@ -17,6 +17,7 @@ public class ScreenshotNotification extends ExpandableNotification {
     private static final Component TITLE = Component.translatable("fancynotify.gui.screenshot.title");
     private static final ResourceLocation BACKGROUND = ResourceLocations.of("notifications/screenshot");
     private static final ResourceLocation SCREENSHOT_PREVIEW = ResourceLocations.of("screenshot_preview");
+
     private final TextureManager textureManager;
 
     public ScreenshotNotification(NotificationManager manager, NativeImage screenshotImage) {
@@ -33,7 +34,7 @@ public class ScreenshotNotification extends ExpandableNotification {
     }
 
     @Override
-    protected void onRemoval() {
+    public void onRemoval() {
         textureManager.release(SCREENSHOT_PREVIEW);
     }
 
@@ -43,15 +44,10 @@ public class ScreenshotNotification extends ExpandableNotification {
     }
 
     @Override
-    protected boolean isStretchable() {
-        return false;
-    }
-
-    @Override
     public void draw(GuiGraphics guiGraphics) {
         drawSprite(guiGraphics, BACKGROUND, 0, 0, getWidth(), getHeight());
-        drawText(guiGraphics, this.title, getTextOffset(), 7, new Color(43, 181, 43).getRGB());
-        drawText(guiGraphics, this.message, getTextOffset(), 18, -1);
+        drawText(guiGraphics, getTitle(), getTextOffset(), 7, new Color(43, 181, 43).getRGB());
+        drawMessage(guiGraphics, getTextOffset(), 18, -1);
         int width = 38;
         int height = 22;
         drawTexture(guiGraphics, SCREENSHOT_PREVIEW, 5, 5, width, height, width * 4, height * 4, ((width * 4) - width) / 2, ((height * 4) - height) / 2);

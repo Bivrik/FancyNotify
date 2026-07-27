@@ -2,6 +2,8 @@ package net.bivrik.fancynotify.gui;
 
 import net.bivrik.fancynotify.NotificationManager;
 import net.bivrik.fancynotify.ResourceLocations;
+import net.bivrik.fancynotify.config.ConfigManager;
+import net.bivrik.fancynotify.core.Common;
 import net.minecraft.advancements.AdvancementType;
 import net.minecraft.advancements.DisplayInfo;
 import net.minecraft.client.gui.GuiGraphics;
@@ -15,10 +17,8 @@ import java.awt.*;
 
 public class AdvancementNotification extends Notification {
     private static final ResourceLocation BACKGROUND = ResourceLocations.of("notifications/advancement");
-    private static final int MAX_LINES = 3;
 
     private final ItemStack icon;
-    private final int backgroundOffset;
     private final boolean isChallenge;
     private final int color;
 
@@ -28,7 +28,6 @@ public class AdvancementNotification extends Notification {
         super(manager, type.getDisplayName(), title);
 
         this.icon = icon;
-        this.backgroundOffset = Math.min(this.messageLines.size() - 1, MAX_LINES - 1) * 9;
         this.isChallenge = type == AdvancementType.CHALLENGE;
         this.color = this.isChallenge ? new Color(255, 119, 255).getRGB() : Color.yellow.getRGB();
     }
@@ -39,13 +38,8 @@ public class AdvancementNotification extends Notification {
     }
 
     @Override
-    public int getHeight() {
-        return super.getHeight() + backgroundOffset;
-    }
-
-    @Override
     public int getLifeTimeTicks() {
-        return super.getLifeTimeTicks() + 20;
+        return super.getLifeTimeTicks() + 30;
     }
 
     @Override
@@ -61,16 +55,8 @@ public class AdvancementNotification extends Notification {
     @Override
     public void draw(GuiGraphics guiGraphics) {
         drawSprite(guiGraphics, BACKGROUND, 0, 0, getWidth(), getHeight());
-        drawText(guiGraphics, this.title, getTextOffset(), 7, color);
-        for (int i = 0; i < Math.min(this.messageLines.size(), MAX_LINES); i++) {
-            var line = this.messageLines.get(i);
-            drawText(guiGraphics, line, getTextOffset(), 18 + i * 9, -1);
-        }
-        if (this.messageLines.size() > MAX_LINES) {
-            int index = MAX_LINES - 1;
-            var line = this.messageLines.get(index);
-            drawText(guiGraphics, Component.literal("..."), getTextOffset() + this.minecraft.font.width(line), 18 + index * 9 , -1);
-        }
+        drawText(guiGraphics, getTitle(), getTextOffset(), 7, color);
+        drawMessage(guiGraphics, getTextOffset(), 18, -1);
         guiGraphics.renderFakeItem(icon, 8, getCenterY() - 8);
     }
 }

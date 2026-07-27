@@ -27,22 +27,17 @@ public class BiomeNotification extends ExpandableNotification {
     }
 
     @Override
-    public int getHeight() {
-        return 23;
-    }
-
-    @Override
     protected void expand(ExpandableNotification expansion) {
         if (expansion instanceof BiomeNotification biomeNotification) {
-            this.setDisplay(biomeNotification.title, Component.empty());
-            this.icon = biomeNotification.icon;
+            setDisplay(biomeNotification.getTitle(), Component.empty());
+            icon = biomeNotification.icon;
         }
     }
 
     @Override
     public void draw(GuiGraphics guiGraphics) {
         drawSprite(guiGraphics, BACKGROUND, 0, 0, getWidth(), getHeight());
-        drawText(guiGraphics, title, getTextOffset(), 8, COLOR);
+        drawText(guiGraphics, getTitle(), getTextOffset(), 8, COLOR);
         guiGraphics.renderFakeItem(icon, 8, getCenterY() - 8);
     }
 }

@@ -27,14 +27,9 @@ public class WeatherNotification extends ExpandableNotification {
     }
 
     @Override
-    public int getHeight() {
-        return 23;
-    }
-
-    @Override
     protected void expand(ExpandableNotification expansion) {
         if (expansion instanceof WeatherNotification weatherNotification) {
-            setDisplay(weatherNotification.title, Component.empty());
+            setDisplay(weatherNotification.getTitle(), Component.empty());
             this.icon = weatherNotification.icon;
         }
     }
@@ -42,7 +37,7 @@ public class WeatherNotification extends ExpandableNotification {
     @Override
     public void draw(GuiGraphics guiGraphics) {
         drawSprite(guiGraphics, BACKGROUND, 0, 0, getWidth(), getHeight());
-        drawText(guiGraphics, this.title, getTextOffset(), 8, COLOR);
+        drawText(guiGraphics, getTitle(), getTextOffset(), 8, COLOR);
         drawSprite(guiGraphics, this.icon, 5, 1, 20, 20);
     }
 }

@@ -41,6 +41,7 @@ public class SettingsScreen extends UniversalScreen {
     private CycleButton<GeneralConfig.Orientation> orientationCycleButton;
     private CycleButton<GeneralConfig.Anchor> anchorCycleButton;
     private CycleButton<Boolean> debugCycleButton;
+    private CycleButton<GeneralConfig.Animation> animationCycleButton;
     private Button createDummyButton;
 
     protected SettingsScreen(Screen parent) {
@@ -97,6 +98,14 @@ public class SettingsScreen extends UniversalScreen {
                 .withTooltip(value -> Tooltip.create(ANCHOR_TOOLTIP))
                 .create(0, 0, Button.DEFAULT_WIDTH, Button.DEFAULT_HEIGHT, ANCHOR_TITLE, (button, value) -> anchor.set(value));
         list.addElement(anchorCycleButton);
+
+        Setting<GeneralConfig.Animation> animation = configManager.getGeneralConfig().animation;
+        animationCycleButton = CycleButton.builder(GeneralConfig.Animation::getDisplayName)
+                .withValues(GeneralConfig.Animation.values())
+                .withInitialValue(animation.get())
+                .withTooltip(value -> Tooltip.create(Component.literal("Affects how notifications appear")))
+                .create(0, 0, Button.DEFAULT_WIDTH, Button.DEFAULT_HEIGHT, Component.literal("Animation"), (button, value) -> animation.set(value));
+        list.addElement(animationCycleButton);
 
         displayTimeSlider = new Slider(0, 0, SettingsList.WidgetWidth.MEDIUM.getWidth(), Button.DEFAULT_HEIGHT, DISPLAY_TIME_TITLE, Math.round(this.minecraft.options.notificationDisplayTime().get() * 10) / 10f, 0.5f, 10.0f, 0.0f);
         displayTimeSlider.setDisplayer(value -> Component.literal(Math.round(value * 10) / 10d + "x"));

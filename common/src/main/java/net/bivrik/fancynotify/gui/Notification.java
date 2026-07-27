@@ -1,14 +1,13 @@
 package net.bivrik.fancynotify.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.*;
-import net.bivrik.fancynotify.Easing;
-import net.bivrik.fancynotify.Keyframe;
+import com.mojang.blaze3d.vertex.ByteBufferBuilder;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 import net.bivrik.fancynotify.NotificationManager;
 import net.bivrik.fancynotify.config.ConfigManager;
 import net.bivrik.fancynotify.config.FiltersConfig;
 import net.bivrik.fancynotify.config.GeneralConfig;
-import net.bivrik.fancynotify.core.Log;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -21,31 +20,26 @@ import net.minecraft.util.FormattedCharSequence;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Notification {
-    private static final org.slf4j.Logger LOGGER = Log.getSpecificLogger(Notification.class);
+public abstract class Notification implements NotificationStateMachine.Listener {
     private static final Object NO_ID = new Object();
 
-    protected Component title;
-    private int titleWidth;
-    protected Component message;
-    private int messageWidth;
-    protected List<FormattedCharSequence> messageLines;
+    private Component title;
+    private Component message;
+    private List<FormattedCharSequence> messageLines;
+    private int minWidth;
+    private int width;
 
+    private final NotificationStateMachine stateMachine;
+    private final NotificationAnimator animator;
     protected final Minecraft minecraft;
     protected final FiltersConfig filtersConfig;
     protected final GeneralConfig generalConfig;
 
     protected float timeTicks = 0;
     protected float offsetTicks = 0;
-    private float animationTimingTicks;
-
-    private float x = 0;
-    private float y = 0;
-    private float alpha = 0;
-
-    private Visibility state = Visibility.HIDDEN;
 
     public Notification(NotificationManager manager, @NotNull Component title, @Nullable Component message) {
         Minecraft minecraft = manager.getMinecraft();
@@ -54,6 +48,8 @@ public abstract class Notification {
         this.minecraft = minecraft;
         this.filtersConfig = configManager.getFiltersConfig();
         this.generalConfig = configManager.getGeneralConfig();
+        this.stateMachine = new NotificationStateMachine(minecraft, this);
+        this.animator = this.generalConfig.getAnimator();
 
         setDisplay(title, message);
     }
@@ -61,9 +57,8 @@ public abstract class Notification {
     protected final void setDisplay(@NotNull Component title, @Nullable Component message) {
         Component notNullMessage = message == null ? Component.empty() : message;
         this.title = title;
-        this.titleWidth = minecraft.font.width(title);
+        this.minWidth = minecraft.font.width(title) + getTextOffset() + 7;
         this.message = notNullMessage;
-        this.messageWidth = minecraft.font.width(notNullMessage);
         this.messageLines = getWrappedText(notNullMessage);
     }
 
@@ -71,22 +66,29 @@ public abstract class Notification {
         return minecraft.font.split(text, getWidth() - 36);
     }
 
-    // Waittt width changes but text doesnt get wrapped properly yknow shi
-    public final int getWidth() {
-        int width = isStretchable() ? titleWidth : Math.max(titleWidth, messageWidth);
-        return Math.max(width + getTextOffset() + 7, generalConfig.notificationsWidth.get());
+    protected final Component getTitle() {
+        return title;
+    }
+
+    protected final Component getMessage() {
+        return message;
+    }
+
+    protected final List<FormattedCharSequence> getMessageLines() {
+        return new ArrayList<>(messageLines);
+    }
+
+    public int getWidth() {
+        width = Math.max(minWidth, generalConfig.notificationsWidth.get());
+        return width;
     }
 
     public int getHeight() {
-        return 32;
+        return 23 + messageLines.size() * 9;
     }
 
     protected int getCenterY() {
         return getHeight() / 2;
-    }
-
-    protected boolean isStretchable() {
-        return true;
     }
 
     protected int getTextOffset() {
@@ -106,157 +108,89 @@ public abstract class Notification {
     }
 
     public boolean shouldRemove() {
-        return state == Visibility.REMOVAL;
+        return stateMachine.isInState(NotificationState.REMOVAL);
     }
-
-    protected void onRemoval() {}
 
     protected int getLifeTimeTicks() {
         return 140;
     }
 
-    public int getAnimationDurationTicks() {
+    public final int getAnimationDurationTicks() {
         return 15;
     }
 
-    public void show() {
-        if (state == Visibility.SHOWING) return;
-
-        setVisibility(Visibility.SHOWING);
-        animationTimingTicks = timeTicks;
+    @Override
+    public void onShowing() {
         minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_TOAST_IN, 1, 1));
     }
 
-    public void hide() {
-        if (state == Visibility.HIDING) return;
-
-        setVisibility(Visibility.HIDING);
-        animationTimingTicks = timeTicks;
+    @Override
+    public void onHiding() {
         minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_TOAST_OUT, 1, 1));
     }
 
-    public void showingAnimation() {
-        LOGGER.info("Showing...");
-
-        float startX = getWidth() + generalConfig.padding.get();
-        float startAlpha = 0;
-
-        float endX = 0;
-        float endAlpha = 1;
-
-        float showingProgress = Keyframe.getProgress(timeTicks, animationTimingTicks, getAnimationDurationTicks());
-        if (Keyframe.isActive(showingProgress)) {
-            x = Easing.SINE_OUT.lerp(startX, endX, showingProgress);
-            setAlpha(Easing.SINE_OUT.lerp(startAlpha, endAlpha, showingProgress));
-        }
-
-        if (timeTicks >= animationTimingTicks + getAnimationDurationTicks()) {
-            setVisibility(Visibility.VISIBLE);
-            x = endX;
-            setAlpha(endAlpha);
-        }
-    }
-
-    public void hidingAnimation() {
-        LOGGER.info("Hiding...");
-
-        float startX = 0;
-        float startAlpha = 1;
-
-        float endX = getWidth() + generalConfig.padding.get();
-        float endAlpha = 0;
-
-        float hidingProgress = Keyframe.getProgress(timeTicks, animationTimingTicks, getAnimationDurationTicks());
-        if (Keyframe.isActive(hidingProgress)) {
-            x = Easing.SINE_IN.lerp(startX, endX, hidingProgress);
-            setAlpha(Easing.SINE_IN.lerp(startAlpha, endAlpha, hidingProgress));
-        }
-
-        if (timeTicks >= animationTimingTicks + getAnimationDurationTicks()) {
-            setVisibility(Visibility.REMOVAL);
-            x = endX;
-            setAlpha(endAlpha);
-            onRemoval();
-        }
-    }
-
-    private void setAlpha(float alpha) {
-        this.alpha = alpha * generalConfig.notificationsTransparency.get();
+    public void hide() {
+        stateMachine.hide();
     }
 
     public void update(float deltaTicks) {
         timeTicks += deltaTicks;
 
-        updateState();
-        checkState();
+        // Temp solution
+        int tempWidth = width;
+        if (tempWidth != getWidth()) {
+            messageLines = getWrappedText(message);
+        }
+
+        stateMachine.update(timeTicks, offsetTicks, getAnimationDurationTicks(), getLifeTimeTicks());
+        animator.update(timeTicks, stateMachine.getState(), stateMachine.getTimingTicks(), getWidth(), getHeight(), getAnimationDurationTicks());
 
         onUpdate();
     }
 
     protected void onUpdate() {}
 
-    private void updateState() {
-        if (state == Visibility.HIDDEN) {
-            show();
-        } else if (state == Visibility.VISIBLE && timeTicks - offsetTicks >= getLifeTimeTicks() * minecraft.options.notificationDisplayTime().get()) {
-            hide();
-        }
-    }
-
-    private void checkState() {
-        if (state == Visibility.SHOWING) {
-            showingAnimation();
-        } else if (state == Visibility.HIDING) {
-            hidingAnimation();
-        }
-    }
-
-    private void setVisibility(Visibility state) {
-        this.state = state;
-        LOGGER.info("State: {}", state);
-    }
-
     public final void render(GuiGraphics guiGraphics) {
-        if (state == Visibility.HIDDEN || state == Visibility.REMOVAL) {
+        if (stateMachine.isInState(NotificationState.HIDDEN) || stateMachine.isInState(NotificationState.REMOVAL)) {
             return;
         }
 
-        if (state == Visibility.VISIBLE) {
-            float newAlpha = generalConfig.notificationsTransparency.get();
-            if (alpha != newAlpha) {
-                alpha = newAlpha;
-            }
-        }
-
-        guiGraphics.pose().pushPose();
-        guiGraphics.pose().translate(x, y, 0);
+        float halfWidth = getWidth() / 2.0f;
+        float halfHeight = getHeight() / 2.0f;
+        PoseStack stack = guiGraphics.pose();
+        stack.pushPose();
+        stack.translate(halfWidth, halfHeight, 0);
+        stack.scale(animator.getScaleX(), animator.getScaleY(), 1);
+        stack.translate(-halfWidth, -halfHeight, 0);
+        stack.rotateAround(Axis.ZP.rotation(animator.getRotation()), halfWidth, halfHeight, 0);
+        stack.translate(animator.getX(), animator.getY(), 0);
         draw(guiGraphics);
-        guiGraphics.pose().popPose();
+        stack.popPose();
     }
 
     protected abstract void draw(GuiGraphics guiGraphics);
 
     protected void drawSprite(GuiGraphics guiGraphics, ResourceLocation sprite, int x, int y, int width, int height) {
-        if (alpha == 1) {
+        if (animator.getAlpha() == 1) {
             guiGraphics.blitSprite(sprite, x, y, width, height);
             return;
         }
 
         RenderSystem.enableBlend();
-        guiGraphics.setColor(1, 1, 1, alpha);
+        guiGraphics.setColor(1, 1, 1, animator.getAlpha());
         guiGraphics.blitSprite(sprite, x, y, width, height);
         guiGraphics.setColor(1, 1, 1, 1);
         RenderSystem.disableBlend();
     }
 
     protected void drawTexture(GuiGraphics guiGraphics, ResourceLocation texture, int x, int y, int width, int height, int textureWidth, int textureHeight, int uOffset, int vOffset) {
-        if (alpha == 1) {
+        if (animator.getAlpha() == 1) {
             guiGraphics.blit(texture, x, y, uOffset, vOffset, width, height, textureWidth, textureHeight);
             return;
         }
 
         RenderSystem.enableBlend();
-        guiGraphics.setColor(1, 1, 1, alpha);
+        guiGraphics.setColor(1, 1, 1, animator.getAlpha());
         guiGraphics.blit(texture, x, y, uOffset, vOffset, width, height, textureWidth, textureHeight);
         guiGraphics.setColor(1, 1, 1, 1);
         RenderSystem.disableBlend();
@@ -267,7 +201,7 @@ public abstract class Notification {
     }
 
     protected void drawText(GuiGraphics guiGraphics, FormattedCharSequence text, int x, int y, int color) {
-        if (alpha == 1) {
+        if (animator.getAlpha() == 1) {
             guiGraphics.drawString(minecraft.font, text, x, y, color, false);
             return;
         }
@@ -279,24 +213,8 @@ public abstract class Notification {
         // Why without all of this there is a bug,
         // when using guiGraphics.setColor(),
         // it makes all the tooltips with the same color?
-        // P.S. IT STILL DOES AFFECT TOOLTIPS WTF?
-        /*RenderSystem.enableBlend();
-        guiGraphics.setColor(1.0f, 1.0f, 1.0f, alpha);
-        minecraft.font.drawInBatch(
-                text, x, y, color, false,
-                guiGraphics.pose().last().pose(),
-                guiGraphics.bufferSource(),
-                Font.DisplayMode.SEE_THROUGH,
-                0,
-                15728880
-        );
-        guiGraphics.drawString(minecraft.font, text, x, y, color, false);
-        guiGraphics.bufferSource().endBatch();
-        guiGraphics.setColor(1.0f, 1.0f, 1.0f, 1.0f);
-        RenderSystem.disableBlend();*/
-        // I hate this
         MultiBufferSource.BufferSource isolatedBuffer = MultiBufferSource.immediate(new ByteBufferBuilder(256));
-        int iAlpha = Math.max((int) (alpha * 255), 25);
+        int iAlpha = Math.max((int) (animator.getAlpha() * 255), 25);
         int alphaColor = (iAlpha << 24) | (color & 0x00FFFFFF);
         RenderSystem.enableBlend();
         minecraft.font.drawInBatch(
@@ -314,11 +232,10 @@ public abstract class Notification {
         drawText(guiGraphics, text.getVisualOrderText(), x, y, color);
     }
 
-    private enum Visibility {
-        HIDDEN,
-        SHOWING,
-        VISIBLE,
-        HIDING,
-        REMOVAL
+    protected void drawMessage(GuiGraphics guiGraphics, int x, int y, int color) {
+        for (int i = 0; i < messageLines.size(); i++) {
+            FormattedCharSequence line = messageLines.get(i);
+            drawText(guiGraphics, line, x, y + i * 9, color);
+        }
     }
 }

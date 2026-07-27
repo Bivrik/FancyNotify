@@ -38,18 +38,14 @@ public class RecipeNotification extends ExpandableNotification {
         }
     }
 
-    @Override
-    protected boolean isStretchable() {
-        return false;
-    }
-
     private float countTemp = 0;
     @Override
     public void draw(GuiGraphics guiGraphics) {
         countTemp += 1 / 2f;
         drawSprite(guiGraphics, BACKGROUND, 0, 0, getWidth(), getHeight());
-        drawText(guiGraphics, this.title, getTextOffset(), 7, color);
-        drawText(guiGraphics, this.message, getTextOffset(), 18, Color.black.getRGB());
+        drawText(guiGraphics, getTitle(), getTextOffset(), 7, color);
+        drawMessage(guiGraphics, getTextOffset(), 18, Color.black.getRGB());
+
         int orderedIndex = (int) (countTemp / Math.max(1f, (double) getLifeTimeTicks() / recipes.size()) % recipes.size());
         var recipe = recipes.get(orderedIndex).value();
         var stack = guiGraphics.pose();

@@ -20,7 +20,7 @@ public abstract class ExpandableNotification extends Notification {
 
     @Override
     public boolean tryMerge(Notification notification) {
-        if (this.getId().equals(notification.getId()) && this.getClass().isAssignableFrom(notification.getClass())) {
+        if (getId().equals(notification.getId()) && getClass().isAssignableFrom(notification.getClass())) {
             merge((ExpandableNotification) notification);
             return true;
         }

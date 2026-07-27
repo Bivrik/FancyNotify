@@ -15,17 +15,10 @@ public class SystemNotification extends ExpandableNotification {
 
     private final Identifier id;
 
-    private int backgroundOffset;
-
     public SystemNotification(NotificationManager manager, Identifier id, Component title, Component description) {
         super(manager, title, description);
 
         this.id = id;
-        this.backgroundOffset = getBackgroundOffset();
-    }
-
-    private int getBackgroundOffset() {
-        return (this.messageLines.size() - 1) * 9;
     }
 
     @Override
@@ -39,28 +32,24 @@ public class SystemNotification extends ExpandableNotification {
     }
 
     @Override
-    public int getHeight() {
-        return super.getHeight() + backgroundOffset;
+    protected int getLifeTimeTicks() {
+        return id.getLifeTimeTicks();
     }
 
     @Override
     protected void expand(ExpandableNotification notification) {
         if (notification instanceof SystemNotification systemNotification) {
-            setDisplay(systemNotification.title, systemNotification.message);
-            this.backgroundOffset = getBackgroundOffset();
+            setDisplay(systemNotification.getTitle(), systemNotification.getMessage());
         }
     }
 
     @Override
     public void draw(GuiGraphics guiGraphics) {
         drawSprite(guiGraphics, BACKGROUND, 0, 0, getWidth(), getHeight());
-        int alignment = Math.min(this.messageLines.size(), 1);
-        drawText(guiGraphics, title, getTextOffset(), 8 - alignment, Color.yellow.getRGB());
-        for (int i = 0; i < this.messageLines.size(); i++) {
-            var line = this.messageLines.get(i);
-            drawText(guiGraphics, line, getTextOffset(), 18 + i * 9, -1);
-        }
-        drawSprite(guiGraphics, id.sprite, 6, getCenterY() - 10, 20, 20);
+        int alignment = Math.min(getMessageLines().size(), 1);
+        drawText(guiGraphics, getTitle(), getTextOffset(), 8 - alignment, Color.yellow.getRGB());
+        drawMessage(guiGraphics, getTextOffset(), 18, -1);
+        drawSprite(guiGraphics, id.getSprite(), 6, getCenterY() - 10, 20, 20);
     }
 
     public enum Identifier {

@@ -1,5 +1,9 @@
 package net.bivrik.fancynotify.config;
 
+import net.bivrik.fancynotify.gui.NotificationAnimator;
+import net.bivrik.fancynotify.gui.QuirkyAnimation;
+import net.bivrik.fancynotify.gui.TopDownAnimation;
+import net.bivrik.fancynotify.gui.VanillaAnimation;
 import net.minecraft.network.chat.Component;
 
 public class GeneralConfig extends Config {
@@ -15,7 +19,16 @@ public class GeneralConfig extends Config {
     public Setting<Integer> notificationsWidth = new Setting<>(160);
     public Setting<Orientation> orientation = new Setting<>(Orientation.VERTICAL);
     public Setting<Anchor> anchor = new Setting<>(Anchor.TOP_RIGHT);
+    public Setting<Animation> animation = new Setting<>(Animation.VANILLA);
     public Setting<Boolean> debug = new Setting<>(false);
+
+    public NotificationAnimator getAnimator() {
+        return switch (animation.get()) {
+            case VANILLA -> new VanillaAnimation(this);
+            case TOP_DOWN -> new TopDownAnimation(this);
+            case QUIRKY -> new QuirkyAnimation(this);
+        };
+    }
 
     public enum Orientation {
         VERTICAL("vertical"),
@@ -58,6 +71,22 @@ public class GeneralConfig extends Config {
 
         public boolean isTop() {
             return isTop;
+        }
+    }
+
+    public enum Animation {
+        VANILLA("vanilla"),
+        TOP_DOWN("top_down"),
+        QUIRKY("quirky");
+
+        private final Component displayName;
+
+        Animation(String name) {
+            this.displayName = Component.translatable("fancynotify.gui.animation." + name);
+        }
+
+        public Component getDisplayName() {
+            return displayName;
         }
     }
 

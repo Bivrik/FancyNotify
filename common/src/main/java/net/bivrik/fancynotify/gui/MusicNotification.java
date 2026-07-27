@@ -22,15 +22,10 @@ public class MusicNotification extends Notification {
     }
 
     @Override
-    protected boolean isStretchable() {
-        return false;
-    }
-
-    @Override
     public void draw(GuiGraphics guiGraphics) {
         drawSprite(guiGraphics, BACKGROUND, 0, 0, getWidth(), getHeight());
-        drawText(guiGraphics, this.title, getTextOffset(), 7, Color.cyan.getRGB());
-        drawText(guiGraphics, this.message, getTextOffset(), 18, -1);
+        drawText(guiGraphics, getTitle(), getTextOffset(), 7, Color.cyan.getRGB());
+        drawMessage(guiGraphics, getTextOffset(), 18, -1);
         drawSprite(guiGraphics, ICON, 4, getCenterY() - 10, 21, 21);
     }
 }
