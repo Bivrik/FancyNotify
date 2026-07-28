@@ -50,7 +50,8 @@ public class NotificationManager {
         }
 
         if (hasCurrentSlots()) {
-            currentNotifications.add(new NotificationHolder(newNotification, 0, 0));
+            Position position = computePosition(newNotification);
+            currentNotifications.add(new NotificationHolder(newNotification, position.x(), position.y()));
             Log.info("Showing new notification");
         } else {
             notificationQueue.add(newNotification);
@@ -73,11 +74,13 @@ public class NotificationManager {
         return currentNotifications.isEmpty();
     }
 
-    private void place(List<NotificationHolder> holders, GeneralConfig.Orientation orientation, GeneralConfig.Anchor anchor) {
-        boolean isVertical = orientation == GeneralConfig.Orientation.VERTICAL;
+    private void arrangeNotifications() {
+        GeneralConfig config = configManager.getGeneralConfig();
+        GeneralConfig.Anchor anchor = config.anchor.get();
+        boolean isVertical = config.orientation.get() == GeneralConfig.Orientation.VERTICAL;
         int x = 0;
         int y = 0;
-        for (var h : holders) {
+        for (var h : currentNotifications) {
             int width = h.getWidth();
             int height = h.getHeight();
 
@@ -99,6 +102,46 @@ public class NotificationManager {
         }
     }
 
+    // Why is it so much conditions I need to change this BRO :sob:
+    private Position computePosition(Notification notification) {
+        GeneralConfig config = configManager.getGeneralConfig();
+        GeneralConfig.Anchor anchor = config.anchor.get();
+        boolean isVertical = config.orientation.get() == GeneralConfig.Orientation.VERTICAL;
+        int padding = config.padding.get();
+
+        int x = 0;
+        int y = 0;
+        for (var h : currentNotifications) {
+            int width = h.getWidth();
+            int height = h.getHeight();
+
+            x += isVertical ? 0 : (anchor.isLeft() ? width : -width);
+            y += isVertical ? (anchor.isTop() ? height : -height) : 0;
+
+            if (isVertical) {
+                y += anchor.isTop() ? padding : -padding;
+            } else {
+                x += anchor.isLeft() ? padding : -padding;
+            }
+        }
+
+        int width = notification.getWidth();
+        int height = notification.getHeight();
+        int posX, posY;
+
+        if (isVertical) {
+            posX = anchor.isLeft() ? 0 : -width;
+            posY = anchor.isTop() ? y : y - height;
+        } else {
+            posX = anchor.isLeft() ? x : x - width;
+            posY = anchor.isTop() ? 0 : -height;
+        }
+
+        return new Position(posX, posY);
+    }
+
+    private record Position(int x, int y) {}
+
     public void update() {
         if (!isCurrentEmpty()) {
             for (var iterator = currentNotifications.iterator(); iterator.hasNext();) {
@@ -115,14 +158,14 @@ public class NotificationManager {
                 notificationHolder.update(deltaTracker.getGameTimeDeltaTicks());
             }
 
-            GeneralConfig config = configManager.getGeneralConfig();
-            place(currentNotifications, config.orientation.get(), config.anchor.get());
+            arrangeNotifications();
         }
 
         while (!notificationQueue.isEmpty() && hasCurrentSlots()) {
             Notification next = notificationQueue.pollFirst();
             if (next != null) {
-                currentNotifications.add(new NotificationHolder(next, 0, 0));
+                Position position = computePosition(next);
+                currentNotifications.add(new NotificationHolder(next, position.x(), position.y()));
                 Log.info("Showing next notification");
             }
         }
