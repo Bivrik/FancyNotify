@@ -4,14 +4,15 @@ import net.bivrik.fancynotify.BiomeManager;
 import net.bivrik.fancynotify.NotificationManager;
 import net.bivrik.fancynotify.SplashesManager;
 import net.bivrik.fancynotify.config.ConfigManager;
-import net.bivrik.fancynotify.gui.SystemNotification;
+import net.bivrik.fancynotify.eventbus.EventBus;
+import net.bivrik.fancynotify.eventbus.IEventBus;
 import net.bivrik.fancynotify.platform.Services;
 import net.minecraft.client.Minecraft;
-import net.minecraft.network.chat.Component;
-import org.lwjgl.glfw.GLFW;
 
 public final class Common {
     private Common() {}
+
+    public static final IEventBus EVENT_BUS = new EventBus();
 
     private static ConfigManager configManager;
     private static NotificationManager notificationManager;

@@ -46,7 +46,7 @@ public class SystemNotification extends ExpandableNotification {
     @Override
     public void draw(GuiGraphics guiGraphics) {
         drawSprite(guiGraphics, BACKGROUND, 0, 0, getWidth(), getHeight());
-        int alignment = Math.min(getMessageLines().size(), 1);
+        int alignment = Math.min(getWrappedMessage().size(), 1);
         drawText(guiGraphics, getTitle(), getTextOffset(), 8 - alignment, Color.yellow.getRGB());
         drawMessage(guiGraphics, getTextOffset(), 18, -1);
         drawSprite(guiGraphics, id.getSprite(), 6, getCenterY() - 10, 20, 20);

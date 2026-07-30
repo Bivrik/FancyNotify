@@ -7,6 +7,9 @@ public class Config {
         this.path = path;
     }
 
+    // Probably temp, I need to come up with better solution for these shenanigans
+    public void registerListeners() {}
+
     public String getPath() {
         return path;
     }

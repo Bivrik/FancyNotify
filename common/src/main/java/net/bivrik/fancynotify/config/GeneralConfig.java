@@ -1,5 +1,7 @@
 package net.bivrik.fancynotify.config;
 
+import net.bivrik.fancynotify.core.Common;
+import net.bivrik.fancynotify.event.NotificationWidthChangedEvent;
 import net.bivrik.fancynotify.gui.NotificationAnimator;
 import net.bivrik.fancynotify.gui.QuirkyAnimation;
 import net.bivrik.fancynotify.gui.TopDownAnimation;
@@ -11,6 +13,7 @@ public class GeneralConfig extends Config {
 
     public GeneralConfig() {
         super(GENERAL_CONFIG_PATH);
+        registerListeners();
     }
 
     public Setting<Float> notificationsTransparency = new Setting<>(1.0f);
@@ -29,6 +32,11 @@ public class GeneralConfig extends Config {
             case TOP_DOWN -> new TopDownAnimation(this);
             case QUIRKY -> new QuirkyAnimation(this);
         };
+    }
+
+    @Override
+    public void registerListeners() {
+        notificationsWidth.setListener(newValue -> Common.EVENT_BUS.send(new NotificationWidthChangedEvent(newValue)));
     }
 
     public enum Orientation {

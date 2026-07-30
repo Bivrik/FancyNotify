@@ -8,6 +8,10 @@ import net.bivrik.fancynotify.NotificationManager;
 import net.bivrik.fancynotify.config.ConfigManager;
 import net.bivrik.fancynotify.config.FiltersConfig;
 import net.bivrik.fancynotify.config.GeneralConfig;
+import net.bivrik.fancynotify.core.Common;
+import net.bivrik.fancynotify.core.Log;
+import net.bivrik.fancynotify.event.NotificationWidthChangedEvent;
+import net.bivrik.fancynotify.eventbus.SubscribeEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -28,7 +32,7 @@ public abstract class Notification implements NotificationStateMachine.Listener 
 
     private Component title;
     private Component message;
-    private List<FormattedCharSequence> messageLines;
+    private List<FormattedCharSequence> wrappedMessage;
     private int minWidth;
     private int width;
 
@@ -42,6 +46,8 @@ public abstract class Notification implements NotificationStateMachine.Listener 
     protected float offsetTicks = 0;
 
     public Notification(NotificationManager manager, @NotNull Component title, @Nullable Component message) {
+        Common.EVENT_BUS.register(this);
+
         Minecraft minecraft = manager.getMinecraft();
         ConfigManager configManager = manager.getConfigManager();
 
@@ -50,6 +56,7 @@ public abstract class Notification implements NotificationStateMachine.Listener 
         this.generalConfig = configManager.getGeneralConfig();
         this.stateMachine = new NotificationStateMachine(minecraft, this);
         this.animator = this.generalConfig.getAnimator();
+        this.width = this.generalConfig.notificationsWidth.get();
 
         setDisplay(title, message);
     }
@@ -59,11 +66,18 @@ public abstract class Notification implements NotificationStateMachine.Listener 
         this.title = title;
         this.minWidth = minecraft.font.width(title) + getTextOffset() + 7;
         this.message = notNullMessage;
-        this.messageLines = getWrappedText(notNullMessage);
+        this.wrappedMessage = getWrappedText(notNullMessage);
     }
 
     private List<FormattedCharSequence> getWrappedText(@NotNull Component text) {
         return minecraft.font.split(text, getWidth() - 36);
+    }
+
+    @SubscribeEvent
+    public void onNotificationWidthChanged(NotificationWidthChangedEvent event) {
+        width = event.getWidth();
+        wrappedMessage = getWrappedText(message);
+        Log.info("New width is " + width);
     }
 
     protected final Component getTitle() {
@@ -74,17 +88,16 @@ public abstract class Notification implements NotificationStateMachine.Listener 
         return message;
     }
 
-    protected final List<FormattedCharSequence> getMessageLines() {
-        return new ArrayList<>(messageLines);
+    protected final List<FormattedCharSequence> getWrappedMessage() {
+        return new ArrayList<>(wrappedMessage);
     }
 
     public int getWidth() {
-        width = Math.max(minWidth, generalConfig.notificationsWidth.get());
-        return width;
+        return Math.max(minWidth, width);
     }
 
     public int getHeight() {
-        return 23 + messageLines.size() * 9;
+        return 23 + wrappedMessage.size() * 9;
     }
 
     protected int getCenterY() {
@@ -131,12 +144,6 @@ public abstract class Notification implements NotificationStateMachine.Listener 
 
     public void update(float deltaTicks) {
         timeTicks += deltaTicks;
-
-        // Temp solution
-        int tempWidth = width;
-        if (tempWidth != getWidth()) {
-            messageLines = getWrappedText(message);
-        }
 
         stateMachine.update(timeTicks, offsetTicks, generalConfig.animationDuration.get(), getLifeTimeTicks());
         animator.update(timeTicks, stateMachine.getState(), stateMachine.getTimingTicks(), getWidth(), getHeight(), generalConfig.animationDuration.get());
@@ -229,8 +236,8 @@ public abstract class Notification implements NotificationStateMachine.Listener 
     }
 
     protected void drawMessage(GuiGraphics guiGraphics, int x, int y, int color) {
-        for (int i = 0; i < messageLines.size(); i++) {
-            FormattedCharSequence line = messageLines.get(i);
+        for (int i = 0; i < wrappedMessage.size(); i++) {
+            FormattedCharSequence line = wrappedMessage.get(i);
             drawText(guiGraphics, line, x, y + i * 9, color);
         }
     }

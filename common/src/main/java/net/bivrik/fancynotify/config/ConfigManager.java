@@ -49,7 +49,9 @@ public class ConfigManager {
             return config;
         }
         LOGGER.info("Successfully read config {} from {}", configClass.getSimpleName(), configFile.getPath());
-        return optionalConfig.get();
+        T result = optionalConfig.get();
+        result.registerListeners();
+        return result;
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
