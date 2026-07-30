@@ -13,7 +13,6 @@ public final class EventSubscriber {
         this.targetReference = new WeakReference<>(target);
         this.method = method;
         this.eventType = eventType;
-        this.method.setAccessible(true);
     }
 
     public Object getTarget() {

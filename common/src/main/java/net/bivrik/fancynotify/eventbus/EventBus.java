@@ -3,6 +3,7 @@ package net.bivrik.fancynotify.eventbus;
 import net.bivrik.fancynotify.core.Log;
 
 import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
@@ -11,7 +12,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public final class EventBus implements IEventBus {
     private final ConcurrentHashMap<Class<? extends Event>, List<EventSubscriber>> eventSubscribers = new ConcurrentHashMap<>();
 
-    @Override // remove Object class stuff
+    // Add overriding ability in subclasses, so no double invoking
+    @Override
     public void register(final Object listener) {
         Class<?> listenerClass = listener.getClass();
         for (Method method : listenerClass.getMethods()) {
