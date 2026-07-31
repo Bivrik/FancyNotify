@@ -56,8 +56,13 @@ public class SettingsScreen extends UniversalScreen {
     @Override
     protected void init() {
         backButton = Button.builder(CommonComponents.GUI_BACK, button -> this.onClose())
-                .bounds(this.width / 2 - Button.BIG_WIDTH / 2, this.height - Button.DEFAULT_HEIGHT - 6, Button.BIG_WIDTH, Button.DEFAULT_HEIGHT).build();
+                .bounds(this.width / 2 - Button.DEFAULT_WIDTH - 5, this.height - Button.DEFAULT_HEIGHT - 6, 180, Button.DEFAULT_HEIGHT).build();
         this.addSimpleWidget(backButton);
+
+        createDummyButton = Button.builder(Component.literal("Send Dummy"), button -> sendDummy())
+                .bounds(this.width / 2 + 30 + 5, this.height - Button.DEFAULT_HEIGHT - 6, Button.SMALL_WIDTH, Button.DEFAULT_HEIGHT)
+                .build();
+        this.addSimpleWidget(createDummyButton);
 
         SettingsList list = new SettingsList(this.minecraft, this.width, this.height - 64 - 2, 32, 25, this);
         this.addSimpleWidget(list);
@@ -95,19 +100,19 @@ public class SettingsScreen extends UniversalScreen {
         paddingSlider.setResponder(value -> padding.set(value.intValue()));
         list.addElement(paddingSlider);
 
-        Setting<Integer> maxAmount = configManager.getGeneralConfig().maxAmount;
-        maxAmountSlider = new Slider(0, 0, SettingsList.WidgetWidth.MEDIUM.getWidth(), Button.DEFAULT_HEIGHT, Component.literal("Max Amount"), maxAmount.get(), 1, 12);
-        maxAmountSlider.setDisplayer(value -> Component.literal(String.valueOf(value.intValue())));
-        maxAmountSlider.setResponder(value -> maxAmount.set(value.intValue()));
-        list.addElement(maxAmountSlider);
-
         Setting<GeneralConfig.Animation> animation = configManager.getGeneralConfig().animation;
         animationCycleButton = CycleButton.builder(GeneralConfig.Animation::getDisplayName)
                 .withValues(GeneralConfig.Animation.values())
                 .withInitialValue(animation.get())
                 .withTooltip(value -> Tooltip.create(Component.literal("Affects how notifications appear")))
-                .create(0, 0, Button.DEFAULT_WIDTH, Button.DEFAULT_HEIGHT, Component.literal("Animation"), (button, value) -> animation.set(value));
-        list.addElement(animationCycleButton);
+                .create(0, 0, SettingsList.WidgetWidth.BIG.getWidth(), Button.DEFAULT_HEIGHT, Component.literal("Animation"), (button, value) -> animation.set(value));
+        list.addElement(animationCycleButton, SettingsList.WidgetWidth.BIG);
+
+        Setting<Integer> maxAmount = configManager.getGeneralConfig().maxAmount;
+        maxAmountSlider = new Slider(0, 0, SettingsList.WidgetWidth.MEDIUM.getWidth(), Button.DEFAULT_HEIGHT, Component.literal("Max Amount"), maxAmount.get(), 1, 12);
+        maxAmountSlider.setDisplayer(value -> Component.literal(String.valueOf(value.intValue())));
+        maxAmountSlider.setResponder(value -> maxAmount.set(value.intValue()));
+        list.addElement(maxAmountSlider);
 
         displayTimeSlider = new Slider(0, 0, SettingsList.WidgetWidth.MEDIUM.getWidth(), Button.DEFAULT_HEIGHT, DISPLAY_TIME_TITLE, Math.round(this.minecraft.options.notificationDisplayTime().get() * 10) / 10f, 0.5f, 10.0f, 0.0f);
         displayTimeSlider.setDisplayer(value -> Component.literal(Math.round(value * 10) / 10d + "x"));
@@ -127,11 +132,6 @@ public class SettingsScreen extends UniversalScreen {
                 .withTooltip(value -> Tooltip.create(Component.literal("Option for development")))
                 .create(0, 0, Button.DEFAULT_WIDTH, Button.DEFAULT_HEIGHT, Component.literal("Debug"), (button, value) -> debug.set(value));
         list.addElement(debugCycleButton);
-
-        createDummyButton = Button.builder(Component.literal("Send Dummy"), button -> sendDummy())
-                .bounds(0, 0, Button.DEFAULT_WIDTH, Button.DEFAULT_HEIGHT)
-                .build();
-        list.addElement(createDummyButton);
 
         list.alignElements();
     }
