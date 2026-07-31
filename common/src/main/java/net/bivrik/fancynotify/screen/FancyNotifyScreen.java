@@ -1,11 +1,12 @@
 package net.bivrik.fancynotify.screen;
 
+import net.bivrik.fancynotify.ResourceLocations;
 import net.bivrik.fancynotify.core.Common;
 import net.bivrik.fancynotify.core.Constants;
 import net.minecraft.Util;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.*;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.PlainTextButton;
 import net.minecraft.client.gui.screens.ConfirmLinkScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.CommonComponents;
@@ -14,11 +15,19 @@ import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FancyNotifyScreen extends UniversalScreen {
     private static final Component TITLE = Component.literal(Constants.MOD_NAME);
-    private static final Component SUPPORT_LABEL = Component.literal("News, polls, and other stuff on my Boosty blog!");
+    private static final Component GITHUB_LABEL = Component.literal("With love and care from Bivrik, enjoy!");
+    private static final Component DISCORD_TOOLTIP = Component.literal("Discord server Bivrik's Palace");
+    private static final Component BOOSTY_TOOLTIP = Component.literal("Boosty to support me <3");
+    private static final Component YOUTUBE_TOOLTIP = Component.literal("Youtube channel with showcases and other stuff");
+    private static final URI GITHUB_URI = URI.create("https://github.com/Bivrik");
+    private static final URI DISCORD_URI = URI.create("https://discord.gg/9XuRDgbbZe");
     private static final URI BOOSTY_URI = URI.create("https://boosty.to/bivrik");
+    private static final URI YOUTUBE_URI = URI.create("https://www.youtube.com/@modsEnjoyer");
 
     private final String splash;
 
@@ -27,6 +36,9 @@ public class FancyNotifyScreen extends UniversalScreen {
     private Button filtersButton;
     private Button creditsButton;
     private PlainTextButton supportButton;
+    private ImageButton discordButton;
+    private ImageButton boostyButton;
+    private ImageButton youtubeButton;
 
     public FancyNotifyScreen(Screen parent) {
         super(TITLE, parent);
@@ -37,21 +49,51 @@ public class FancyNotifyScreen extends UniversalScreen {
     @Override
     protected void init() {
         backButton = Button.builder(CommonComponents.GUI_BACK, button -> setScreen(parent)).bounds(this.width / 2 - Button.BIG_WIDTH / 2, this.height / 2 + 4 + Button.DEFAULT_HEIGHT + 8, Button.BIG_WIDTH, Button.DEFAULT_HEIGHT).build();
-        this.addSimpleWidget(backButton);
+        addSimpleWidget(backButton);
 
         settingsButton = Button.builder(Component.literal("Settings..."), button -> setScreen(new SettingsScreen(this))).bounds(this.width / 2 - Button.BIG_WIDTH / 2, this.height / 2 - Button.DEFAULT_HEIGHT - 4, Button.BIG_WIDTH, Button.DEFAULT_HEIGHT).build();
-        this.addSimpleWidget(settingsButton);
+        addSimpleWidget(settingsButton);
 
         filtersButton = Button.builder(Component.literal("Filters..."), button -> setScreen(new FiltersScreen(this))).bounds(this.width / 2 - 100, this.height / 2 + 4, 96, Button.DEFAULT_HEIGHT).build();
-        this.addSimpleWidget(filtersButton);
+        addSimpleWidget(filtersButton);
 
         creditsButton = Button.builder(Component.literal("Credits"), button -> setScreen(new CreditsScreen(this))).bounds(this.width / 2 + 4, this.height / 2 + 4, 96, Button.DEFAULT_HEIGHT).build();
-        this.addSimpleWidget(creditsButton);
+        addSimpleWidget(creditsButton);
 
-        int supportButtonWidth = this.font.width(SUPPORT_LABEL);
-        Button.OnPress supportButtonAction = ConfirmLinkScreen.confirmLink(this, BOOSTY_URI);
-        supportButton = new PlainTextButton(this.width - supportButtonWidth - 4, this.height - 13, supportButtonWidth, 9, SUPPORT_LABEL, supportButtonAction, this.font);
-        this.addSimpleWidget(supportButton);
+        List<ImageButton> linkButtons = new ArrayList<>();
+
+        discordButton = createLinkButton(18, 18, "links/discord", "links/discord_hover",
+                DISCORD_URI, DISCORD_TOOLTIP);
+        linkButtons.add(discordButton);
+
+        boostyButton = createLinkButton(18, 18, "links/boosty", "links/boosty_hover",
+                BOOSTY_URI, BOOSTY_TOOLTIP);
+        linkButtons.add(boostyButton);
+
+        youtubeButton = createLinkButton(18, 18, "links/youtube", "links/youtube_hover",
+                YOUTUBE_URI, YOUTUBE_TOOLTIP);
+        linkButtons.add(youtubeButton);
+
+        final int padding = 5;
+        int x = this.width / 2 + Button.BIG_WIDTH / 2 + padding;
+        int y = this.height / 2 - 24;
+        for (ImageButton button : linkButtons) {
+            button.setPosition(x, y);
+            addSimpleWidget(button);
+            y += button.getHeight() + padding;
+        }
+
+        int supportButtonWidth = this.font.width(GITHUB_LABEL);
+        Button.OnPress openGithubAction = ConfirmLinkScreen.confirmLink(this, GITHUB_URI);
+        supportButton = new PlainTextButton(this.width - supportButtonWidth - 2, this.height - 9 - 1, supportButtonWidth, 9, GITHUB_LABEL, openGithubAction, this.font);
+        addSimpleWidget(supportButton);
+    }
+
+    private ImageButton createLinkButton(int width, int height, String icon, String iconHovered, URI link, Component tooltip) {
+        Button.OnPress action = ConfirmLinkScreen.confirmLink(this, link);
+        ImageButton button = new ImageButton(0, 0, width, height, new WidgetSprites(ResourceLocations.of(icon), ResourceLocations.of(iconHovered)), action);
+        button.setTooltip(Tooltip.create(tooltip));
+        return button;
     }
 
     @Override
