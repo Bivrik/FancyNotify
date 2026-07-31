@@ -7,6 +7,7 @@ import net.bivrik.fancynotify.config.ConfigManager;
 import net.bivrik.fancynotify.config.GeneralConfig;
 import net.bivrik.fancynotify.config.Setting;
 import net.bivrik.fancynotify.core.Common;
+import net.bivrik.fancynotify.event.NotificationWidthChangedEvent;
 import net.bivrik.fancynotify.gui.SystemNotification;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.CycleButton;
@@ -67,11 +68,6 @@ public class SettingsScreen extends UniversalScreen {
         transparencySlider.setResponder(notificationTransparency::set);
         list.addElement(transparencySlider, SettingsList.WidgetWidth.BIG);
 
-        Setting<Integer> notificationWidth = configManager.getGeneralConfig().notificationsWidth;
-        widthEditBox = new IntegerEditBox(this.font, 0, 0, SettingsList.WidgetWidth.MEDIUM.getWidth(), Button.DEFAULT_HEIGHT, widthEditBox, WIDTH_TITLE, notificationWidth.get());
-        widthEditBox.setResponder(value -> widthEditBox.setIntegerResponder(iValue -> notificationWidth.set(Math.clamp(iValue, 20, this.width - 4))));
-        list.addElement(widthEditBox);
-
         Setting<GeneralConfig.Orientation> orientation = configManager.getGeneralConfig().orientation;
         orientationCycleButton = CycleButton.builder(GeneralConfig.Orientation::getDisplayName)
                 .withValues(GeneralConfig.Orientation.values())
@@ -79,6 +75,19 @@ public class SettingsScreen extends UniversalScreen {
                 .withTooltip(value -> Tooltip.create(ORIENTATION_TOOLTIP))
                 .create(0, 0, Button.DEFAULT_WIDTH, Button.DEFAULT_HEIGHT, ORIENTATION_TITLE, (button, value) -> orientation.set(value));
         list.addElement(orientationCycleButton);
+
+        Setting<GeneralConfig.Anchor> anchor = configManager.getGeneralConfig().anchor;
+        anchorCycleButton = CycleButton.builder(GeneralConfig.Anchor::getDisplayName)
+                .withValues(GeneralConfig.Anchor.values())
+                .withInitialValue(anchor.get())
+                .withTooltip(value -> Tooltip.create(ANCHOR_TOOLTIP))
+                .create(0, 0, Button.DEFAULT_WIDTH, Button.DEFAULT_HEIGHT, ANCHOR_TITLE, (button, value) -> anchor.set(value));
+        list.addElement(anchorCycleButton);
+
+        Setting<Integer> notificationWidth = configManager.getGeneralConfig().notificationsWidth;
+        widthEditBox = new IntegerEditBox(this.font, 0, 0, SettingsList.WidgetWidth.MEDIUM.getWidth(), Button.DEFAULT_HEIGHT, widthEditBox, WIDTH_TITLE, notificationWidth.get());
+        widthEditBox.setResponder(value -> widthEditBox.setIntegerResponder(iValue -> notificationWidth.set(Math.clamp(iValue, 20, this.width - configManager.getGeneralConfig().padding.get() * 2))));
+        list.addElement(widthEditBox);
 
         Setting<Integer> padding = configManager.getGeneralConfig().padding;
         paddingSlider = new Slider(0, 0, SettingsList.WidgetWidth.MEDIUM.getWidth(), Button.DEFAULT_HEIGHT, Component.literal("Padding"), padding.get(), 8);
@@ -91,14 +100,6 @@ public class SettingsScreen extends UniversalScreen {
         maxAmountSlider.setDisplayer(value -> Component.literal(String.valueOf(value.intValue())));
         maxAmountSlider.setResponder(value -> maxAmount.set(value.intValue()));
         list.addElement(maxAmountSlider);
-
-        Setting<GeneralConfig.Anchor> anchor = configManager.getGeneralConfig().anchor;
-        anchorCycleButton = CycleButton.builder(GeneralConfig.Anchor::getDisplayName)
-                .withValues(GeneralConfig.Anchor.values())
-                .withInitialValue(anchor.get())
-                .withTooltip(value -> Tooltip.create(ANCHOR_TOOLTIP))
-                .create(0, 0, Button.DEFAULT_WIDTH, Button.DEFAULT_HEIGHT, ANCHOR_TITLE, (button, value) -> anchor.set(value));
-        list.addElement(anchorCycleButton);
 
         Setting<GeneralConfig.Animation> animation = configManager.getGeneralConfig().animation;
         animationCycleButton = CycleButton.builder(GeneralConfig.Animation::getDisplayName)
