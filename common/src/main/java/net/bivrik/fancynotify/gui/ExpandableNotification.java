@@ -11,7 +11,7 @@ public abstract class ExpandableNotification extends Notification {
     protected void expand(ExpandableNotification expansion) {}
 
     private void merge(ExpandableNotification notification) {
-        if (this.timeTicks - this.offsetTicks < getLifeTimeTicks()) {
+        if (this.timeTicks - this.offsetTicks < getLifeTimeTicks() * this.minecraft.options.notificationDisplayTime().get() - this.generalConfig.animationDuration.get()) {
             this.offsetTicks = this.timeTicks;
         }
 
