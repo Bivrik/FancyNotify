@@ -10,11 +10,15 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public final class EventBus implements IEventBus {
+    private final static int MAX = 50;
+
     private final ConcurrentHashMap<Class<? extends Event>, List<EventSubscriber>> eventSubscribers = new ConcurrentHashMap<>();
 
-    // Add overriding ability in subclasses, so no double invoking
+    private int temp = 0;
+
     @Override
     public void register(final Object listener) {
+        temp++;
         Class<?> listenerClass = listener.getClass();
         for (Method method : listenerClass.getMethods()) {
             if (method.isAnnotationPresent(SubscribeEvent.class)) {
@@ -22,6 +26,16 @@ public final class EventBus implements IEventBus {
                 EventSubscriber subscriber = new EventSubscriber(listener, method, eventType);
                 eventSubscribers.computeIfAbsent(eventType, v -> new CopyOnWriteArrayList<>()).add(subscriber);
                 Log.info("Registered method " + method.getName() + " (" + listener.getClass().getSimpleName() + ") for " + eventType.getSimpleName() + " (" + eventSubscribers.get(eventType).size() + ")");
+            }
+        }
+        if (temp >= MAX) {
+            temp = 0;
+            for (var entry : eventSubscribers.entrySet()) {
+                List<EventSubscriber> subscribers = entry.getValue();
+                subscribers.removeIf(subscriber -> subscriber.getTarget() == null);
+                if (subscribers.isEmpty()) {
+                    eventSubscribers.remove(entry.getKey(), subscribers);
+                }
             }
         }
     }
@@ -60,14 +74,14 @@ public final class EventBus implements IEventBus {
         }
 
         printDebugInfo();
-
         int before = subscribers.size();
-        subscribers.removeIf(subscriber -> !subscriber.invoke(event));
-        Log.info("Sent " + event.getClass().getSimpleName() + " (from " + before + " to " + subscribers.size() + ")");
 
+        subscribers.removeIf(subscriber -> !subscriber.invoke(event));
         if (subscribers.isEmpty()) {
             eventSubscribers.remove(event.getClass());
         }
+
+        Log.info("Sent " + event.getClass().getSimpleName() + " (from " + before + " to " + subscribers.size() + ")");
     }
 
     @Override
