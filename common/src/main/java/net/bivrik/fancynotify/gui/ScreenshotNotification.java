@@ -35,6 +35,8 @@ public class ScreenshotNotification extends ExpandableNotification {
 
     @Override
     public void onRemoval() {
+        super.onRemoval();
+
         textureManager.release(SCREENSHOT_PREVIEW);
     }
 

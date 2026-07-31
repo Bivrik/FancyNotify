@@ -46,8 +46,6 @@ public abstract class Notification implements NotificationStateMachine.Listener 
     protected float offsetTicks = 0;
 
     public Notification(NotificationManager manager, @NotNull Component title, @Nullable Component message) {
-        Common.EVENT_BUS.register(this);
-
         Minecraft minecraft = manager.getMinecraft();
         ConfigManager configManager = manager.getConfigManager();
 
@@ -130,12 +128,18 @@ public abstract class Notification implements NotificationStateMachine.Listener 
 
     @Override
     public void onShowing() {
+        Common.EVENT_BUS.register(this);
         minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_TOAST_IN, 1, 1));
     }
 
     @Override
     public void onHiding() {
         minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_TOAST_OUT, 1, 1));
+    }
+
+    @Override
+    public void onRemoval() {
+        Common.EVENT_BUS.unregister(this);
     }
 
     public void hide() {
