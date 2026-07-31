@@ -107,7 +107,7 @@ public class SettingsList extends ContainerObjectSelectionList<SettingsList.Entr
 
         @Override
         public void render(@NotNull GuiGraphics guiGraphics, int index, int y, int x, int width, int height, int mouseX, int mouseY, boolean hovering, float partialTick) {
-            int i = 0;
+            int i = -2;
             for (var widget : children) {
                 widget.setPosition(list.getRowLeft() + i, y);
                 widget.render(guiGraphics, mouseX, mouseY, partialTick);
