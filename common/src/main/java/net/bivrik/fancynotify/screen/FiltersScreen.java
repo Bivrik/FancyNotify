@@ -11,14 +11,14 @@ import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 
 public class FiltersScreen extends UniversalScreen {
-    private static final Component TITLE = Component.literal("Filters");
-    private static final Component ADVANCEMENTS_NOTIFICATION_TITLE = Component.literal("Advancements");
-    private static final Component RECIPES_NOTIFICATION_TITLE = Component.literal("Recipes");
-    private static final Component MUSIC_NOTIFICATION_TITLE = Component.literal("Musics");
-    private static final Component SCREENSHOT_NOTIFICATION_TITLE = Component.literal("Screenshots");
-    private static final Component SYSTEM_NOTIFICATION_TITLE = Component.literal("Systems");
-    private static final Component WEATHER_NOTIFICATION_TITLE = Component.literal("Weathers");
-    private static final Component BIOME_NOTIFICATION_TITLE = Component.literal("Biomes");
+    private static final Component TITLE = Component.literal("Notifications Filter");
+    private static final Component ADVANCEMENTS_NOTIFICATION_TITLE = Component.literal("Advancement's");
+    private static final Component RECIPES_NOTIFICATION_TITLE = Component.literal("Recipe's");
+    private static final Component MUSIC_NOTIFICATION_TITLE = Component.literal("Music's");
+    private static final Component SCREENSHOT_NOTIFICATION_TITLE = Component.literal("Screenshot's");
+    private static final Component SYSTEM_NOTIFICATION_TITLE = Component.literal("System's");
+    private static final Component WEATHER_NOTIFICATION_TITLE = Component.literal("Weather's");
+    private static final Component BIOME_NOTIFICATION_TITLE = Component.literal("Biome's");
 
     private final ConfigManager configManager;
 
