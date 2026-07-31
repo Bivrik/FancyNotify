@@ -34,9 +34,9 @@ public class ConfigManager {
         configs.put(config.getClass(), read(config));
     }
 
-    @SuppressWarnings("unchecked")
     private <T extends Config> T read(T config) {
         File configFile = new File(config.getPath());
+        @SuppressWarnings("unchecked")
         Class<T> configClass = (Class<T>) config.getClass();
         if (!configFile.exists()) {
             LOGGER.info("Creating new config {}", configClass.getSimpleName());
@@ -50,7 +50,9 @@ public class ConfigManager {
         }
         LOGGER.info("Successfully read config {} from {}", configClass.getSimpleName(), configFile.getPath());
         T result = optionalConfig.get();
-        result.registerListeners();
+        if (result instanceof IListenerRegistrar listenerRegistrar) {
+            listenerRegistrar.registerListeners();
+        }
         return result;
     }
 

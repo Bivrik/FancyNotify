@@ -8,12 +8,16 @@ import net.bivrik.fancynotify.gui.TopDownAnimation;
 import net.bivrik.fancynotify.gui.VanillaAnimation;
 import net.minecraft.network.chat.Component;
 
-public class GeneralConfig extends Config {
+public class GeneralConfig extends Config implements IListenerRegistrar {
     private static final String GENERAL_CONFIG_PATH = ConfigManager.CONFIG_FOLDER_PATH + "general.json";
 
     public GeneralConfig() {
         super(GENERAL_CONFIG_PATH);
-        registerListeners();
+    }
+
+    @Override
+    public void registerListeners() {
+        notificationsWidth.setListener(newValue -> Common.EVENT_BUS.send(new NotificationWidthChangedEvent(newValue)));
     }
 
     public Setting<Float> notificationsTransparency = new Setting<>(1.0f);
@@ -32,11 +36,6 @@ public class GeneralConfig extends Config {
             case TOP_DOWN -> new TopDownAnimation(this);
             case QUIRKY -> new QuirkyAnimation(this);
         };
-    }
-
-    @Override
-    public void registerListeners() {
-        notificationsWidth.setListener(newValue -> Common.EVENT_BUS.send(new NotificationWidthChangedEvent(newValue)));
     }
 
     public enum Orientation {
