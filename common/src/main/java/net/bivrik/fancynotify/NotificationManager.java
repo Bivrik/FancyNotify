@@ -44,7 +44,7 @@ public class NotificationManager {
 
         for (Notification n : allNotifications) {
             if (n.tryMerge(newNotification)) {
-                Log.info("Expanded notification");
+                Log.info("Expanded " + newNotification.getClass().getSimpleName());
                 return;
             }
         }
@@ -52,10 +52,10 @@ public class NotificationManager {
         if (hasCurrentSlots()) {
             Position position = computePosition(newNotification);
             currentNotifications.add(new NotificationHolder(newNotification, position.x(), position.y()));
-            Log.info("Showing new notification");
+            Log.info("Showing new " + newNotification.getClass().getSimpleName());
         } else {
             notificationQueue.add(newNotification);
-            Log.info("Added new notification to queue");
+            Log.info("Added new " + newNotification.getClass().getSimpleName() + " to queue");
         }
         allNotifications.add(newNotification);
     }
