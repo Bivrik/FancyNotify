@@ -1,5 +1,6 @@
 package net.bivrik.fancynotify.gui;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.bivrik.fancynotify.NotificationManager;
 import net.bivrik.fancynotify.ResourceLocations;
 import net.minecraft.client.gui.GuiGraphics;
@@ -11,7 +12,7 @@ import java.awt.*;
 
 public class BiomeNotification extends ExpandableNotification {
     private static final ResourceLocation BACKGROUND = ResourceLocations.of("notifications/biome");
-    private static final int COLOR = new Color(14, 94, 14).getRGB();
+    private static final int COLOR = new Color(41, 92, 38).getRGB();
 
     private ItemStack icon;
 
@@ -38,6 +39,10 @@ public class BiomeNotification extends ExpandableNotification {
     public void draw(GuiGraphics guiGraphics) {
         drawSprite(guiGraphics, BACKGROUND, 0, 0, getWidth(), getHeight());
         drawText(guiGraphics, getTitle(), getTextOffset(), 8, COLOR);
-        guiGraphics.renderFakeItem(icon, 8, getCenterY() - 8);
+        PoseStack stack = guiGraphics.pose();
+        stack.pushPose();
+        stack.scale(0.85f, 0.85f, 1);
+        guiGraphics.renderFakeItem(icon, 10, getCenterY() - 6);
+        stack.popPose();
     }
 }
