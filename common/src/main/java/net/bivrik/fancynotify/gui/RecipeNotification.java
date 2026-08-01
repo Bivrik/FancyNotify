@@ -50,10 +50,10 @@ public class RecipeNotification extends ExpandableNotification {
         var recipe = recipes.get(orderedIndex).value();
         var stack = guiGraphics.pose();
         stack.pushPose();
-        stack.scale(0.825f, 0.825f, 1.0f);
+        stack.scale(0.85f, 0.85f, 1.0f);
         stack.translate(0, 0, -20);
-        guiGraphics.renderFakeItem(recipe.getToastSymbol(), 9, getCenterY());
+        guiGraphics.renderFakeItem(recipe.getToastSymbol(), 11, getCenterY() - 1);
         stack.popPose();
-        guiGraphics.renderFakeItem(recipe.getResultItem(Objects.requireNonNull(this.minecraft.level).registryAccess()), 6, getCenterY() - 12);
+        guiGraphics.renderFakeItem(recipe.getResultItem(Objects.requireNonNull(this.minecraft.level).registryAccess()), 8, getCenterY() - 12);
     }
 }
