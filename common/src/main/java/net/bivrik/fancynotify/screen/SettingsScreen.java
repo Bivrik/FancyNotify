@@ -122,7 +122,7 @@ public class SettingsScreen extends UniversalScreen {
 
         Setting<Integer> animationDuration = configManager.getGeneralConfig().animationDuration;
         animationDurationSlider = new Slider(0, 0, SettingsList.WidgetWidth.MEDIUM.getWidth(), Button.DEFAULT_HEIGHT, Component.literal("Animation Duration"), animationDuration.get(), 5, 40);
-        animationDurationSlider.setDisplayer(value -> Component.literal(String.valueOf(value.intValue())));
+        animationDurationSlider.setDisplayer(value -> Component.literal(value.intValue() + " ticks"));
         animationDurationSlider.setResponder(value -> animationDuration.set(value.intValue()));
         list.addElement(animationDurationSlider);
 
