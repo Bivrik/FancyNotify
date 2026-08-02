@@ -40,30 +40,21 @@ public class NotificationStateMachine {
         this.timeTicks = timeTicks;
 
         switch (state) {
-            case HIDDEN -> {
-                Log.info("[{}] state: HIDDEN?", timeTicks);
-                changeState(NotificationState.SHOWING, timeTicks);
-            }
+            case HIDDEN -> changeState(NotificationState.SHOWING, timeTicks);
             case SHOWING -> {
-                Log.info("[{}] state: SHOWING?", timeTicks);
                 if (timeTicks - timingTicks > animationDurationTicks) {
                     changeState(NotificationState.VISIBLE, timeTicks);
                 }
             }
             case VISIBLE -> {
-                Log.info("[{}] state: VISIBLE?", timeTicks);
                 if (timeTicks - offsetTimeTicks >= lifeTimeTicks * minecraft.options.notificationDisplayTime().get() - animationDurationTicks) {
                     changeState(NotificationState.HIDING, timeTicks);
                 }
             }
             case HIDING -> {
-                Log.info("[{}] state: HIDING?", timeTicks);
                 if (timeTicks - offsetTimeTicks >= lifeTimeTicks * minecraft.options.notificationDisplayTime().get()) {
                     changeState(NotificationState.REMOVAL, timeTicks);
                 }
-            }
-            case REMOVAL -> {
-                Log.info("[{}] state: REMOVAL?", timeTicks);
             }
         }
     }

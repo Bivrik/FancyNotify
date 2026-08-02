@@ -190,21 +190,25 @@ public abstract class Notification implements NotificationStateMachine.Listener 
         RenderSystem.disableBlend();
     }
 
-    protected void drawTexture(GuiGraphics guiGraphics, ResourceLocation texture, int x, int y, int width, int height, int textureWidth, int textureHeight, int uOffset, int vOffset) {
+    protected void drawTexture(GuiGraphics guiGraphics, ResourceLocation texture, int x, int y, int width, int height, int textureWidth, int textureHeight, int uOffset, int vOffset, int uWidth, int vHeight) {
         if (animator.getAlpha() == 1) {
-            guiGraphics.blit(texture, x, y, uOffset, vOffset, width, height, textureWidth, textureHeight);
+            guiGraphics.blit(texture, x, y, width, height, uOffset, vOffset, uWidth, vHeight, textureWidth, textureHeight);
             return;
         }
 
         RenderSystem.enableBlend();
         guiGraphics.setColor(1, 1, 1, animator.getAlpha());
-        guiGraphics.blit(texture, x, y, uOffset, vOffset, width, height, textureWidth, textureHeight);
+        guiGraphics.blit(texture, x, y, width, height, uOffset, vOffset, uWidth, vHeight, textureWidth, textureHeight);
         guiGraphics.setColor(1, 1, 1, 1);
         RenderSystem.disableBlend();
     }
 
+    protected void drawTexture(GuiGraphics guiGraphics, ResourceLocation texture, int x, int y, int width, int height, int textureWidth, int textureHeight, int uOffset, int vOffset) {
+        drawTexture(guiGraphics, texture, x, y, width, height, textureWidth, textureHeight, uOffset, vOffset, width, height);
+    }
+
     protected void drawTexture(GuiGraphics guiGraphics, ResourceLocation texture, int x, int y, int width, int height, int textureWidth, int textureHeight) {
-        drawTexture(guiGraphics, texture, x, y, width, height, textureWidth, textureHeight, 0, 0);
+        drawTexture(guiGraphics, texture, x, y, width, height, textureWidth, textureHeight, 0, 0, width, height);
     }
 
     protected void drawText(GuiGraphics guiGraphics, FormattedCharSequence text, int x, int y, int color) {
