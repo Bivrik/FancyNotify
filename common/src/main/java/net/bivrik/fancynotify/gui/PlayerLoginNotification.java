@@ -24,6 +24,11 @@ public class PlayerLoginNotification extends Notification {
     }
 
     @Override
+    public boolean shouldDisplay() {
+        return this.filtersConfig.isLoginPlayerNotificationEnabled.get();
+    }
+
+    @Override
     protected void draw(GuiGraphics guiGraphics) {
         drawSprite(guiGraphics, BACKGROUND, 0, 0, getWidth(), getHeight());
         drawText(guiGraphics, getTitle(), getTextOffset(), 7, COLOR);

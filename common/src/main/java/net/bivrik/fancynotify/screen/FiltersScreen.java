@@ -6,9 +6,12 @@ import net.bivrik.fancynotify.config.Setting;
 import net.bivrik.fancynotify.core.Common;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.CycleButton;
+import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
+
+import javax.tools.Tool;
 
 public class FiltersScreen extends UniversalScreen {
     private static final Component TITLE = Component.literal("Notifications Filter");
@@ -19,6 +22,8 @@ public class FiltersScreen extends UniversalScreen {
     private static final Component SYSTEM_NOTIFICATION_TITLE = Component.literal("System's");
     private static final Component WEATHER_NOTIFICATION_TITLE = Component.literal("Weather's");
     private static final Component BIOME_NOTIFICATION_TITLE = Component.literal("Biome's");
+    private static final Component PLAYER_LOGIN_NOTIFICATION_TITLE = Component.literal("Player Login's");
+    private static final Component PLAYER_LOGIN_NOTIFICATION_TOOLTIP = Component.literal("This notification is unstable! Is not recommended on servers with big online.");
 
     private final ConfigManager configManager;
 
@@ -30,6 +35,7 @@ public class FiltersScreen extends UniversalScreen {
     private CycleButton<Boolean> systemButton;
     private CycleButton<Boolean> weatherButton;
     private CycleButton<Boolean> biomeButton;
+    private CycleButton<Boolean> playerLoginButton;
 
     protected FiltersScreen(Screen parent) {
         super(TITLE, parent);
@@ -60,12 +66,20 @@ public class FiltersScreen extends UniversalScreen {
         list.addElement(weatherButton);
         biomeButton = createCycleButton(configManager.getFiltersConfig().isBiomeNotificationEnabled, BIOME_NOTIFICATION_TITLE);
         list.addElement(biomeButton);
+        playerLoginButton = createCycleButtonWithTooltip(configManager.getFiltersConfig().isLoginPlayerNotificationEnabled, PLAYER_LOGIN_NOTIFICATION_TITLE, PLAYER_LOGIN_NOTIFICATION_TOOLTIP);
+        list.addElement(playerLoginButton);
 
         list.alignElements();
     }
 
     private CycleButton<Boolean> createCycleButton(Setting<Boolean> setting, Component title) {
         return CycleButton.onOffBuilder(setting.get()).create(0, 0, Button.DEFAULT_WIDTH, Button.DEFAULT_HEIGHT, title, (button, value) -> setting.set(value));
+    }
+
+    private CycleButton<Boolean> createCycleButtonWithTooltip(Setting<Boolean> setting, Component title, Component tooltip) {
+        CycleButton<Boolean> button = createCycleButton(setting, title);
+        button.setTooltip(Tooltip.create(tooltip));
+        return button;
     }
 
     @Override
