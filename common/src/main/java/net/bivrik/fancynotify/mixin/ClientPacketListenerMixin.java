@@ -1,19 +1,52 @@
 package net.bivrik.fancynotify.mixin;
 
+import com.mojang.authlib.GameProfile;
 import net.bivrik.fancynotify.NotificationManager;
 import net.bivrik.fancynotify.WeatherType;
 import net.bivrik.fancynotify.core.Common;
+import net.bivrik.fancynotify.core.Log;
+import net.bivrik.fancynotify.gui.PlayerLoginNotification;
 import net.bivrik.fancynotify.gui.WeatherNotification;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.social.PlayerSocialManager;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.multiplayer.ClientPacketListener;
+import net.minecraft.client.multiplayer.PlayerInfo;
+import net.minecraft.client.player.RemotePlayer;
+import net.minecraft.client.resources.PlayerSkin;
+import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.protocol.game.ClientboundGameEventPacket;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.PlayerModelPart;
+import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.Objects;
+import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+
 @Mixin(ClientPacketListener.class)
-public class ClientPacketListenerMixin {
+public abstract class ClientPacketListenerMixin {
+    @Shadow
+    private ClientLevel level;
+
+    @Shadow
+    @Nullable
+    public abstract PlayerInfo getPlayerInfo(UUID uuid);
+
     @Unique
     private boolean fancyNotify$isRaining;
     @Unique
@@ -57,5 +90,31 @@ public class ClientPacketListenerMixin {
         }
 
         return WeatherType.THUNDER;
+    }
+
+    // Why so many bugs and quirks???
+    // What am I not understanding bruh
+    @Redirect(method = "handlePlayerInfoUpdate",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/client/gui/screens/social/PlayerSocialManager;addPlayer(Lnet/minecraft/client/multiplayer/PlayerInfo;)V"
+            )
+    )
+    private void onAddedPlayer(PlayerSocialManager playerSocialManager, PlayerInfo playerInfo) {
+        playerSocialManager.addPlayer(playerInfo);
+
+        GameProfile profile = playerInfo.getProfile();
+        Minecraft.getInstance().getSkinManager().getOrLoad(profile).thenAcceptAsync(skin -> {
+            Player player = this.level.getPlayerByUUID(profile.getId());
+            boolean hasHat = player != null && player.isModelPartShown(PlayerModelPart.HAT);
+            NotificationManager manager = Common.getNotificationManager();
+            manager.add(new PlayerLoginNotification(manager, profile.getName(), skin.texture(), hasHat));
+
+            Log.info("====================");
+            Log.info("Profile: " + profile);
+            Log.info("UUID from profile: " + profile.getId());
+            Log.info("Name from profile: " + profile.getName());
+            Log.info("====================");
+        });
     }
 }

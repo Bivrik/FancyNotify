@@ -13,7 +13,6 @@
     "SystemToastMixin",
     "ToastComponentMixin",
     "TutorialMixin",
-    "PlayerListMixin",
     "accessor.AdvancementToastMixinAccessor",
     "accessor.TutorialToastMixinAccessor",
     "accessor.WeighedSoundEventsMixinAccessor"
