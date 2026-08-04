@@ -34,12 +34,20 @@ public class MusicManagerMixin {
             if (musicSound != SoundManager.EMPTY_SOUND) {
                 Component musicName = Component.translatable(musicSound.getLocation().toShortLanguageKey().replace("/", "."));
 
+                // Temp
+                Component title;
+                Component message;
                 String[] musicInfo = musicName.getString().split(" - ");
-                Component artist = Component.literal(musicInfo[0]);
-                Component title = Component.literal(musicInfo[1]);
+                if (musicInfo.length == 2) {
+                    title = Component.literal(musicInfo[0]);
+                    message = Component.literal(musicInfo[1]);
+                } else {
+                    title = musicName;
+                    message = Component.literal("Is playing...");
+                }
 
                 NotificationManager manager = Common.getNotificationManager();
-                manager.add(new MusicNotification(manager, artist, title));
+                manager.add(new MusicNotification(manager, title, message));
             }
         }
     }
