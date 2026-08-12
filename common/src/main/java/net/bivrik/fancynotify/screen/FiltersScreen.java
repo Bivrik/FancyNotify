@@ -3,15 +3,13 @@ package net.bivrik.fancynotify.screen;
 import net.bivrik.fancynotify.config.ConfigManager;
 import net.bivrik.fancynotify.config.FiltersConfig;
 import net.bivrik.fancynotify.config.Setting;
-import net.bivrik.fancynotify.core.Common;
+import net.bivrik.fancynotify.core.FancyNotify;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.CycleButton;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
-
-import javax.tools.Tool;
 
 public class FiltersScreen extends UniversalScreen {
     private static final Component TITLE = Component.literal("Notifications Filter");
@@ -40,7 +38,7 @@ public class FiltersScreen extends UniversalScreen {
     protected FiltersScreen(Screen parent) {
         super(TITLE, parent);
 
-        this.configManager = Common.getConfigManager();
+        this.configManager = FancyNotify.getInstance().getConfigManager();
     }
 
     @Override

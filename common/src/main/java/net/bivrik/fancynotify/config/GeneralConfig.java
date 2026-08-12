@@ -1,6 +1,6 @@
 package net.bivrik.fancynotify.config;
 
-import net.bivrik.fancynotify.core.Common;
+import net.bivrik.fancynotify.core.FancyNotify;
 import net.bivrik.fancynotify.event.NotificationWidthChangedEvent;
 import net.bivrik.fancynotify.gui.NotificationAnimator;
 import net.bivrik.fancynotify.gui.QuirkyAnimation;
@@ -17,7 +17,7 @@ public class GeneralConfig extends Config implements IListenerRegistrar {
 
     @Override
     public void registerListeners() {
-        notificationsWidth.setListener(newValue -> Common.EVENT_BUS.send(new NotificationWidthChangedEvent(newValue)));
+        notificationsWidth.setListener(newValue -> FancyNotify.EVENT_BUS.send(new NotificationWidthChangedEvent(newValue)));
     }
 
     public Setting<Float> notificationsTransparency = new Setting<>(1.0f);

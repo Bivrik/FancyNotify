@@ -1,7 +1,7 @@
 package net.bivrik.fancynotify.mixin;
 
 import net.bivrik.fancynotify.NotificationManager;
-import net.bivrik.fancynotify.core.Common;
+import net.bivrik.fancynotify.core.FancyNotify;
 import net.bivrik.fancynotify.gui.MusicNotification;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.Sound;
@@ -46,7 +46,7 @@ public class MusicManagerMixin {
                     message = Component.literal("Is playing...");
                 }
 
-                NotificationManager manager = Common.getNotificationManager();
+                NotificationManager manager = FancyNotify.getInstance().getNotificationManager();
                 manager.add(new MusicNotification(manager, title, message));
             }
         }

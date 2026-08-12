@@ -1,7 +1,7 @@
 package net.bivrik.fancynotify.screen;
 
 import net.bivrik.fancynotify.ResourceLocations;
-import net.bivrik.fancynotify.core.Common;
+import net.bivrik.fancynotify.core.FancyNotify;
 import net.bivrik.fancynotify.core.Constants;
 import net.bivrik.fancynotify.particle.Testing;
 import net.minecraft.Util;
@@ -44,7 +44,7 @@ public class FancyNotifyScreen extends UniversalScreen {
     public FancyNotifyScreen(Screen parent) {
         super(TITLE, parent);
 
-        this.splash = Common.getSplashesManager().getSplash();
+        this.splash = FancyNotify.getInstance().getSplashesManager().getSplash();
     }
 
     @Override

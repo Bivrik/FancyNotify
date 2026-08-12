@@ -1,6 +1,6 @@
 package net.bivrik.fancynotify.particle;
 
-import net.bivrik.fancynotify.core.Common;
+import net.bivrik.fancynotify.core.FancyNotify;
 
 // For testing
 public class Testing {
@@ -14,6 +14,6 @@ public class Testing {
                 .endRotation(90).spreadEndRotation(90)
                 .startScale(1.1f)
                 .build();
-        Common.getParticle2DEngine().spawn(setup, 1);
+        FancyNotify.getInstance().getParticle2DEngine().spawn(setup, 1);
     }
 }

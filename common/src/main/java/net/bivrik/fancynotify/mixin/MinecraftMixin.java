@@ -1,6 +1,6 @@
 package net.bivrik.fancynotify.mixin;
 
-import net.bivrik.fancynotify.core.Common;
+import net.bivrik.fancynotify.core.FancyNotify;
 import net.minecraft.client.Minecraft;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -15,11 +15,11 @@ public class MinecraftMixin {
 
     @Inject(at = @At("TAIL"), method = "<init>")
     private void onInit(CallbackInfo info) {
-        Common.onMinecraftInit(instance);
+        FancyNotify.getInstance().onMinecraftInit(instance);
     }
 
     @Inject(at = @At("RETURN"), method = "tick")
     private void onTick(CallbackInfo info) {
-        Common.onClientTick();
+        FancyNotify.getInstance().onClientTick();
     }
 }

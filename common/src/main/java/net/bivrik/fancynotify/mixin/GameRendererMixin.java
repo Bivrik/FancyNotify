@@ -1,7 +1,7 @@
 package net.bivrik.fancynotify.mixin;
 
 import com.mojang.blaze3d.platform.Window;
-import net.bivrik.fancynotify.core.Common;
+import net.bivrik.fancynotify.core.FancyNotify;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
@@ -31,6 +31,6 @@ public class GameRendererMixin {
         }
 
         float partialTick = deltaTracker.getGameTimeDeltaPartialTick(false);
-        Common.onGameRenderer(guiGraphics, partialTick);
+        FancyNotify.getInstance().onGuiRender(guiGraphics, partialTick);
     }
 }

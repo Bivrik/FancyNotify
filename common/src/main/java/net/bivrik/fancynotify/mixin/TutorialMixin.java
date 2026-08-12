@@ -1,9 +1,6 @@
 package net.bivrik.fancynotify.mixin;
 
-import net.bivrik.fancynotify.ITutorialToastAccessor;
-import net.bivrik.fancynotify.core.Common;
 import net.bivrik.fancynotify.gui.Notification;
-import net.bivrik.fancynotify.gui.TutorialNotification;
 import net.minecraft.client.gui.components.toasts.TutorialToast;
 import net.minecraft.client.tutorial.Tutorial;
 import org.spongepowered.asm.mixin.Mixin;

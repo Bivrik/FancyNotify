@@ -2,7 +2,7 @@ package net.bivrik.fancynotify.mixin;
 
 import net.bivrik.fancynotify.IAdvancementHolderAccessor;
 import net.bivrik.fancynotify.NotificationManager;
-import net.bivrik.fancynotify.core.Common;
+import net.bivrik.fancynotify.core.FancyNotify;
 import net.bivrik.fancynotify.core.Log;
 import net.bivrik.fancynotify.gui.AdvancementNotification;
 import net.minecraft.advancements.DisplayInfo;
@@ -23,7 +23,7 @@ public class ToastComponentMixin {
     private void onAddedToast(Toast toast, CallbackInfo info) {
         info.cancel();
 
-        NotificationManager manager = Common.getNotificationManager();
+        NotificationManager manager = FancyNotify.getInstance().getNotificationManager();
         // Advancement Notifications
         if (toast instanceof AdvancementToast advancementToast) {
             Optional<DisplayInfo> optionalDisplay = ((IAdvancementHolderAccessor) advancementToast).getAdvancementHolder().value().display();
@@ -46,14 +46,14 @@ public class ToastComponentMixin {
     private void onCleared(CallbackInfo info) {
         info.cancel();
 
-        Common.getNotificationManager().clear();
+        FancyNotify.getInstance().getNotificationManager().clear();
     }
 
     @Inject(at = @At("HEAD"), method = "render", cancellable = true)
     private void onRendered(GuiGraphics guiGraphics, CallbackInfo info) {
         info.cancel();
 
-        NotificationManager manager = Common.getNotificationManager();
+        NotificationManager manager = FancyNotify.getInstance().getNotificationManager();
         manager.update();
         manager.render(guiGraphics);
     }

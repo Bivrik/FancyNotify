@@ -6,8 +6,7 @@ import net.bivrik.fancynotify.Slider;
 import net.bivrik.fancynotify.config.ConfigManager;
 import net.bivrik.fancynotify.config.GeneralConfig;
 import net.bivrik.fancynotify.config.Setting;
-import net.bivrik.fancynotify.core.Common;
-import net.bivrik.fancynotify.event.NotificationWidthChangedEvent;
+import net.bivrik.fancynotify.core.FancyNotify;
 import net.bivrik.fancynotify.gui.SystemNotification;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.CycleButton;
@@ -49,8 +48,9 @@ public class SettingsScreen extends UniversalScreen {
     protected SettingsScreen(Screen parent) {
         super(TITLE, parent);
 
-        this.configManager = Common.getConfigManager();
-        this.notificationManager = Common.getNotificationManager();
+        FancyNotify fancyNotify = FancyNotify.getInstance();
+        this.configManager = fancyNotify.getConfigManager();
+        this.notificationManager = fancyNotify.getNotificationManager();
     }
 
     @Override

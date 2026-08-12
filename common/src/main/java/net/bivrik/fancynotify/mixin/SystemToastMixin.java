@@ -1,7 +1,7 @@
 package net.bivrik.fancynotify.mixin;
 
 import net.bivrik.fancynotify.NotificationManager;
-import net.bivrik.fancynotify.core.Common;
+import net.bivrik.fancynotify.core.FancyNotify;
 import net.bivrik.fancynotify.core.Log;
 import net.bivrik.fancynotify.gui.SystemNotification;
 import net.minecraft.client.Minecraft;
@@ -47,14 +47,14 @@ public class SystemToastMixin {
     private static void onForcedHide(ToastComponent toastComponent, SystemToast.SystemToastId id, CallbackInfo info) {
         info.cancel();
 
-        NotificationManager manager = Common.getNotificationManager();
+        NotificationManager manager = FancyNotify.getInstance().getNotificationManager();
         manager.remove(SystemNotification.class, SystemNotification.Identifier.fromSystemToastId(id));
         Log.info("[!] Forced to hide FUCKING SYSTEM notification");
     }
 
     @Unique
     private static void fancyNotify$add(SystemToast.SystemToastId id, Component title, Component message) {
-        NotificationManager manager = Common.getNotificationManager();
+        NotificationManager manager = FancyNotify.getInstance().getNotificationManager();
         manager.add(new SystemNotification(manager, SystemNotification.Identifier.fromSystemToastId(id), title, message));
         Log.info("[!] New FUCKING SYSTEM notification");
     }

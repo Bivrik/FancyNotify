@@ -8,7 +8,7 @@ import net.bivrik.fancynotify.NotificationManager;
 import net.bivrik.fancynotify.config.ConfigManager;
 import net.bivrik.fancynotify.config.FiltersConfig;
 import net.bivrik.fancynotify.config.GeneralConfig;
-import net.bivrik.fancynotify.core.Common;
+import net.bivrik.fancynotify.core.FancyNotify;
 import net.bivrik.fancynotify.core.Log;
 import net.bivrik.fancynotify.event.NotificationWidthChangedEvent;
 import net.bivrik.fancynotify.eventbus.SubscribeEvent;
@@ -131,7 +131,7 @@ public abstract class Notification implements NotificationStateMachine.Listener 
 
     @Override
     public void onShowing() {
-        Common.EVENT_BUS.register(this);
+        FancyNotify.EVENT_BUS.register(this);
         minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_TOAST_IN, 1, 1));
     }
 
@@ -142,7 +142,7 @@ public abstract class Notification implements NotificationStateMachine.Listener 
 
     @Override
     public void onRemoval() {
-        Common.EVENT_BUS.unregister(this);
+        FancyNotify.EVENT_BUS.unregister(this);
     }
 
     public void hide() {

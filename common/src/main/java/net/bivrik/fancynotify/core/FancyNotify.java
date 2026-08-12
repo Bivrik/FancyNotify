@@ -11,25 +11,36 @@ import net.bivrik.fancynotify.platform.Services;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 
-public final class Common {
-    private Common() {}
+public final class FancyNotify {
+    private FancyNotify() {}
 
     public static final IEventBus EVENT_BUS = new EventBus();
+    private static final FancyNotify INSTANCE = new FancyNotify();
 
-    private static ConfigManager configManager;
-    private static NotificationManager notificationManager;
-    private static SplashesManager splashesManager;
-    private static BiomeManager biomeManager;
-    private static Particle2DEngine particle2DEngine;
+    private ConfigManager configManager;
+    private NotificationManager notificationManager;
+    private SplashesManager splashesManager;
+    private BiomeManager biomeManager;
+    private Particle2DEngine particle2DEngine;
 
-    public static void onModInit() {
-        if (!Services.PLATFORM.isModLoaded(Constants.MOD_ID)) {
-            return;
-        }
+    private boolean isMinecraftInitialized = false;
+
+    public static FancyNotify getInstance() {
+        return INSTANCE;
+    }
+
+    public void onModInit() {
         Log.info("Initialized on {} in a {} environment", Services.PLATFORM.getName(), Services.PLATFORM.getEnvironmentName());
     }
 
-    public static void onMinecraftInit(Minecraft minecraft) {
+    public void onMinecraftInit(Minecraft minecraft) {
+        if (isMinecraftInitialized) {
+            Log.warn("Minecraft is already initialized!");
+            return;
+        }
+        isMinecraftInitialized = true;
+        Log.info("Minecraft initialized");
+
         configManager = new ConfigManager();
         particle2DEngine = new Particle2DEngine();
         notificationManager = new NotificationManager(minecraft, configManager);
@@ -37,28 +48,28 @@ public final class Common {
         biomeManager = new BiomeManager(minecraft, notificationManager);
     }
 
-    public static void onClientTick() {
+    public void onClientTick() {
         biomeManager.tick();
         particle2DEngine.tick();
     }
 
-    public static void onGameRenderer(GuiGraphics guiGraphics, float partialTick) {
+    public void onGuiRender(GuiGraphics guiGraphics, float partialTick) {
         particle2DEngine.render(guiGraphics, partialTick);
     }
 
-    public static NotificationManager getNotificationManager() {
+    public NotificationManager getNotificationManager() {
         return notificationManager;
     }
 
-    public static SplashesManager getSplashesManager() {
+    public SplashesManager getSplashesManager() {
         return splashesManager;
     }
 
-    public static ConfigManager getConfigManager() {
+    public ConfigManager getConfigManager() {
         return configManager;
     }
 
-    public static Particle2DEngine getParticle2DEngine() {
+    public Particle2DEngine getParticle2DEngine() {
         return particle2DEngine;
     }
 }

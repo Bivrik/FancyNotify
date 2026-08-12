@@ -2,7 +2,7 @@ package net.bivrik.fancynotify.gui;
 
 import net.bivrik.fancynotify.NotificationManager;
 import net.bivrik.fancynotify.ResourceLocations;
-import net.bivrik.fancynotify.core.Common;
+import net.bivrik.fancynotify.core.FancyNotify;
 import net.bivrik.fancynotify.particle.Particle2DSetup;
 import net.minecraft.advancements.AdvancementType;
 import net.minecraft.client.gui.GuiGraphics;
@@ -53,7 +53,7 @@ public class AdvancementNotification extends Notification {
                 .startRotation(-90).spreadStartRotation(90)
                 .endRotation(90).spreadEndRotation(90)
                 .build();
-        Common.getParticle2DEngine().spawn(setup, 24);
+        FancyNotify.getInstance().getParticle2DEngine().spawn(setup, 24);
     }
 
     @Override
