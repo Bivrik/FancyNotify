@@ -6,8 +6,10 @@ import net.bivrik.fancynotify.SplashesManager;
 import net.bivrik.fancynotify.config.ConfigManager;
 import net.bivrik.fancynotify.eventbus.EventBus;
 import net.bivrik.fancynotify.eventbus.IEventBus;
+import net.bivrik.fancynotify.particle.Particle2DEngine;
 import net.bivrik.fancynotify.platform.Services;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 
 public final class Common {
     private Common() {}
@@ -18,6 +20,7 @@ public final class Common {
     private static NotificationManager notificationManager;
     private static SplashesManager splashesManager;
     private static BiomeManager biomeManager;
+    private static Particle2DEngine particle2DEngine;
 
     public static void onModInit() {
         if (!Services.PLATFORM.isModLoaded(Constants.MOD_ID)) {
@@ -28,6 +31,7 @@ public final class Common {
 
     public static void onMinecraftInit(Minecraft minecraft) {
         configManager = new ConfigManager();
+        particle2DEngine = new Particle2DEngine();
         notificationManager = new NotificationManager(minecraft, configManager);
         splashesManager = new SplashesManager(minecraft);
         biomeManager = new BiomeManager(minecraft, notificationManager);
@@ -35,6 +39,11 @@ public final class Common {
 
     public static void onClientTick() {
         biomeManager.tick();
+        particle2DEngine.tick();
+    }
+
+    public static void onGameRenderer(GuiGraphics guiGraphics, float partialTick) {
+        particle2DEngine.render(guiGraphics, partialTick);
     }
 
     public static NotificationManager getNotificationManager() {
@@ -47,5 +56,9 @@ public final class Common {
 
     public static ConfigManager getConfigManager() {
         return configManager;
+    }
+
+    public static Particle2DEngine getParticle2DEngine() {
+        return particle2DEngine;
     }
 }
