@@ -1,13 +1,21 @@
 package net.bivrik.fancynotify.particle;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.gui.GuiGraphics;
+
+import java.awt.*;
 
 public class Particle2D {
     private boolean isAlive = true;
     private int timeTicks;
     private final int lifetimeTicks;
+
+    private final float red;
+    private final float green;
+    private final float blue;
+    private final float alpha;
 
     private float previousX;
     private float previousY;
@@ -23,9 +31,14 @@ public class Particle2D {
     private final float startScale;
     private final float endScale;
 
-    public Particle2D(int lifetimeTicks, float spawnX, float spawnY, int angle, float speed, float movementFriction, int startRotation, int endRotation, float startScale, float endScale) {
+    public Particle2D(int lifetimeTicks, float spawnX, float spawnY, int angle, float speed, float movementFriction, int startRotation, int endRotation, float startScale, float endScale, Color color) {
         this.lifetimeTicks = Math.max(lifetimeTicks, 0);
         this.movementFriction = Math.clamp(1.0f - movementFriction, 0, 1);
+
+        red = (float) (color.getRed() / 255);
+        green = (float) (color.getGreen() / 255);
+        blue = (float) (color.getBlue() / 255);
+        alpha = (float) (color.getAlpha() / 255);
 
         previousX = spawnX;
         previousY = spawnY;
@@ -70,7 +83,7 @@ public class Particle2D {
 
     // Batching but it's too much effort for now
     public void render(GuiGraphics guiGraphics, float partialTick) {
-        if (!isAlive) {
+        if (!isAlive || timeTicks == 0) {
             return;
         }
 
@@ -88,7 +101,11 @@ public class Particle2D {
         stack.scale(renderScale, renderScale, 1);
         stack.translate(-2, -2, 0);
         stack.rotateAround(Axis.ZP.rotationDegrees(renderRotation), 2, 2, 0);
+        RenderSystem.enableBlend();
+        guiGraphics.setColor(red, green, blue, alpha);
         guiGraphics.fill(0, 0, 4, 4, -1);
+        guiGraphics.setColor(1, 1, 1, 1);
+        RenderSystem.disableBlend();
         stack.popPose();
     }
 }
