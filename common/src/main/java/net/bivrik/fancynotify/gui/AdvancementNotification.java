@@ -53,7 +53,7 @@ public class AdvancementNotification extends Notification {
                 .startRotation(-90).spreadStartRotation(90)
                 .endRotation(90).spreadEndRotation(90)
                 .build();
-        FancyNotify.getInstance().getParticle2DEngine().spawn(setup, 24);
+        FancyNotify.getInstance().getParticleEngine().spawn(setup, 24);
     }
 
     @Override

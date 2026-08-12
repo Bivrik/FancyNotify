@@ -14,6 +14,6 @@ public class Testing {
                 .endRotation(90).spreadEndRotation(90)
                 .startScale(1.1f)
                 .build();
-        FancyNotify.getInstance().getParticle2DEngine().spawn(setup, 1);
+        FancyNotify.getInstance().getParticleEngine().spawn(setup, 1);
     }
 }

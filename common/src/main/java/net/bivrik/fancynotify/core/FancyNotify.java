@@ -21,7 +21,7 @@ public final class FancyNotify {
     private NotificationManager notificationManager;
     private SplashesManager splashesManager;
     private BiomeManager biomeManager;
-    private Particle2DEngine particle2DEngine;
+    private Particle2DEngine particleEngine;
 
     private boolean isMinecraftInitialized = false;
 
@@ -42,7 +42,7 @@ public final class FancyNotify {
         Log.info("Minecraft initialized");
 
         configManager = new ConfigManager();
-        particle2DEngine = new Particle2DEngine();
+        particleEngine = new Particle2DEngine();
         notificationManager = new NotificationManager(minecraft, configManager);
         splashesManager = new SplashesManager(minecraft);
         biomeManager = new BiomeManager(minecraft, notificationManager);
@@ -50,11 +50,11 @@ public final class FancyNotify {
 
     public void onClientTick() {
         biomeManager.tick();
-        particle2DEngine.tick();
+        particleEngine.tick();
     }
 
     public void onGuiRender(GuiGraphics guiGraphics, float partialTick) {
-        particle2DEngine.render(guiGraphics, partialTick);
+        particleEngine.render(guiGraphics, partialTick);
     }
 
     public NotificationManager getNotificationManager() {
@@ -69,7 +69,7 @@ public final class FancyNotify {
         return configManager;
     }
 
-    public Particle2DEngine getParticle2DEngine() {
-        return particle2DEngine;
+    public Particle2DEngine getParticleEngine() {
+        return particleEngine;
     }
 }
