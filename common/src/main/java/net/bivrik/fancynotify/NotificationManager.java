@@ -144,6 +144,7 @@ public class NotificationManager {
 
     public void update() {
         if (!isCurrentEmpty()) {
+            float deltaTicks = deltaTracker.getGameTimeDeltaTicks();
             for (var iterator = currentNotifications.iterator(); iterator.hasNext();) {
                 var notificationHolder = iterator.next();
 
@@ -155,7 +156,12 @@ public class NotificationManager {
                     continue;
                 }
 
-                notificationHolder.update(deltaTracker.getGameTimeDeltaTicks());
+                GeneralConfig config = configManager.getGeneralConfig();
+                GeneralConfig.Anchor anchor = config.anchor.get();
+                int padding = config.padding.get();
+                float anchorX = anchor.isLeft() ? padding : minecraft.getWindow().getGuiScaledWidth() - padding;
+                float anchorY = anchor.isTop() ? padding : minecraft.getWindow().getGuiScaledHeight() - padding;
+                notificationHolder.update(deltaTicks, anchorX, anchorY);
             }
 
             arrangeNotifications();
@@ -273,8 +279,8 @@ public class NotificationManager {
             }
         }
 
-        private void update(float deltaTicks) {
-            notification.update(deltaTicks);
+        private void update(float deltaTicks, float anchorX, float anchorY) {
+            notification.update(deltaTicks, anchorX + x, anchorY + y);
             timeTicks += deltaTicks;
 
             if (x != newX) {

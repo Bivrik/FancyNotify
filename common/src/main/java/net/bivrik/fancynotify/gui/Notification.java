@@ -45,6 +45,9 @@ public abstract class Notification implements NotificationStateMachine.Listener 
     protected float timeTicks = 0;
     protected float offsetTicks = 0;
 
+    protected float globalX;
+    protected float globalY;
+
     public Notification(NotificationManager manager, @NotNull Component title, @Nullable Component message) {
         Minecraft minecraft = manager.getMinecraft();
         ConfigManager configManager = manager.getConfigManager();
@@ -146,8 +149,11 @@ public abstract class Notification implements NotificationStateMachine.Listener 
         stateMachine.hide();
     }
 
-    public void update(float deltaTicks) {
+    public void update(float deltaTicks, float globalX, float globalY) {
         timeTicks += deltaTicks;
+
+        this.globalX = globalX;
+        this.globalY = globalY;
 
         stateMachine.update(timeTicks, offsetTicks, generalConfig.animationDuration.get(), getLifeTimeTicks());
         animator.update(timeTicks, stateMachine.getState(), stateMachine.getTimingTicks(), getWidth(), getHeight(), generalConfig.animationDuration.get());
