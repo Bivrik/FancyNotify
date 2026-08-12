@@ -284,10 +284,10 @@ public class NotificationManager {
             timeTicks += deltaTicks;
 
             if (x != newX) {
-                x = Easing.OCT_EASE_OUT.lerp(oldX, newX, Keyframe.getProgress(timeTicks, xLastChangedTicks, ANIMATION_SPEED));
+                x = Easing.QUART_EASE_OUT.lerp(oldX, newX, Keyframe.getProgress(timeTicks, xLastChangedTicks, ANIMATION_SPEED));
             }
             if (y != newY) {
-                y = Easing.OCT_EASE_OUT.lerp(oldY, newY, Keyframe.getProgress(timeTicks, yLastChangedTicks, ANIMATION_SPEED));
+                y = Easing.QUART_EASE_OUT.lerp(oldY, newY, Keyframe.getProgress(timeTicks, yLastChangedTicks, ANIMATION_SPEED));
             }
         }
 
