@@ -21,8 +21,8 @@ public class TopDownAnimation extends NotificationAnimator {
 
                 float showingProgress = Keyframe.getProgress(timeTicks, animationTimingTicks, animationDurationTicks);
                 if (Keyframe.isActive(showingProgress)) {
-                    y = Easing.SINE_OUT.lerp(startY, endY, showingProgress);
-                    alpha = Easing.SINE_OUT.lerp(startAlpha, endAlpha, showingProgress);
+                    y = Easing.QUART_EASE_OUT.lerp(startY, endY, showingProgress);
+                    alpha = Easing.QUART_EASE_OUT.lerp(startAlpha, endAlpha, showingProgress);
                 }
 
                 if (timeTicks >= animationTimingTicks + animationDurationTicks) {
@@ -39,8 +39,8 @@ public class TopDownAnimation extends NotificationAnimator {
 
                 float hidingProgress = Keyframe.getProgress(timeTicks, animationTimingTicks, animationDurationTicks);
                 if (Keyframe.isActive(hidingProgress)) {
-                    y = Easing.SINE_IN.lerp(startY, endY, hidingProgress);
-                    alpha = Easing.SINE_IN.lerp(startAlpha, endAlpha, hidingProgress);
+                    y = Easing.QUART_EASE_IN.lerp(startY, endY, hidingProgress);
+                    alpha = Easing.QUART_EASE_IN.lerp(startAlpha, endAlpha, hidingProgress);
                 }
 
                 if (timeTicks >= animationTimingTicks + animationDurationTicks) {
