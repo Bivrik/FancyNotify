@@ -23,6 +23,7 @@ public final class FancyNotify {
     private BiomeManager biomeManager;
     private Particle2DEngine particleEngine;
 
+    private boolean isInitialized = false;
     private boolean isMinecraftInitialized = false;
 
     public static FancyNotify getInstance() {
@@ -30,7 +31,15 @@ public final class FancyNotify {
     }
 
     public void onModInit() {
-        Log.info("Initialized on {} in a {} environment", Services.PLATFORM.getName(), Services.PLATFORM.getEnvironmentName());
+        if (isInitialized) {
+            Log.warn(Constants.MOD_NAME + " is already initialized!");
+            return;
+        }
+        isInitialized = true;
+        Log.info(Constants.MOD_NAME + " initialized on {} ({})", Services.PLATFORM.getName(), Services.PLATFORM.getEnvironmentName());
+
+        configManager = new ConfigManager();
+        particleEngine = new Particle2DEngine();
     }
 
     public void onMinecraftInit(Minecraft minecraft) {
@@ -41,8 +50,6 @@ public final class FancyNotify {
         isMinecraftInitialized = true;
         Log.info("Minecraft initialized");
 
-        configManager = new ConfigManager();
-        particleEngine = new Particle2DEngine();
         notificationManager = new NotificationManager(minecraft, configManager);
         splashesManager = new SplashesManager(minecraft);
         biomeManager = new BiomeManager(minecraft, notificationManager);

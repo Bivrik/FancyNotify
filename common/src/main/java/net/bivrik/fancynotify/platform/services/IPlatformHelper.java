@@ -25,6 +25,6 @@ public interface IPlatformHelper {
      * @return The display name of the environment type.
      */
     default String getEnvironmentName() {
-        return isDevelopmentEnvironment() ? "development" : "production";
+        return isDevelopmentEnvironment() ? "Development" : "Production";
     }
 }
