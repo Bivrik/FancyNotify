@@ -10,12 +10,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Minecraft.class)
 public class MinecraftMixin {
-    @Shadow
-    static Minecraft instance;
-
     @Inject(at = @At("TAIL"), method = "<init>")
     private void onInit(CallbackInfo info) {
-        FancyNotify.getInstance().onMinecraftInit(instance);
+        FancyNotify.getInstance().onMinecraftInit(Minecraft.getInstance());
     }
 
     @Inject(at = @At("RETURN"), method = "tick")
