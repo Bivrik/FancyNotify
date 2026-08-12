@@ -18,8 +18,15 @@ public class FiltersConfig extends Config {
 
     @Override
     public String toString() {
-        return super.toString().replace("}", ", ") + String.format(
-                "isAdvancementNotificationEnabled='%s', isRecipieNotificationEnabled='%s', isMusicNotificationEnabled='%s', isScreenshotNotificationEnabled='%s', isSystemNotificationEnabled='%s', isWeatherNotificationEnabled='%s', isBiomeNotificationEnabled='%s', isLoginPlayerNotificationEnabled='%s'}",
-                isAdvancementNotificationEnabled, isRecipeNotificationEnabled, isMusicNotificationEnabled, isScreenshotNotificationEnabled, isSystemNotificationEnabled, isWeatherNotificationEnabled, isBiomeNotificationEnabled, isLoginPlayerNotificationEnabled);
+        return getBaseStringBuilder()
+                .append("isAdvancementNotificationEnabled", isAdvancementNotificationEnabled.get())
+                .append("isRecipeNotificationEnabled", isRecipeNotificationEnabled.get())
+                .append("isMusicNotificationEnabled", isMusicNotificationEnabled.get())
+                .append("isScreenshotNotificationEnabled", isScreenshotNotificationEnabled.get())
+                .append("isSystemNotificationEnabled", isSystemNotificationEnabled.get())
+                .append("isWeatherNotificationEnabled", isWeatherNotificationEnabled.get())
+                .append("isBiomeNotificationEnabled", isBiomeNotificationEnabled.get())
+                .append("isLoginPlayerNotificationEnabled", isLoginPlayerNotificationEnabled.get())
+                .toString();
     }
 }

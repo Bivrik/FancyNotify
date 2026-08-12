@@ -1,5 +1,7 @@
 package net.bivrik.fancynotify.config;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 public class Config {
     private transient final String path;
 
@@ -11,8 +13,12 @@ public class Config {
         return path;
     }
 
+    protected ToStringBuilder getBaseStringBuilder() {
+        return new ToStringBuilder(this).append("path='" + path + "'");
+    }
+
     @Override
     public String toString() {
-        return this.getClass().getSimpleName() + String.format("{path='%s'}", path);
+        return getBaseStringBuilder().toString();
     }
 }

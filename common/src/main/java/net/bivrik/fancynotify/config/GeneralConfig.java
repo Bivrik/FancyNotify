@@ -100,8 +100,16 @@ public class GeneralConfig extends Config implements IListenerRegistrar {
 
     @Override
     public String toString() {
-        return super.toString().replace("}", ", ") + String.format(
-                "notificationsTransparency='%s', notificationsWidth='%s', anchor='%s'}",
-                notificationsTransparency, notificationsWidth, anchor);
+        return getBaseStringBuilder()
+                .append("notificationsTransparency", notificationsTransparency.get())
+                .append("padding", padding.get())
+                .append("maxAmount", maxAmount.get())
+                .append("notificationsWidth", notificationsWidth.get())
+                .append("orientation", orientation.get())
+                .append("anchor", anchor.get())
+                .append("animation", animation.get())
+                .append("animationDuration", animationDuration.get())
+                .append("debug", debug.get())
+                .toString();
     }
 }

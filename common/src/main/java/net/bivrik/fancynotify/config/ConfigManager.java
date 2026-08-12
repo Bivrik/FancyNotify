@@ -48,11 +48,12 @@ public class ConfigManager {
             LOGGER.warn("Could not read config {} from {}", configClass.getSimpleName(), configFile.getPath());
             return config;
         }
-        LOGGER.info("Successfully read config {} from {}", configClass.getSimpleName(), configFile.getPath());
+        LOGGER.info("Successfully read config {}", configClass.getSimpleName());
         T result = optionalConfig.get();
         if (result instanceof IListenerRegistrar listenerRegistrar) {
             listenerRegistrar.registerListeners();
         }
+        LOGGER.info(result.toString());
         return result;
     }
 
