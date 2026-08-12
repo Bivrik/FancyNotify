@@ -2,10 +2,9 @@ package net.bivrik.fancynotify.gui;
 
 import net.bivrik.fancynotify.NotificationManager;
 import net.bivrik.fancynotify.ResourceLocations;
-import net.bivrik.fancynotify.config.ConfigManager;
 import net.bivrik.fancynotify.core.Common;
+import net.bivrik.fancynotify.particle.Particle2DSetup;
 import net.minecraft.advancements.AdvancementType;
-import net.minecraft.advancements.DisplayInfo;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
@@ -40,6 +39,21 @@ public class AdvancementNotification extends Notification {
     @Override
     public int getLifeTimeTicks() {
         return super.getLifeTimeTicks() + 30;
+    }
+
+    @Override
+    public void onShowing() {
+        super.onShowing();
+
+        Particle2DSetup setup = new Particle2DSetup.Builder(30, this.globalX + getWidth() / 2.0f, this.globalY + getHeight() / 2.0f)
+                .angle(-180).spreadAngle(8)
+                .spreadX(5).spreadY(10)
+                .movementFriction(0.16f)
+                .speed(0).spreadSpeed(16)
+                .startRotation(-90).spreadStartRotation(90)
+                .endRotation(90).spreadEndRotation(90)
+                .build();
+        Common.getParticle2DEngine().spawn(setup, 24);
     }
 
     @Override
