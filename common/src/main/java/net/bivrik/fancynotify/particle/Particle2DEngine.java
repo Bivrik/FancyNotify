@@ -40,7 +40,8 @@ public class Particle2DEngine {
                 getRandomized(setup.startRotation, setup.spreadStartRotation),
                 getRandomized(setup.endRotation, setup.spreadEndRotation),
                 getRandomized(setup.startScale, setup.spreadStartScale),
-                getRandomized(setup.endScale, setup.spreadEndScale));
+                getRandomized(setup.endScale, setup.spreadEndScale),
+                setup.color);
     }
 
     private int getRandomized(int value, int range) {
