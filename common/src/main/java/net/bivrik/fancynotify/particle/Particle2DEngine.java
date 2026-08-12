@@ -61,7 +61,7 @@ public class Particle2DEngine {
             while (iterator.hasNext()) {
                 Particle2D particle = iterator.next();
                 particle.tick();
-                if (!particle.isAlive()) {
+                if (particle.isDead()) {
                     iterator.remove();
                 }
             }

@@ -64,8 +64,8 @@ public class Particle2D {
         currentY += velocityY;
     }
 
-    public boolean isAlive() {
-        return isAlive;
+    public boolean isDead() {
+        return !isAlive;
     }
 
     // Batching but it's too much effort for now
