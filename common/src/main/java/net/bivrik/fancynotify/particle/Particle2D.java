@@ -90,11 +90,10 @@ public class Particle2D {
 
         PoseStack stack = guiGraphics.pose();
         stack.pushPose();
-        stack.translate(renderX + 2, renderY + 2, 0);
+        stack.translate(renderX, renderY, 0);
         stack.scale(renderScale, renderScale, 1);
-        stack.translate(-2, -2, 0);
-        stack.rotateAround(Axis.ZP.rotationDegrees(renderRotation), 2, 2, 0);
-        guiGraphics.fill(0, 0, 4, 4, color.getRGB());
+        stack.rotateAround(Axis.ZP.rotationDegrees(renderRotation), 0, 0, 0);
+        guiGraphics.fill(-2, -2, 2, 2, color.getRGB());
         stack.popPose();
     }
 }
