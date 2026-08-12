@@ -3,6 +3,7 @@ package net.bivrik.fancynotify.gui;
 import net.bivrik.fancynotify.NotificationManager;
 import net.bivrik.fancynotify.ResourceLocations;
 import net.bivrik.fancynotify.core.FancyNotify;
+import net.bivrik.fancynotify.particle.Particle2DEngine;
 import net.bivrik.fancynotify.particle.Particle2DSetup;
 import net.minecraft.advancements.AdvancementType;
 import net.minecraft.client.gui.GuiGraphics;
@@ -15,20 +16,39 @@ import net.minecraft.world.item.ItemStack;
 import java.awt.*;
 
 public class AdvancementNotification extends Notification {
-    private static final ResourceLocation BACKGROUND = ResourceLocations.of("notifications/advancement");
+    private static final ResourceLocation TASK_BACKGROUND = ResourceLocations.of("notifications/task");
+    private static final ResourceLocation GOAL_BACKGROUND = ResourceLocations.of("notifications/goal");
+    private static final ResourceLocation CHALLENGE_BACKGROUND = ResourceLocations.of("notifications/challenge");
+    private static final Color TASK_COLOR = Color.yellow;
+    private static final Color GOAL_COLOR = Color.cyan;
+    private static final Color CHALLENGE_COLOR = new Color(255, 94, 209);
 
+    private final AdvancementType type;
     private final ItemStack icon;
-    private final boolean isChallenge;
-    private final int color;
+    private final int textColor;
+    private final ResourceLocation background;
 
-    private boolean isSoundPlayed;
+    private boolean isCelebrated;
 
     public AdvancementNotification(NotificationManager manager, Component title, AdvancementType type, ItemStack icon) {
         super(manager, type.getDisplayName(), title);
 
+        this.type = type;
         this.icon = icon;
-        this.isChallenge = type == AdvancementType.CHALLENGE;
-        this.color = this.isChallenge ? new Color(255, 119, 255).getRGB() : Color.yellow.getRGB();
+        switch (type) {
+            case GOAL -> {
+                this.textColor = GOAL_COLOR.getRGB();
+                this.background = GOAL_BACKGROUND;
+            }
+            case CHALLENGE -> {
+                this.textColor = CHALLENGE_COLOR.getRGB();
+                this.background = CHALLENGE_BACKGROUND;
+            }
+            default -> {
+                this.textColor = TASK_COLOR.getRGB();
+                this.background = TASK_BACKGROUND;
+            }
+        }
     }
 
     @Override
@@ -42,35 +62,46 @@ public class AdvancementNotification extends Notification {
     }
 
     @Override
-    public void onShowing() {
-        super.onShowing();
-
-        Particle2DSetup setup = new Particle2DSetup.Builder(30, this.globalX + getWidth() / 2.0f, this.globalY + getHeight() / 2.0f)
-                .angle(-180).spreadAngle(8)
-                .spreadX(5).spreadY(10)
-                .movementFriction(0.16f)
-                .speed(0).spreadSpeed(16)
-                .startRotation(-90).spreadStartRotation(90)
-                .endRotation(90).spreadEndRotation(90)
-                .build();
-        FancyNotify.getInstance().getParticleEngine().spawn(setup, 24);
-    }
-
-    @Override
     public void onUpdate() {
-        int animationDuration = this.generalConfig.animationDuration.get();
-        if (!isSoundPlayed && this.timeTicks >= animationDuration - animationDuration / 2f) {
-            isSoundPlayed = true;
-            if (isChallenge) {
-                this.minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_TOAST_CHALLENGE_COMPLETE, 1, 1));
+        int animationDurationTicks = this.generalConfig.animationDuration.get();
+        if (!isCelebrated && this.timeTicks >= animationDurationTicks * 0.3f) {
+            isCelebrated = true;
+
+            Particle2DSetup.Builder setupBuilder = new Particle2DSetup.Builder(30, this.globalX + getWidth() / 2.0f, this.globalY + getHeight() / 2.0f)
+                    .spreadX(5)
+                    .startRotation(-90).spreadStartRotation(90)
+                    .endRotation(90).spreadEndRotation(90);
+
+            switch (type) {
+                case TASK -> {
+                    this.minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_CARTOGRAPHY_TABLE_TAKE_RESULT, 1, 1));
+                }
+                case GOAL -> {
+                    this.minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.FIREWORK_ROCKET_TWINKLE, 1, 1));
+                    Particle2DSetup setup = setupBuilder.spreadY(5)
+                            .angle(0).spreadAngle(360)
+                            .speed(1.5f).spreadSpeed(1.5f)
+                            .movementFriction(0.02f)
+                            .color(GOAL_COLOR).build();
+                    FancyNotify.getInstance().getParticleEngine().spawn(setup, 12);
+                }
+                case CHALLENGE -> {
+                    this.minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_TOAST_CHALLENGE_COMPLETE, 1, 1));
+                    Particle2DSetup setup = setupBuilder.spreadY(10)
+                            .angle(-180).spreadAngle(8)
+                            .speed(0).spreadSpeed(16)
+                            .movementFriction(0.16f)
+                            .color(CHALLENGE_COLOR).build();
+                    FancyNotify.getInstance().getParticleEngine().spawn(setup, 24);
+                }
             }
         }
     }
 
     @Override
     public void draw(GuiGraphics guiGraphics) {
-        drawSprite(guiGraphics, BACKGROUND, 0, 0, getWidth(), getHeight());
-        drawText(guiGraphics, getTitle(), getTextOffset(), 7, color);
+        drawSprite(guiGraphics, background, 0, 0, getWidth(), getHeight());
+        drawText(guiGraphics, getTitle(), getTextOffset(), 7, textColor);
         drawMessage(guiGraphics, getTextOffset(), 18, -1);
         guiGraphics.renderFakeItem(icon, 8, getCenterY() - 8);
     }
