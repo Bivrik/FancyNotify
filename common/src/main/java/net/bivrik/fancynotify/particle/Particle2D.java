@@ -11,19 +11,15 @@ public class Particle2D {
 
     private float previousX;
     private float previousY;
-    private float x;
-    private float y;
+    private float currentX;
+    private float currentY;
     private float velocityX;
     private float velocityY;
     private final float movementFriction;
 
-    private float previousRotation;
-    private float rotation;
     private final int startRotation;
     private final int endRotation;
 
-    private float previousScale;
-    private float scale;
     private final float startScale;
     private final float endScale;
 
@@ -33,20 +29,16 @@ public class Particle2D {
 
         previousX = spawnX;
         previousY = spawnY;
-        x = spawnX;
-        y = spawnY;
+        currentX = spawnX;
+        currentY = spawnY;
 
         double angleInRadians = Math.toRadians(angle);
         velocityX = (float) (Math.cos(angleInRadians) * speed);
         velocityY = (float) (Math.sin(angleInRadians) * speed);
 
-        previousRotation = startRotation;
-        rotation = startRotation;
         this.startRotation = startRotation;
         this.endRotation = endRotation;
 
-        previousScale = startScale;
-        scale = startScale;
         this.startScale = startScale;
         this.endScale = endScale;
     }
@@ -62,22 +54,14 @@ public class Particle2D {
             return;
         }
 
-        previousX = x;
-        previousY = y;
+        previousX = currentX;
+        previousY = currentY;
 
         velocityX *= movementFriction;
         velocityY *= movementFriction;
 
-        x += velocityX;
-        y += velocityY;
-
-        float progress = Math.min((float) timeTicks / lifetimeTicks, 1);
-
-        previousRotation = rotation;
-        rotation = startRotation + (endRotation - startRotation) * progress;
-
-        previousScale = scale;
-        scale = startScale + (endScale - startScale) * progress;
+        currentX += velocityX;
+        currentY += velocityY;
     }
 
     public boolean isAlive() {
@@ -90,10 +74,13 @@ public class Particle2D {
             return;
         }
 
-        float renderX = previousX + (x - previousX) * partialTick;
-        float renderY = previousY + (y - previousY) * partialTick;
-        float renderRotation = previousRotation + (rotation - previousRotation) * partialTick;
-        float renderScale = previousScale + (scale - previousScale) * partialTick;
+        float renderTimeTicks = timeTicks + partialTick;
+        float progress = Math.min(renderTimeTicks / lifetimeTicks, 1);
+
+        float renderX = previousX + (currentX - previousX) * partialTick;
+        float renderY = previousY + (currentY - previousY) * partialTick;
+        float renderRotation = startRotation + (endRotation - startRotation) * progress;
+        float renderScale = startScale + (endScale - startScale) * progress;
 
         PoseStack stack = guiGraphics.pose();
         stack.pushPose();
