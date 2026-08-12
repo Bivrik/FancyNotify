@@ -40,18 +40,18 @@ public class BiomeManager {
     private static final int DELAY_TICKS = 40;
 
     private final Minecraft minecraft;
-    private final NotificationManager manager;
+    private final NotificationManager notificationManager;
 
     private int counterTicks;
-    private Biome current;
+    private Biome currentBiome;
 
-    public BiomeManager(Minecraft minecraft, NotificationManager manager) {
+    public BiomeManager(Minecraft minecraft, NotificationManager notificationManager) {
         this.minecraft = minecraft;
-        this.manager = manager;
+        this.notificationManager = notificationManager;
     }
 
     public void tick() {
-        counterTicks += 1;
+        counterTicks++;
         if (counterTicks >= DELAY_TICKS) {
             counterTicks = 0;
 
@@ -62,13 +62,13 @@ public class BiomeManager {
             }
 
             Holder<Biome> biomeHolder = level.getBiome(camera.blockPosition());
-            if (current == biomeHolder.value()) {
+            if (currentBiome == biomeHolder.value()) {
                 return;
             }
 
-            current = biomeHolder.value();
+            currentBiome = biomeHolder.value();
             ResourceLocation biomeId = biomeHolder.unwrap().map(ResourceKey::location, null);
-            Component biomeName = getBiomeComponent(biomeId, current);
+            Component biomeName = getBiomeComponent(biomeId, currentBiome);
             ItemStack icon = DEFAULT_ICON;
             for (var entry : TAGS_ICONS.entrySet()) {
                 if (biomeHolder.is(entry.getKey())) {
@@ -76,7 +76,7 @@ public class BiomeManager {
                     break;
                 }
             }
-            manager.add(new BiomeNotification(manager, biomeName, icon));
+            notificationManager.add(new BiomeNotification(notificationManager, biomeName, icon));
         }
     }
 
