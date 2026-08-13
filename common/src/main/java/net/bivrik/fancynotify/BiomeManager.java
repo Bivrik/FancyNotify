@@ -1,6 +1,7 @@
 package net.bivrik.fancynotify;
 
-import net.bivrik.fancynotify.gui.BiomeNotification;
+import net.bivrik.fancynotify.notification.gui.BiomeNotification;
+import net.bivrik.fancynotify.notification.NotificationManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.Holder;

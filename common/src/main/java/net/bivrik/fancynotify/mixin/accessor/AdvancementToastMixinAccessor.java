@@ -1,6 +1,6 @@
 package net.bivrik.fancynotify.mixin.accessor;
 
-import net.bivrik.fancynotify.IAdvancementHolderAccessor;
+import net.bivrik.fancynotify.accessor.IAdvancementHolderAccessor;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.client.gui.components.toasts.AdvancementToast;
 import org.spongepowered.asm.mixin.Mixin;

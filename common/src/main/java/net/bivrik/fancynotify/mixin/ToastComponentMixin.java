@@ -1,10 +1,10 @@
 package net.bivrik.fancynotify.mixin;
 
-import net.bivrik.fancynotify.IAdvancementHolderAccessor;
-import net.bivrik.fancynotify.NotificationManager;
-import net.bivrik.fancynotify.core.FancyNotify;
+import net.bivrik.fancynotify.accessor.IAdvancementHolderAccessor;
+import net.bivrik.fancynotify.notification.NotificationManager;
+import net.bivrik.fancynotify.FancyNotify;
 import net.bivrik.fancynotify.core.Log;
-import net.bivrik.fancynotify.gui.AdvancementNotification;
+import net.bivrik.fancynotify.notification.gui.AdvancementNotification;
 import net.minecraft.advancements.DisplayInfo;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.toasts.*;

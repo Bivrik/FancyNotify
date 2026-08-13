@@ -1,7 +1,7 @@
 package net.bivrik.fancynotify.credits;
 
 import com.google.gson.*;
-import net.bivrik.fancynotify.JsonHelper;
+import net.bivrik.fancynotify.utility.JsonHelper;
 import net.bivrik.fancynotify.core.Log;
 
 import java.io.File;

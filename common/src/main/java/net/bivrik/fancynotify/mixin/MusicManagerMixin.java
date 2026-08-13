@@ -1,8 +1,8 @@
 package net.bivrik.fancynotify.mixin;
 
-import net.bivrik.fancynotify.NotificationManager;
-import net.bivrik.fancynotify.core.FancyNotify;
-import net.bivrik.fancynotify.gui.MusicNotification;
+import net.bivrik.fancynotify.notification.NotificationManager;
+import net.bivrik.fancynotify.FancyNotify;
+import net.bivrik.fancynotify.notification.gui.MusicNotification;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.Sound;
 import net.minecraft.client.resources.sounds.SoundInstance;

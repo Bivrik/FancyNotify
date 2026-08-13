@@ -1,6 +1,6 @@
 package net.bivrik.fancynotify.particle;
 
-import net.bivrik.fancynotify.core.FancyNotify;
+import net.bivrik.fancynotify.FancyNotify;
 
 // For testing
 public class Testing {

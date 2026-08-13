@@ -1,9 +1,8 @@
 package net.bivrik.fancynotify;
 
-import net.bivrik.fancynotify.gui.Notification;
-import net.bivrik.fancynotify.gui.TutorialNotification;
+import net.bivrik.fancynotify.notification.gui.TutorialNotification;
+import net.bivrik.fancynotify.notification.NotificationManager;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.components.toasts.TutorialToast;
 
 public class TutorialManager {
     private final Minecraft minecraft;

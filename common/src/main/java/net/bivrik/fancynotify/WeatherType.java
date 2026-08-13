@@ -1,5 +1,6 @@
 package net.bivrik.fancynotify;
 
+import net.bivrik.fancynotify.utility.ResourceLocations;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 

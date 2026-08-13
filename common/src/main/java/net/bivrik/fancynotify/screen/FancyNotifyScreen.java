@@ -1,7 +1,7 @@
 package net.bivrik.fancynotify.screen;
 
-import net.bivrik.fancynotify.ResourceLocations;
-import net.bivrik.fancynotify.core.FancyNotify;
+import net.bivrik.fancynotify.utility.ResourceLocations;
+import net.bivrik.fancynotify.FancyNotify;
 import net.bivrik.fancynotify.core.Constants;
 import net.bivrik.fancynotify.particle.Testing;
 import net.minecraft.Util;

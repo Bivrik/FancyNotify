@@ -2,14 +2,11 @@ package net.bivrik.fancynotify.screen;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.bivrik.fancynotify.core.FancyNotify;
+import net.bivrik.fancynotify.FancyNotify;
 import net.bivrik.fancynotify.credits.CreditsList;
 import net.bivrik.fancynotify.credits.CreditsManager;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.renderer.texture.TextureManager;
-import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;

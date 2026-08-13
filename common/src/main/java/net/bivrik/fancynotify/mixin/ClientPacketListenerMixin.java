@@ -1,12 +1,12 @@
 package net.bivrik.fancynotify.mixin;
 
 import com.mojang.authlib.GameProfile;
-import net.bivrik.fancynotify.NotificationManager;
+import net.bivrik.fancynotify.notification.NotificationManager;
 import net.bivrik.fancynotify.WeatherType;
-import net.bivrik.fancynotify.core.FancyNotify;
+import net.bivrik.fancynotify.FancyNotify;
 import net.bivrik.fancynotify.core.Log;
-import net.bivrik.fancynotify.gui.PlayerLoginNotification;
-import net.bivrik.fancynotify.gui.WeatherNotification;
+import net.bivrik.fancynotify.notification.gui.PlayerLoginNotification;
+import net.bivrik.fancynotify.notification.gui.WeatherNotification;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.social.PlayerSocialManager;
 import net.minecraft.client.multiplayer.ClientLevel;

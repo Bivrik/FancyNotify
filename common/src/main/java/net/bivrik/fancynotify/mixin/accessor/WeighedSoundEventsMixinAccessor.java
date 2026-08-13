@@ -1,6 +1,6 @@
 package net.bivrik.fancynotify.mixin.accessor;
 
-import net.bivrik.fancynotify.IWeighedSoundEventsAccessor;
+import net.bivrik.fancynotify.accessor.IWeighedSoundEventsAccessor;
 import net.minecraft.client.resources.sounds.Sound;
 import net.minecraft.client.sounds.WeighedSoundEvents;
 import net.minecraft.client.sounds.Weighted;

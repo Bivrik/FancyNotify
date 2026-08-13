@@ -1,6 +1,7 @@
 package net.bivrik.fancynotify;
 
 import net.bivrik.fancynotify.core.Log;
+import net.bivrik.fancynotify.utility.ResourceLocations;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;

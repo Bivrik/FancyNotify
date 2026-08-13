@@ -1,11 +1,11 @@
 package net.bivrik.fancynotify.config;
 
-import net.bivrik.fancynotify.core.FancyNotify;
-import net.bivrik.fancynotify.event.NotificationWidthChangedEvent;
-import net.bivrik.fancynotify.gui.NotificationAnimator;
-import net.bivrik.fancynotify.gui.QuirkyAnimation;
-import net.bivrik.fancynotify.gui.TopDownAnimation;
-import net.bivrik.fancynotify.gui.VanillaAnimation;
+import net.bivrik.fancynotify.FancyNotify;
+import net.bivrik.fancynotify.eventbus.event.NotificationWidthChangedEvent;
+import net.bivrik.fancynotify.notification.animation.NotificationAnimator;
+import net.bivrik.fancynotify.notification.animation.QuirkyAnimation;
+import net.bivrik.fancynotify.notification.animation.TopDownAnimation;
+import net.bivrik.fancynotify.notification.animation.VanillaAnimation;
 import net.minecraft.network.chat.Component;
 
 public class GeneralConfig extends Config implements IListenerRegistrar {

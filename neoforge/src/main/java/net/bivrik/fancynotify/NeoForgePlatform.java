@@ -1,8 +1,7 @@
 package net.bivrik.fancynotify;
 
-import net.bivrik.fancynotify.core.FancyNotify;
 import net.bivrik.fancynotify.core.Constants;
-import net.bivrik.fancynotify.gui.NeoForgeConfigScreen;
+import net.bivrik.fancynotify.notification.NeoForgeConfigScreen;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
 

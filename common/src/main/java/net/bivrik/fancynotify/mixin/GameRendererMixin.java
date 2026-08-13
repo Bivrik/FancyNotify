@@ -1,7 +1,7 @@
 package net.bivrik.fancynotify.mixin;
 
 import com.mojang.blaze3d.platform.Window;
-import net.bivrik.fancynotify.core.FancyNotify;
+import net.bivrik.fancynotify.FancyNotify;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
