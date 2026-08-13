@@ -14,7 +14,7 @@ public class Config {
     }
 
     protected ToStringBuilder getBaseStringBuilder() {
-        return new ToStringBuilder(this).append("path='" + path + "'");
+        return new ToStringBuilder(this).append("path", path);
     }
 
     @Override
