@@ -83,7 +83,7 @@ public class AdvancementNotification extends Notification {
                             .speed(1.5f).spreadSpeed(1.5f)
                             .movementFriction(0.02f)
                             .color(GOAL_COLOR).build();
-                    FancyNotify.getInstance().getParticleEngine().spawn(setup, 12);
+                    this.particleEngine.spawn(setup, 12);
                 }
                 case CHALLENGE -> {
                     this.minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_TOAST_CHALLENGE_COMPLETE, 1, 1));
@@ -92,7 +92,7 @@ public class AdvancementNotification extends Notification {
                             .speed(0).spreadSpeed(16)
                             .movementFriction(0.16f)
                             .color(CHALLENGE_COLOR).build();
-                    FancyNotify.getInstance().getParticleEngine().spawn(setup, 24);
+                    this.particleEngine.spawn(setup, 24);
                 }
             }
         }

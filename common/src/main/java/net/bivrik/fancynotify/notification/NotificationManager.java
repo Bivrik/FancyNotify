@@ -6,6 +6,7 @@ import net.bivrik.fancynotify.animation.Keyframe;
 import net.bivrik.fancynotify.config.ConfigManager;
 import net.bivrik.fancynotify.config.GeneralConfig;
 import net.bivrik.fancynotify.core.Log;
+import net.bivrik.fancynotify.particle.Particle2DEngine;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -18,15 +19,17 @@ import java.util.concurrent.ConcurrentLinkedDeque;
 public class NotificationManager {
     private final Minecraft minecraft;
     private final ConfigManager configManager;
+    private final Particle2DEngine particleEngine;
     private final DeltaTracker deltaTracker;
 
     private final List<Notification> allNotifications = new ArrayList<>();
     private final Deque<Notification> notificationQueue = new ConcurrentLinkedDeque<>();
     private final List<NotificationHolder> currentNotifications = new ArrayList<>();
 
-    public NotificationManager(Minecraft minecraft, ConfigManager configManager) {
+    public NotificationManager(Minecraft minecraft, ConfigManager configManager, Particle2DEngine particleEngine) {
         this.minecraft = minecraft;
         this.configManager = configManager;
+        this.particleEngine = particleEngine;
         this.deltaTracker = minecraft.getTimer();
     }
 
@@ -36,6 +39,10 @@ public class NotificationManager {
 
     public ConfigManager getConfigManager() {
         return configManager;
+    }
+
+    public Particle2DEngine getParticleEngine() {
+        return particleEngine;
     }
 
     public void add(Notification newNotification) {

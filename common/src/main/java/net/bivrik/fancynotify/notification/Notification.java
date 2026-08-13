@@ -11,6 +11,7 @@ import net.bivrik.fancynotify.FancyNotify;
 import net.bivrik.fancynotify.core.Log;
 import net.bivrik.fancynotify.eventbus.event.NotificationWidthChangedEvent;
 import net.bivrik.fancynotify.eventbus.SubscribeEvent;
+import net.bivrik.fancynotify.particle.Particle2DEngine;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -38,6 +39,7 @@ public abstract class Notification implements NotificationStateMachine.Listener 
     private final NotificationStateMachine stateMachine;
     private final NotificationAnimator animator;
     protected final Minecraft minecraft;
+    protected final Particle2DEngine particleEngine;
     protected final FiltersConfig filtersConfig;
     protected final GeneralConfig generalConfig;
 
@@ -54,6 +56,7 @@ public abstract class Notification implements NotificationStateMachine.Listener 
         this.minecraft = minecraft;
         this.filtersConfig = configManager.getFiltersConfig();
         this.generalConfig = configManager.getGeneralConfig();
+        this.particleEngine = manager.getParticleEngine();
         this.stateMachine = new NotificationStateMachine(minecraft, this);
         this.animator = this.generalConfig.getAnimator();
         this.width = this.generalConfig.notificationsWidth.get();

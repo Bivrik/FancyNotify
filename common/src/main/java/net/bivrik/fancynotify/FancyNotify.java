@@ -55,7 +55,7 @@ public final class FancyNotify {
 
         particleEngine = new Particle2DEngine(minecraft.options, configManager);
         splashesManager = new SplashesManager(minecraft);
-        notificationManager = new NotificationManager(minecraft, configManager);
+        notificationManager = new NotificationManager(minecraft, configManager, particleEngine);
         weatherManager = new WeatherManager(notificationManager);
         biomeManager = new BiomeManager(minecraft, notificationManager);
     }
