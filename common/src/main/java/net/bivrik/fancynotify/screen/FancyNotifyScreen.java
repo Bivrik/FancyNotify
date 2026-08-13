@@ -3,7 +3,6 @@ package net.bivrik.fancynotify.screen;
 import net.bivrik.fancynotify.utility.ResourceLocations;
 import net.bivrik.fancynotify.FancyNotify;
 import net.bivrik.fancynotify.core.Constants;
-import net.bivrik.fancynotify.particle.Testing;
 import net.minecraft.Util;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.*;
@@ -49,12 +48,6 @@ public class FancyNotifyScreen extends UniversalScreen {
 
     @Override
     protected void init() {
-        Button testingButton = Button.builder(Component.literal("Fancy Notify"), (button) -> {
-            Testing testing = new Testing();
-            testing.test(this.width, this.height);
-        }).bounds(this.width - 8 - 98, this.height - 8 - 20, 98, 20).build();
-        addSimpleWidget(testingButton);
-
         backButton = Button.builder(CommonComponents.GUI_BACK, button -> setScreen(parent)).bounds(this.width / 2 - Button.BIG_WIDTH / 2, this.height / 2 + 4 + Button.DEFAULT_HEIGHT + 8, Button.BIG_WIDTH, Button.DEFAULT_HEIGHT).build();
         addSimpleWidget(backButton);
 
