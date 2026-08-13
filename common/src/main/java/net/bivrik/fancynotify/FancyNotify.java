@@ -42,7 +42,6 @@ public final class FancyNotify {
         Log.info(Constants.MOD_NAME + " initialized on {} ({})", Services.PLATFORM.getName(), Services.PLATFORM.getEnvironmentName());
 
         configManager = new ConfigManager();
-        particleEngine = new Particle2DEngine(configManager);
         creditsManager = new CreditsManager();
     }
 
@@ -54,6 +53,7 @@ public final class FancyNotify {
         isMinecraftInitialized = true;
         Log.info("Minecraft initialized");
 
+        particleEngine = new Particle2DEngine(minecraft.options, configManager);
         splashesManager = new SplashesManager(minecraft);
         notificationManager = new NotificationManager(minecraft, configManager);
         weatherManager = new WeatherManager(notificationManager);

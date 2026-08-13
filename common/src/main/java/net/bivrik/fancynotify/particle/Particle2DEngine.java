@@ -3,6 +3,7 @@ package net.bivrik.fancynotify.particle;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.bivrik.fancynotify.config.ConfigManager;
 import net.bivrik.fancynotify.config.GeneralConfig;
+import net.minecraft.client.Options;
 import net.minecraft.client.gui.GuiGraphics;
 
 import java.util.*;
@@ -12,9 +13,11 @@ public class Particle2DEngine {
     private static final Random RANDOM = new Random();
 
     private final List<Particle2D> particles = new ArrayList<>();
+    private final Options options;
     private final GeneralConfig generalConfig;
 
-    public Particle2DEngine(ConfigManager configManager) {
+    public Particle2DEngine(Options options, ConfigManager configManager) {
+        this.options = options;
         this.generalConfig = configManager.getGeneralConfig();
     }
 
@@ -82,7 +85,7 @@ public class Particle2DEngine {
 
     // Better do batching in the future, but it's fine for now
     public void render(GuiGraphics guiGraphics, float partialTick) {
-        if (particles.isEmpty()) {
+        if (particles.isEmpty() || options.hideGui) {
             return;
         }
 
