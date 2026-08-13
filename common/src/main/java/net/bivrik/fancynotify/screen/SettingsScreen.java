@@ -134,13 +134,6 @@ public class SettingsScreen extends UniversalScreen {
                 .create(0, 0, Button.DEFAULT_WIDTH, Button.DEFAULT_HEIGHT, Component.literal("Particles 2D"), (button, value) -> particlesEnabled.set(value));
         list.addElement(particlesCycleButton);
 
-        Setting<Boolean> debug = configManager.getGeneralConfig().debug;
-        debugCycleButton = CycleButton.onOffBuilder()
-                .withInitialValue(debug.get())
-                .withTooltip(value -> Tooltip.create(Component.literal("Option for development")))
-                .create(0, 0, Button.DEFAULT_WIDTH, Button.DEFAULT_HEIGHT, Component.literal("Debug"), (button, value) -> debug.set(value));
-        list.addElement(debugCycleButton);
-
         list.alignElements();
     }
 
