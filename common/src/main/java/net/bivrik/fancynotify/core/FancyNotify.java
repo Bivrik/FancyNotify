@@ -4,6 +4,7 @@ import net.bivrik.fancynotify.BiomeManager;
 import net.bivrik.fancynotify.NotificationManager;
 import net.bivrik.fancynotify.SplashesManager;
 import net.bivrik.fancynotify.config.ConfigManager;
+import net.bivrik.fancynotify.credits.CreditsManager;
 import net.bivrik.fancynotify.eventbus.EventBus;
 import net.bivrik.fancynotify.eventbus.IEventBus;
 import net.bivrik.fancynotify.particle.Particle2DEngine;
@@ -22,6 +23,7 @@ public final class FancyNotify {
     private SplashesManager splashesManager;
     private BiomeManager biomeManager;
     private Particle2DEngine particleEngine;
+    private CreditsManager creditsManager;
 
     private boolean isInitialized = false;
     private boolean isMinecraftInitialized = false;
@@ -40,6 +42,7 @@ public final class FancyNotify {
 
         configManager = new ConfigManager();
         particleEngine = new Particle2DEngine();
+        creditsManager = new CreditsManager();
     }
 
     public void onMinecraftInit(Minecraft minecraft) {
@@ -78,5 +81,9 @@ public final class FancyNotify {
 
     public Particle2DEngine getParticleEngine() {
         return particleEngine;
+    }
+
+    public CreditsManager getCreditsManager() {
+        return creditsManager;
     }
 }

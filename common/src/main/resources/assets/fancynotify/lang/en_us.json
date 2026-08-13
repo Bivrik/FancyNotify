@@ -17,6 +17,11 @@
   "fancynotify.gui.animation.top_down": "Top Down",
   "fancynotify.gui.animation.quirky": "Quirky",
 
+  "fancynotify.credits.boosters": "Boosters",
+  "fancynotify.credits.translators": "Translators",
+  "fancynotify.credits.github_activists": "Github Contributors",
+  "fancynotify.credits.special_thanks": "Special Thanks",
+
   "music.menu.beginning_2": "C418 - Beginning 2",
   "music.menu.floating_trees": "C418 - Floating Trees",
   "music.menu.moog_city_2": "C418 - Moog City 2",
