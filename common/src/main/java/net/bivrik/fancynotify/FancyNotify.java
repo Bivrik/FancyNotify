@@ -42,7 +42,7 @@ public final class FancyNotify {
         Log.info(Constants.MOD_NAME + " initialized on {} ({})", Services.PLATFORM.getName(), Services.PLATFORM.getEnvironmentName());
 
         configManager = new ConfigManager();
-        particleEngine = new Particle2DEngine();
+        particleEngine = new Particle2DEngine(configManager);
         creditsManager = new CreditsManager();
     }
 

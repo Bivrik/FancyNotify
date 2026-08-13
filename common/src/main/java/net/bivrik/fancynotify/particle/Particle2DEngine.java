@@ -1,6 +1,8 @@
 package net.bivrik.fancynotify.particle;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.bivrik.fancynotify.config.ConfigManager;
+import net.bivrik.fancynotify.config.GeneralConfig;
 import net.minecraft.client.gui.GuiGraphics;
 
 import java.util.*;
@@ -10,8 +12,17 @@ public class Particle2DEngine {
     private static final Random RANDOM = new Random();
 
     private final List<Particle2D> particles = new ArrayList<>();
+    private final GeneralConfig generalConfig;
+
+    public Particle2DEngine(ConfigManager configManager) {
+        this.generalConfig = configManager.getGeneralConfig();
+    }
 
     public void spawn(Particle2DSetup setup, int amount) {
+        if (!generalConfig.particlesEnabled.get()) {
+            return;
+        }
+
         List<Particle2D> newParticles = new ArrayList<>(amount);
         for (int i = 0; i < amount; i++) {
             newParticles.add(createParticle(setup));

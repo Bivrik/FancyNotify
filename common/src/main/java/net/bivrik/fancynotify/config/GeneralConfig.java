@@ -28,6 +28,7 @@ public class GeneralConfig extends Config implements IListenerRegistrar {
     public Setting<Anchor> anchor = new Setting<>(Anchor.TOP_RIGHT);
     public Setting<Animation> animation = new Setting<>(Animation.VANILLA);
     public Setting<Integer> animationDuration = new Setting<>(15);
+    public Setting<Boolean> particlesEnabled = new Setting<>(true);
     public Setting<Boolean> debug = new Setting<>(false);
 
     public NotificationAnimator getAnimator() {
@@ -109,6 +110,7 @@ public class GeneralConfig extends Config implements IListenerRegistrar {
                 .append("anchor", anchor.get())
                 .append("animation", animation.get())
                 .append("animationDuration", animationDuration.get())
+                .append("particlesEnabled", particlesEnabled.get())
                 .append("debug", debug.get())
                 .toString();
     }

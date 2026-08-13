@@ -40,6 +40,7 @@ public class SettingsScreen extends UniversalScreen {
     private Slider displayTimeSlider;
     private CycleButton<GeneralConfig.Orientation> orientationCycleButton;
     private CycleButton<GeneralConfig.Anchor> anchorCycleButton;
+    private CycleButton<Boolean> particlesCycleButton;
     private CycleButton<Boolean> debugCycleButton;
     private CycleButton<GeneralConfig.Animation> animationCycleButton;
     private Slider animationDurationSlider;
@@ -125,6 +126,13 @@ public class SettingsScreen extends UniversalScreen {
         animationDurationSlider.setDisplayer(value -> Component.literal(value.intValue() + " ticks"));
         animationDurationSlider.setResponder(value -> animationDuration.set(value.intValue()));
         list.addElement(animationDurationSlider);
+
+        Setting<Boolean> particlesEnabled = configManager.getGeneralConfig().particlesEnabled;
+        particlesCycleButton = CycleButton.onOffBuilder()
+                .withInitialValue(particlesEnabled.get())
+                .withTooltip(value -> Tooltip.create(Component.literal("Represents an ability to spawn new particles upon getting some notifications.")))
+                .create(0, 0, Button.DEFAULT_WIDTH, Button.DEFAULT_HEIGHT, Component.literal("Particles 2D"), (button, value) -> particlesEnabled.set(value));
+        list.addElement(particlesCycleButton);
 
         Setting<Boolean> debug = configManager.getGeneralConfig().debug;
         debugCycleButton = CycleButton.onOffBuilder()
