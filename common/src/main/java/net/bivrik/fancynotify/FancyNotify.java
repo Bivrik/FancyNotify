@@ -24,6 +24,7 @@ public final class FancyNotify {
     private BiomeManager biomeManager;
     private Particle2DEngine particleEngine;
     private CreditsManager creditsManager;
+    private WeatherManager weatherManager;
 
     private boolean isInitialized = false;
     private boolean isMinecraftInitialized = false;
@@ -53,8 +54,9 @@ public final class FancyNotify {
         isMinecraftInitialized = true;
         Log.info("Minecraft initialized");
 
-        notificationManager = new NotificationManager(minecraft, configManager);
         splashesManager = new SplashesManager(minecraft);
+        notificationManager = new NotificationManager(minecraft, configManager);
+        weatherManager = new WeatherManager(notificationManager);
         biomeManager = new BiomeManager(minecraft, notificationManager);
     }
 
@@ -85,5 +87,9 @@ public final class FancyNotify {
 
     public CreditsManager getCreditsManager() {
         return creditsManager;
+    }
+
+    public WeatherManager getWeatherManager() {
+        return weatherManager;
     }
 }
