@@ -20,8 +20,10 @@ public class WeatherManager {
         boolean isWeatherEvent = false;
         if (event.equals(ClientboundGameEventPacket.RAIN_LEVEL_CHANGE)) {
             isRaining = packet.getParam() >= 0.5f;
+            isWeatherEvent = true;
         } else if (event.equals(ClientboundGameEventPacket.THUNDER_LEVEL_CHANGE)) {
             isThundering = packet.getParam() >= 0.5f;
+            isWeatherEvent = true;
         }
 
         if (!isWeatherEvent) {
