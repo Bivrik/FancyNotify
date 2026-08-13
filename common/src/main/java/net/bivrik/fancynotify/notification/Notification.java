@@ -11,7 +11,6 @@ import net.bivrik.fancynotify.FancyNotify;
 import net.bivrik.fancynotify.core.Log;
 import net.bivrik.fancynotify.eventbus.event.NotificationWidthChangedEvent;
 import net.bivrik.fancynotify.eventbus.SubscribeEvent;
-import net.bivrik.fancynotify.notification.animation.NotificationAnimator;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;

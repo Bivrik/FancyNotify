@@ -2,7 +2,7 @@ package net.bivrik.fancynotify.config;
 
 import net.bivrik.fancynotify.FancyNotify;
 import net.bivrik.fancynotify.eventbus.event.NotificationWidthChangedEvent;
-import net.bivrik.fancynotify.notification.animation.NotificationAnimator;
+import net.bivrik.fancynotify.notification.NotificationAnimator;
 import net.bivrik.fancynotify.notification.animation.QuirkyAnimation;
 import net.bivrik.fancynotify.notification.animation.TopDownAnimation;
 import net.bivrik.fancynotify.notification.animation.VanillaAnimation;

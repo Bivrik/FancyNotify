@@ -1,7 +1,6 @@
-package net.bivrik.fancynotify.notification.animation;
+package net.bivrik.fancynotify.notification;
 
 import net.bivrik.fancynotify.config.GeneralConfig;
-import net.bivrik.fancynotify.notification.NotificationState;
 
 public abstract class NotificationAnimator {
     protected final GeneralConfig generalConfig;
