@@ -100,7 +100,7 @@ public class GeneralConfig extends Config implements IListenerRegistrar {
 
     @Override
     public String toString() {
-        return getBaseStringBuilder()
+        return getBaseToStringBuilder()
                 .append("notificationsTransparency", notificationsTransparency.get())
                 .append("padding", padding.get())
                 .append("maxAmount", maxAmount.get())

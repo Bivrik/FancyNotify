@@ -18,7 +18,7 @@ public class FiltersConfig extends Config {
 
     @Override
     public String toString() {
-        return getBaseStringBuilder()
+        return getBaseToStringBuilder()
                 .append("isAdvancementNotificationEnabled", isAdvancementNotificationEnabled.get())
                 .append("isRecipeNotificationEnabled", isRecipeNotificationEnabled.get())
                 .append("isMusicNotificationEnabled", isMusicNotificationEnabled.get())

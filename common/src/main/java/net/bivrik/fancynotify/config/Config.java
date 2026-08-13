@@ -13,12 +13,12 @@ public class Config {
         return path;
     }
 
-    protected ToStringBuilder getBaseStringBuilder() {
+    protected ToStringBuilder getBaseToStringBuilder() {
         return new ToStringBuilder(this).append("path", path);
     }
 
     @Override
     public String toString() {
-        return getBaseStringBuilder().toString();
+        return getBaseToStringBuilder().toString();
     }
 }
