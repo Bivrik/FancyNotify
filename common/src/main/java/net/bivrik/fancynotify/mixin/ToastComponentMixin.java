@@ -17,12 +17,13 @@ public class ToastComponentMixin {
     // here it will just render as usual toast. Better compatibility!
     // In the future just add instanceof to catch them or mixin as well, depends on
     // the situation.
-    @Inject(at = @At("HEAD"), method = "addToast")
+    @Inject(at = @At("HEAD"), method = "addToast", cancellable = true)
     private void onAddedToast(Toast toast, CallbackInfo info) {
         if (toast != null) {
             Log.warn("Registered non supported toast");
             Log.info("Using vanilla toast system for {}", toast.getClass().getSimpleName());
         } else {
+            info.cancel();
             Log.error("Ugh... null toast?");
         }
     }

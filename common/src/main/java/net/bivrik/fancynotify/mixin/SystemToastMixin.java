@@ -49,13 +49,13 @@ public class SystemToastMixin {
 
         NotificationManager manager = FancyNotify.getInstance().getNotificationManager();
         manager.remove(SystemNotification.class, SystemNotification.Identifier.fromSystemToastId(id));
-        Log.info("[!] Forced to hide FUCKING SYSTEM notification");
+        Log.info("[!] Forced to hide FUCKING system notification");
     }
 
     @Unique
     private static void fancyNotify$add(SystemToast.SystemToastId id, Component title, Component message) {
         NotificationManager manager = FancyNotify.getInstance().getNotificationManager();
         manager.add(new SystemNotification(manager, SystemNotification.Identifier.fromSystemToastId(id), title, message));
-        Log.info("[!] New FUCKING SYSTEM notification");
+        Log.info("[!] Added new FUCKING system notification");
     }
 }
