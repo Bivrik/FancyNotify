@@ -18,7 +18,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(SystemToast.class)
 public class SystemToastMixin {
     @Inject(at = @At("TAIL"), method = "<init>(Lnet/minecraft/client/gui/components/toasts/SystemToast$SystemToastId;Lnet/minecraft/network/chat/Component;Lnet/minecraft/network/chat/Component;)V")
-    private static void onInit(SystemToast.SystemToastId id, Component title, Component message, CallbackInfo info) {
+    private void onInit(SystemToast.SystemToastId id, Component title, Component message, CallbackInfo info) {
         fancyNotify$add(id, title, message);
     }
 
