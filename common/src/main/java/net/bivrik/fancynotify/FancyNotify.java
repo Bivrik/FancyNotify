@@ -25,6 +25,7 @@ public final class FancyNotify {
     private Particle2DEngine particleEngine;
     private CreditsManager creditsManager;
     private WeatherManager weatherManager;
+    private MusicManager musicManager;
 
     private boolean isInitialized = false;
     private boolean isMinecraftInitialized = false;
@@ -58,6 +59,7 @@ public final class FancyNotify {
         notificationManager = new NotificationManager(minecraft, configManager, particleEngine);
         weatherManager = new WeatherManager(notificationManager);
         biomeManager = new BiomeManager(minecraft, notificationManager);
+        musicManager = new MusicManager(minecraft.options, notificationManager);
     }
 
     public void onClientTick() {
@@ -91,5 +93,9 @@ public final class FancyNotify {
 
     public WeatherManager getWeatherManager() {
         return weatherManager;
+    }
+
+    public MusicManager getMusicManager() {
+        return musicManager;
     }
 }
