@@ -1,3 +1,15 @@
 It's been 15 years!
-New notification - you're awesome
+new Notification("You're awesome!")
 N.O.T.I.F.Y.
+Nothing gets past my bow!
+Never say never. Oh, wait-
+You've been notified!
+Check out Fancy Toasts!
+You're stunning today
+I'm actually proud of this
+You only get one chance
+Love you!
+Not if I can't oink
+Who killed toasts?
+You've received a notification: "Have a good day!"
+:D T_T ^-^ O_o ;-;
