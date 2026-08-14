@@ -1,8 +1,8 @@
 package net.bivrik.fancynotify.config;
 
-import net.bivrik.fancynotify.utility.JsonHelper;
 import net.bivrik.fancynotify.core.Constants;
 import net.bivrik.fancynotify.core.Log;
+import net.bivrik.fancynotify.utility.JsonHelper;
 
 import java.io.File;
 import java.util.HashMap;

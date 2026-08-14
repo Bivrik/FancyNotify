@@ -1,7 +1,7 @@
 package net.bivrik.fancynotify.mixin;
 
-import net.bivrik.fancynotify.notification.NotificationManager;
 import net.bivrik.fancynotify.FancyNotify;
+import net.bivrik.fancynotify.notification.NotificationManager;
 import net.bivrik.fancynotify.notification.gui.RecipeNotification;
 import net.minecraft.client.gui.components.toasts.RecipeToast;
 import net.minecraft.client.gui.components.toasts.ToastComponent;

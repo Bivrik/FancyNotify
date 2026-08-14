@@ -1,8 +1,8 @@
 package net.bivrik.fancynotify.credits;
 
-import com.google.gson.*;
-import net.bivrik.fancynotify.utility.JsonHelper;
+import com.google.gson.Gson;
 import net.bivrik.fancynotify.core.Log;
+import net.bivrik.fancynotify.utility.JsonHelper;
 
 import java.io.File;
 import java.io.FileWriter;

@@ -1,10 +1,9 @@
 package net.bivrik.fancynotify.notification.gui;
 
-import net.bivrik.fancynotify.notification.NotificationManager;
-import net.bivrik.fancynotify.utility.ResourceLocations;
-import net.bivrik.fancynotify.FancyNotify;
 import net.bivrik.fancynotify.notification.Notification;
+import net.bivrik.fancynotify.notification.NotificationManager;
 import net.bivrik.fancynotify.particle.Particle2DSetup;
+import net.bivrik.fancynotify.utility.ResourceLocations;
 import net.minecraft.advancements.AdvancementType;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;

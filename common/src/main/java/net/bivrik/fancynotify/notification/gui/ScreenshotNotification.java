@@ -2,9 +2,9 @@ package net.bivrik.fancynotify.notification.gui;
 
 import com.mojang.blaze3d.platform.NativeImage;
 import net.bivrik.fancynotify.core.Constants;
+import net.bivrik.fancynotify.notification.ExpandableNotification;
 import net.bivrik.fancynotify.notification.NotificationManager;
 import net.bivrik.fancynotify.utility.ResourceLocations;
-import net.bivrik.fancynotify.notification.ExpandableNotification;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.client.renderer.texture.TextureManager;

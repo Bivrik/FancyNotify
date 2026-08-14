@@ -1,8 +1,8 @@
 package net.bivrik.fancynotify.screen;
 
-import net.bivrik.fancynotify.utility.ResourceLocations;
 import net.bivrik.fancynotify.FancyNotify;
 import net.bivrik.fancynotify.core.Constants;
+import net.bivrik.fancynotify.utility.ResourceLocations;
 import net.minecraft.Util;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.*;
@@ -11,7 +11,6 @@ import net.minecraft.client.gui.screens.ConfirmLinkScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;

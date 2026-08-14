@@ -4,21 +4,11 @@ import net.bivrik.fancynotify.core.Log;
 import net.bivrik.fancynotify.notification.NotificationManager;
 import net.bivrik.fancynotify.notification.gui.MusicNotification;
 import net.bivrik.fancynotify.utility.ResourceLocations;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
-import net.minecraft.client.resources.sounds.Sound;
-import net.minecraft.client.resources.sounds.SoundInstance;
-import net.minecraft.client.sounds.SoundManager;
 import net.minecraft.locale.Language;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.sounds.Music;
 import net.minecraft.sounds.SoundSource;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 public class MusicManager {
     private static final Component FALLBACK_MESSAGE = Component.translatable("fancynotify.gui.music.message");

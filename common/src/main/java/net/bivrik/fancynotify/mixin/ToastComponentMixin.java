@@ -1,10 +1,11 @@
 package net.bivrik.fancynotify.mixin;
 
+import net.bivrik.fancynotify.FancyNotify;
 import net.bivrik.fancynotify.core.Log;
 import net.bivrik.fancynotify.notification.NotificationManager;
-import net.bivrik.fancynotify.FancyNotify;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.toasts.*;
+import net.minecraft.client.gui.components.toasts.Toast;
+import net.minecraft.client.gui.components.toasts.ToastComponent;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;

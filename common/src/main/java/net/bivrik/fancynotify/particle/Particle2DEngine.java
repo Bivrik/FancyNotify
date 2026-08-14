@@ -6,7 +6,10 @@ import net.bivrik.fancynotify.config.GeneralConfig;
 import net.minecraft.client.Options;
 import net.minecraft.client.gui.GuiGraphics;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Random;
 
 public class Particle2DEngine {
     private static final int MAX = 512;

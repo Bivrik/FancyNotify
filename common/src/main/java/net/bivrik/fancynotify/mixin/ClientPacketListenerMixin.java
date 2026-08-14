@@ -1,9 +1,8 @@
 package net.bivrik.fancynotify.mixin;
 
 import com.mojang.authlib.GameProfile;
-import net.bivrik.fancynotify.notification.NotificationManager;
 import net.bivrik.fancynotify.FancyNotify;
-import net.bivrik.fancynotify.core.Log;
+import net.bivrik.fancynotify.notification.NotificationManager;
 import net.bivrik.fancynotify.notification.gui.PlayerLoginNotification;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.social.PlayerSocialManager;
@@ -13,15 +12,12 @@ import net.minecraft.client.multiplayer.PlayerInfo;
 import net.minecraft.network.protocol.game.ClientboundGameEventPacket;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.player.PlayerModelPart;
-import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import java.util.UUID;
 
 @Mixin(ClientPacketListener.class)
 public abstract class ClientPacketListenerMixin {

@@ -1,7 +1,7 @@
 package net.bivrik.fancynotify.notification.gui;
 
-import net.bivrik.fancynotify.notification.NotificationManager;
 import net.bivrik.fancynotify.notification.Notification;
+import net.bivrik.fancynotify.notification.NotificationManager;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.toasts.TutorialToast;
 import net.minecraft.network.chat.Component;
