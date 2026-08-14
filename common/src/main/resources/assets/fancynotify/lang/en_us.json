@@ -1,3 +1,4 @@
+// By Bivrik
 {
   "fancynotify.title.credits": "Credits",
   "fancynotify.title.filters": "Notifications Filter",
@@ -28,7 +29,7 @@
   
   "fancynotify.tooltip.discord": "Discord server Bivrik's Palace!",
   "fancynotify.tooltip.boosty": "Boosty to support me! <3",
-  "fancynotify.tooltip.youtube": "Youtube channel with showcases and other stuff.",
+  "fancynotify.tooltip.youtube": "YouTube channel with showcases and other stuff.",
   "fancynotify.tooltip.player_logins": "This notification is not yet stable! It is not recommended on servers with big online.",
   "fancynotify.tooltip.orientation": "Represents how notifications will be added to the previous ones.",
   "fancynotify.tooltip.anchor": "Represents position where notifications will be shown.",
@@ -57,7 +58,7 @@
 
   "fancynotify.credits.boosters": "Boosters",
   "fancynotify.credits.translators": "Translators",
-  "fancynotify.credits.github_activists": "Github Contributors",
+  "fancynotify.credits.github_activists": "GitHub Contributors",
   "fancynotify.credits.special_thanks": "Special Thanks",
 
   "fancynotify.music.menu.beginning_2": "C418 - Beginning 2",
