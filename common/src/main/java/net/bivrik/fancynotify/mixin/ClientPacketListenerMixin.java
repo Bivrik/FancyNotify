@@ -28,10 +28,6 @@ public abstract class ClientPacketListenerMixin {
     @Shadow
     private ClientLevel level;
 
-    @Shadow
-    @Nullable
-    public abstract PlayerInfo getPlayerInfo(UUID uuid);
-
     @Inject(at = @At("RETURN"), method = "handleGameEvent")
     private void onHandledGameEvent(ClientboundGameEventPacket packet, CallbackInfo info) {
         FancyNotify.getInstance().getWeatherManager().onClientBoundGameEvent(packet);
@@ -48,18 +44,14 @@ public abstract class ClientPacketListenerMixin {
     private void onAddedPlayer(PlayerSocialManager playerSocialManager, PlayerInfo playerInfo) {
         playerSocialManager.addPlayer(playerInfo);
 
-        GameProfile profile = playerInfo.getProfile();
-        Minecraft.getInstance().getSkinManager().getOrLoad(profile).thenAcceptAsync(skin -> {
-            Player player = this.level.getPlayerByUUID(profile.getId());
-            boolean hasHat = player != null && player.isModelPartShown(PlayerModelPart.HAT);
-            NotificationManager manager = FancyNotify.getInstance().getNotificationManager();
-            manager.add(new PlayerLoginNotification(manager, profile.getName(), skin.texture(), hasHat));
-
-            Log.info("====================");
-            Log.info("Profile: " + profile);
-            Log.info("UUID from profile: " + profile.getId());
-            Log.info("Name from profile: " + profile.getName());
-            Log.info("====================");
-        });
+        if (FancyNotify.getInstance().getConfigManager().getFiltersConfig().isLoginPlayerNotificationEnabled.get()) {
+            GameProfile profile = playerInfo.getProfile();
+            Minecraft.getInstance().getSkinManager().getOrLoad(profile).thenAcceptAsync(skin -> {
+                Player player = this.level.getPlayerByUUID(profile.getId());
+                boolean hasHat = player != null && player.isModelPartShown(PlayerModelPart.HAT);
+                NotificationManager manager = FancyNotify.getInstance().getNotificationManager();
+                manager.add(new PlayerLoginNotification(manager, profile.getName(), skin.texture(), hasHat));
+            });
+        }
     }
 }
