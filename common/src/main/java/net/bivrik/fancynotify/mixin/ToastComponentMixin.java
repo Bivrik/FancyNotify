@@ -1,11 +1,8 @@
 package net.bivrik.fancynotify.mixin;
 
-import net.bivrik.fancynotify.accessor.IAdvancementHolderAccessor;
+import net.bivrik.fancynotify.core.Log;
 import net.bivrik.fancynotify.notification.NotificationManager;
 import net.bivrik.fancynotify.FancyNotify;
-import net.bivrik.fancynotify.core.Log;
-import net.bivrik.fancynotify.notification.gui.AdvancementNotification;
-import net.minecraft.advancements.DisplayInfo;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.toasts.*;
 import org.spongepowered.asm.mixin.Mixin;
@@ -13,46 +10,30 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.Optional;
-
 @Mixin(ToastComponent.class)
 public class ToastComponentMixin {
-    // Some toasts are just calling method addToast from ToastComponent so we capture them here.
-    // Otherwise, mixin into the entrypoint (usually static classes from damn toasts themselves).
-    @Inject(at = @At("HEAD"), method = "addToast", cancellable = true)
+    // Mixin into the entry point of vanilla toasts, because there are a lot of static
+    // classes. All the modded ones will go through here, and if we don't catch it
+    // here it will just render as usual toast. Better compatibility!
+    // In the future just add instanceof to catch them or mixin as well, depends on
+    // the situation.
+    @Inject(at = @At("HEAD"), method = "addToast")
     private void onAddedToast(Toast toast, CallbackInfo info) {
-        info.cancel();
-
-        NotificationManager manager = FancyNotify.getInstance().getNotificationManager();
-        // Advancement Notifications
-        if (toast instanceof AdvancementToast advancementToast) {
-            Optional<DisplayInfo> optionalDisplay = ((IAdvancementHolderAccessor) advancementToast).getAdvancementHolder().value().display();
-            optionalDisplay.ifPresent(displayInfo -> manager.add(new AdvancementNotification(manager, displayInfo.getTitle(), displayInfo.getType(), displayInfo.getIcon())));
-        }
-        // System Notifications
-        else if (toast instanceof SystemToast) {
-            // Just ignoring system toast because it should've been transformed into system notification before
-            Log.info("Just ignoring system toast because it should've been transformed into system notification before");
-        }
-        // Catch all unique toasts here and warn
-        else if (toast != null) {
-            Log.warn("Failed to create a notification from toast: {} ({})", toast.getClass(), toast);
+        if (toast != null) {
+            Log.warn("Registered non supported toast");
+            Log.info("Using vanilla toast system for {}", toast.getClass().getSimpleName());
         } else {
-            Log.warn("Null toast???");
+            Log.error("Ugh... null toast?");
         }
     }
 
-    @Inject(at = @At("HEAD"), method = "clear", cancellable = true)
+    @Inject(at = @At("HEAD"), method = "clear")
     private void onCleared(CallbackInfo info) {
-        info.cancel();
-
         FancyNotify.getInstance().getNotificationManager().clear();
     }
 
-    @Inject(at = @At("HEAD"), method = "render", cancellable = true)
+    @Inject(at = @At("HEAD"), method = "render")
     private void onRendered(GuiGraphics guiGraphics, CallbackInfo info) {
-        info.cancel();
-
         NotificationManager manager = FancyNotify.getInstance().getNotificationManager();
         manager.update();
         manager.render(guiGraphics);
