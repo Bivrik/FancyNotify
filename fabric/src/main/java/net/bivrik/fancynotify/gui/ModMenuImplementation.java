@@ -1,4 +1,4 @@
-package net.bivrik.fancynotify.notification;
+package net.bivrik.fancynotify.gui;
 
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;

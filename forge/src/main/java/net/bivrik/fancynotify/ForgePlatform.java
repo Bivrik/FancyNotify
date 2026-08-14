@@ -1,7 +1,7 @@
 package net.bivrik.fancynotify;
 
 import net.bivrik.fancynotify.core.Constants;
-import net.bivrik.fancynotify.notification.ForgeConfigScreen;
+import net.bivrik.fancynotify.gui.ForgeConfigScreen;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 

@@ -1,4 +1,4 @@
-package net.bivrik.fancynotify.notification;
+package net.bivrik.fancynotify.gui;
 
 import net.bivrik.fancynotify.core.ConfigScreenProvider;
 import net.neoforged.fml.ModLoadingContext;
