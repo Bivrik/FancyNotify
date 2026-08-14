@@ -50,7 +50,6 @@ public class SettingsScreen extends UniversalScreen {
     private CycleButton<GeneralConfig.Orientation> orientationCycleButton;
     private CycleButton<GeneralConfig.Anchor> anchorCycleButton;
     private CycleButton<Boolean> particlesCycleButton;
-    private CycleButton<Boolean> debugCycleButton;
     private CycleButton<GeneralConfig.Animation> animationCycleButton;
     private Slider animationDurationSlider;
     private Button createDummyButton;
