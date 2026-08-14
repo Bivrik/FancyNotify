@@ -3,6 +3,10 @@ plugins {
     id 'net.neoforged.moddev'
 }
 
+base {
+    archivesName = "${mod_id}-${project.name}-${minecraft_version}"
+}
+
 neoForge {
     version = neoforge_version
     def at = project(':common').file('src/main/resources/META-INF/accesstransformer.cfg')
@@ -33,6 +37,10 @@ neoForge {
             sourceSet sourceSets.main
         }
     }
+}
+
+jar {
+    destinationDirectory = rootProject.file('build/libs')
 }
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }
