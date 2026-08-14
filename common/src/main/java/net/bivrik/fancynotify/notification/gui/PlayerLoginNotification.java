@@ -12,13 +12,14 @@ import java.awt.*;
 
 public class PlayerLoginNotification extends Notification {
     private static final ResourceLocation BACKGROUND = ResourceLocations.of("notifications/player_login");
+    private static final Component MESSAGE = Component.translatable("fancynotify.gui.player_login.message");
     private static final int COLOR = Color.yellow.getRGB();
 
     private final ResourceLocation playerTexture;
     private final boolean hasHat;
 
     public PlayerLoginNotification(NotificationManager manager, String playerName, ResourceLocation playerTextures, boolean hasHat) {
-        super(manager, Component.literal(playerName), Component.literal("Joined!"));
+        super(manager, Component.literal(playerName), MESSAGE);
 
         this.playerTexture = playerTextures;
         this.hasHat = hasHat;

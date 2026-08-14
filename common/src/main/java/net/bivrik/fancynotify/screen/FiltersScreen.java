@@ -12,16 +12,16 @@ import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 
 public class FiltersScreen extends UniversalScreen {
-    private static final Component TITLE = Component.literal("Notifications Filter");
-    private static final Component ADVANCEMENTS_NOTIFICATION_TITLE = Component.literal("Advancement's");
-    private static final Component RECIPES_NOTIFICATION_TITLE = Component.literal("Recipe's");
-    private static final Component MUSIC_NOTIFICATION_TITLE = Component.literal("Music's");
-    private static final Component SCREENSHOT_NOTIFICATION_TITLE = Component.literal("Screenshot's");
-    private static final Component SYSTEM_NOTIFICATION_TITLE = Component.literal("System's");
-    private static final Component WEATHER_NOTIFICATION_TITLE = Component.literal("Weather's");
-    private static final Component BIOME_NOTIFICATION_TITLE = Component.literal("Biome's");
-    private static final Component PLAYER_LOGIN_NOTIFICATION_TITLE = Component.literal("Player Login's");
-    private static final Component PLAYER_LOGIN_NOTIFICATION_TOOLTIP = Component.literal("This notification is unstable! Is not recommended on servers with big online.");
+    private static final Component TITLE = Component.translatable("fancynotify.title.filters");
+    private static final Component ADVANCEMENTS_NOTIFICATION_TITLE = Component.translatable("fancynotify.label.advancements");
+    private static final Component RECIPES_NOTIFICATION_TITLE = Component.translatable("fancynotify.label.recipes");
+    private static final Component MUSIC_NOTIFICATION_TITLE = Component.translatable("fancynotify.label.musics");
+    private static final Component SCREENSHOT_NOTIFICATION_TITLE = Component.translatable("fancynotify.label.screenshots");
+    private static final Component SYSTEM_NOTIFICATION_TITLE = Component.translatable("fancynotify.label.systems");
+    private static final Component WEATHER_NOTIFICATION_TITLE = Component.translatable("fancynotify.label.weathers");
+    private static final Component BIOME_NOTIFICATION_TITLE = Component.translatable("fancynotify.label.biomes");
+    private static final Component PLAYER_LOGIN_NOTIFICATION_TITLE = Component.translatable("fancynotify.label.player_logins");
+    private static final Component PLAYER_LOGIN_NOTIFICATION_TOOLTIP = Component.translatable("fancynotify.tooltip.player_logins");
 
     private final ConfigManager configManager;
 

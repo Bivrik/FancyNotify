@@ -15,14 +15,14 @@ import java.util.Objects;
 
 public class RecipeNotification extends ExpandableNotification {
     private static final ResourceLocation BACKGROUND = ResourceLocations.of("notifications/recipe");
-    private static final Component TITLE_TEXT = Component.translatable("recipe.toast.title");
-    private static final Component DESCRIPTION_TEXT = Component.translatable("recipe.toast.description");
+    private static final Component TITLE = Component.translatable("recipe.toast.title");
+    private static final Component MESSAGE = Component.translatable("recipe.toast.description");
 
     private final List<RecipeHolder<?>> recipes = new ArrayList<>();
     private final int color = new Color(119, 0, 119).getRGB();
 
     public RecipeNotification(NotificationManager manager, RecipeHolder<?> recipe) {
-        super(manager, TITLE_TEXT, DESCRIPTION_TEXT);
+        super(manager, TITLE, MESSAGE);
 
         recipes.add(recipe);
     }

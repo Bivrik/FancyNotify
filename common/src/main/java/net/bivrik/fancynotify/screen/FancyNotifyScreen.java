@@ -11,6 +11,7 @@ import net.minecraft.client.gui.screens.ConfirmLinkScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
@@ -20,10 +21,13 @@ import java.util.List;
 
 public class FancyNotifyScreen extends UniversalScreen {
     private static final Component TITLE = Component.literal(Constants.MOD_NAME);
-    private static final Component GITHUB_LABEL = Component.literal("With love and care from Bivrik, enjoy!");
-    private static final Component DISCORD_TOOLTIP = Component.literal("Discord server Bivrik's Palace");
-    private static final Component BOOSTY_TOOLTIP = Component.literal("Boosty to support me <3");
-    private static final Component YOUTUBE_TOOLTIP = Component.literal("Youtube channel with showcases and other stuff");
+    private static final Component SETTINGS_LABEL = Component.translatable("fancynotify.label.settings");
+    private static final Component FILTERS_LABEL = Component.translatable("fancynotify.label.filters");
+    private static final Component CREDITS_LABEL = Component.translatable("fancynotify.label.credits");
+    private static final Component GITHUB_LABEL = Component.translatable("fancynotify.label.creator_note");
+    private static final Component DISCORD_TOOLTIP = Component.translatable("fancynotify.tooltip.discord");
+    private static final Component BOOSTY_TOOLTIP = Component.translatable("fancynotify.tooltip.boosty");
+    private static final Component YOUTUBE_TOOLTIP = Component.translatable("fancynotify.tooltip.youtube");
     private static final URI GITHUB_URI = URI.create("https://github.com/Bivrik");
     private static final URI DISCORD_URI = URI.create("https://discord.gg/9XuRDgbbZe");
     private static final URI BOOSTY_URI = URI.create("https://boosty.to/bivrik");
@@ -51,13 +55,13 @@ public class FancyNotifyScreen extends UniversalScreen {
         backButton = Button.builder(CommonComponents.GUI_BACK, button -> setScreen(parent)).bounds(this.width / 2 - Button.BIG_WIDTH / 2, this.height / 2 + 4 + Button.DEFAULT_HEIGHT + 8, Button.BIG_WIDTH, Button.DEFAULT_HEIGHT).build();
         addSimpleWidget(backButton);
 
-        settingsButton = Button.builder(Component.literal("Settings..."), button -> setScreen(new SettingsScreen(this))).bounds(this.width / 2 - Button.BIG_WIDTH / 2, this.height / 2 - Button.DEFAULT_HEIGHT - 4, Button.BIG_WIDTH, Button.DEFAULT_HEIGHT).build();
+        settingsButton = Button.builder(SETTINGS_LABEL, button -> setScreen(new SettingsScreen(this))).bounds(this.width / 2 - Button.BIG_WIDTH / 2, this.height / 2 - Button.DEFAULT_HEIGHT - 4, Button.BIG_WIDTH, Button.DEFAULT_HEIGHT).build();
         addSimpleWidget(settingsButton);
 
-        filtersButton = Button.builder(Component.literal("Filters..."), button -> setScreen(new FiltersScreen(this))).bounds(this.width / 2 - 100, this.height / 2 + 4, 96, Button.DEFAULT_HEIGHT).build();
+        filtersButton = Button.builder(FILTERS_LABEL, button -> setScreen(new FiltersScreen(this))).bounds(this.width / 2 - 100, this.height / 2 + 4, 96, Button.DEFAULT_HEIGHT).build();
         addSimpleWidget(filtersButton);
 
-        creditsButton = Button.builder(Component.literal("Credits"), button -> setScreen(new CreditsScreen(this))).bounds(this.width / 2 + 4, this.height / 2 + 4, 96, Button.DEFAULT_HEIGHT).build();
+        creditsButton = Button.builder(CREDITS_LABEL, button -> setScreen(new CreditsScreen(this))).bounds(this.width / 2 + 4, this.height / 2 + 4, 96, Button.DEFAULT_HEIGHT).build();
         addSimpleWidget(creditsButton);
 
         List<ImageButton> linkButtons = new ArrayList<>();

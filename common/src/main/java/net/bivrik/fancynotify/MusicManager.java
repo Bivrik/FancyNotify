@@ -21,7 +21,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 public class MusicManager {
-    private static final Component FALLBACK_MESSAGE = Component.literal("is playing...");
+    private static final Component FALLBACK_MESSAGE = Component.translatable("fancynotify.gui.music.message");
 
     private final Options options;
     private final NotificationManager notificationManager;

@@ -13,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class CreditsScreen extends UniversalScreen {
     private static final ResourceLocation VIGNETTE_LOCATION = ResourceLocation.withDefaultNamespace("textures/misc/credits_vignette.png");
-    private static final Component TITLE = Component.literal("Credits");
+    private static final Component TITLE = Component.translatable("fancynotify.title.credits");
 
     private final CreditsManager.CreditsData creditsData;
 

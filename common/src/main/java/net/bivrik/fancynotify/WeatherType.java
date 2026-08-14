@@ -1,5 +1,6 @@
 package net.bivrik.fancynotify;
 
+import net.bivrik.fancynotify.core.Constants;
 import net.bivrik.fancynotify.utility.ResourceLocations;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -13,7 +14,7 @@ public enum WeatherType {
     private final ResourceLocation icon;
 
     WeatherType(String name) {
-        this.displayName = Component.translatable("fancynotify.gui.weather." + name);
+        this.displayName = Component.translatable(Constants.MOD_ID + ".gui.weather." + name);
         this.icon = ResourceLocations.of("icons/" + name);
     }
 
