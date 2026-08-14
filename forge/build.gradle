@@ -4,17 +4,11 @@ plugins {
     id 'org.spongepowered.mixin'
 }
 
-base {
-    archivesName = "${mod_id}-${project.name}-${minecraft_version}"
-}
-
 mixin {
     config("${mod_id}.mixins.json")
 }
 
 jar {
-    destinationDirectory = rootProject.file('build/libs')
-
     manifest {
         attributes["MixinConfigs"] = "${mod_id}.mixins.json"
     }

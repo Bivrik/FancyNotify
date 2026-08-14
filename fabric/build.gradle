@@ -3,10 +3,6 @@ plugins {
     id 'fabric-loom'
 }
 
-base {
-    archivesName = "${mod_id}-${project.name}-${minecraft_version}"
-}
-
 dependencies {
     minecraft "com.mojang:minecraft:${minecraft_version}"
     mappings loom.layered {
@@ -20,6 +16,7 @@ dependencies {
 
 remapJar {
     destinationDirectory = rootProject.file('build/libs')
+    archiveVersion = ""
 }
 
 loom {
