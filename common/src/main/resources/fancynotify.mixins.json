@@ -14,10 +14,7 @@
     "ScreenshotMixin",
     "SystemToastMixin",
     "ToastComponentMixin",
-    "TutorialMixin",
-    "accessor.AdvancementToastMixinAccessor",
-    "accessor.TutorialToastMixinAccessor",
-    "accessor.WeighedSoundEventsMixinAccessor"
+    "accessor.AdvancementToastMixinAccessor"
   ],
   "server": [],
   "injectors": {
