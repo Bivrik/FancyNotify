@@ -1,6 +1,5 @@
 package net.bivrik.fancynotify.notification;
 
-import net.bivrik.fancynotify.core.Log;
 import net.minecraft.client.Minecraft;
 
 public class NotificationStateMachine {
@@ -60,8 +59,6 @@ public class NotificationStateMachine {
     }
 
     private void changeState(NotificationState state, float timingTicks) {
-        Log.info("[{}] New state: {}", timingTicks, state);
-
         this.state = state;
         this.timingTicks = timingTicks;
 

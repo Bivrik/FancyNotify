@@ -23,7 +23,7 @@ public final class EventBus implements IEventBus {
                 Class<? extends Event> eventType = getEventType(method);
                 EventSubscriber subscriber = new EventSubscriber(listener, method, eventType);
                 eventSubscribers.computeIfAbsent(eventType, v -> new CopyOnWriteArrayList<>()).add(subscriber);
-                Log.info("Registered method " + method.getName() + " (" + listener.getClass().getSimpleName() + ") for " + eventType.getSimpleName() + " (" + eventSubscribers.get(eventType).size() + ")");
+                //Log.info("Registered method " + method.getName() + " (" + listener.getClass().getSimpleName() + ") for " + eventType.getSimpleName() + " (" + eventSubscribers.get(eventType).size() + ")");
             }
         }
         if (temp >= MAX) {
@@ -57,7 +57,7 @@ public final class EventBus implements IEventBus {
         for (var entry : eventSubscribers.entrySet()) {
             List<EventSubscriber> subscribers = entry.getValue();
             subscribers.removeIf(subscriber -> subscriber.getTarget() == listener);
-            Log.info("Unregistered (" + listener.getClass().getSimpleName() + ") from " + entry.getKey() + " (" + subscribers.size() + ")");
+            //Log.info("Unregistered (" + listener.getClass().getSimpleName() + ") from " + entry.getKey() + " (" + subscribers.size() + ")");
             if (subscribers.isEmpty()) {
                 eventSubscribers.remove(entry.getKey(), subscribers);
             }
@@ -71,15 +71,15 @@ public final class EventBus implements IEventBus {
             return;
         }
 
-        printDebugInfo();
-        int before = subscribers.size();
+        //printDebugInfo();
+        //int before = subscribers.size();
 
         subscribers.removeIf(subscriber -> !subscriber.invoke(event));
         if (subscribers.isEmpty()) {
             eventSubscribers.remove(event.getClass());
         }
 
-        Log.info("Sent " + event.getClass().getSimpleName() + " (from " + before + " to " + subscribers.size() + ")");
+        //Log.info("Sent " + event.getClass().getSimpleName() + " (from " + before + " to " + subscribers.size() + ")");
     }
 
     @Override

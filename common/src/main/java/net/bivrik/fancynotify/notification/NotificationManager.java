@@ -180,7 +180,7 @@ public class NotificationManager {
             if (next != null) {
                 Position position = computePosition(next);
                 currentNotifications.add(new NotificationHolder(next, position.x(), position.y()));
-                Log.info("Showing next notification");
+                Log.info("Showing next " + next.getClass().getSimpleName());
             }
         }
     }
@@ -270,7 +270,6 @@ public class NotificationManager {
                 oldX = this.x;
                 newX = x;
                 xLastChangedTicks = timeTicks;
-                Log.info("Updated X (new " + this.x + ", current " + x + ")");
             }
         }
 
@@ -283,7 +282,6 @@ public class NotificationManager {
                 oldY = this.y;
                 newY = y;
                 yLastChangedTicks = timeTicks;
-                Log.info("Updated Y (new " + this.y + ", current " + y + ")");
             }
         }
 

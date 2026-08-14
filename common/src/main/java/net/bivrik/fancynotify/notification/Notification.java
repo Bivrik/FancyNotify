@@ -8,7 +8,6 @@ import net.bivrik.fancynotify.FancyNotify;
 import net.bivrik.fancynotify.config.ConfigManager;
 import net.bivrik.fancynotify.config.FiltersConfig;
 import net.bivrik.fancynotify.config.GeneralConfig;
-import net.bivrik.fancynotify.core.Log;
 import net.bivrik.fancynotify.eventbus.SubscribeEvent;
 import net.bivrik.fancynotify.eventbus.event.NotificationWidthChangedEvent;
 import net.bivrik.fancynotify.particle.Particle2DEngine;
@@ -80,7 +79,6 @@ public abstract class Notification implements NotificationStateMachine.Listener 
     public void onNotificationWidthChanged(NotificationWidthChangedEvent event) {
         width = event.getWidth();
         wrappedMessage = getWrappedText(message);
-        Log.info("New width is " + width);
     }
 
     protected final Component getTitle() {

@@ -6,6 +6,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
+import org.slf4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,6 +16,8 @@ import java.util.Optional;
 import java.util.Random;
 
 public class SplashesManager {
+    private static final Logger LOGGER = Log.getSpecificLogger(SplashesManager.class);
+
     private static final ResourceLocation SPLASHES_LOCATION = ResourceLocations.of("splashes.txt");
     private static final Random RANDOM = new Random();
 
@@ -27,7 +30,7 @@ public class SplashesManager {
     private void readSplashes(ResourceManager resourceManager) {
         Optional<Resource> optionalResource = resourceManager.getResource(SPLASHES_LOCATION);
         if (optionalResource.isEmpty()) {
-            Log.warn("Could not read splashes, because there are no splashes");
+            LOGGER.warn("Could not read splashes, because there are no splashes");
             return;
         }
 
@@ -35,13 +38,13 @@ public class SplashesManager {
             BufferedReader reader = new BufferedReader(optionalResource.get().openAsReader());
             splashes.addAll(reader.lines().toList());
         } catch (IOException e) {
-            Log.error("Could not read splashes: {}", e);
+            LOGGER.error("Could not read splashes:", e);
         }
     }
 
     public String getSplash() {
         if (splashes.isEmpty()) {
-            Log.warn("Could not get a splash, because splashes are empty");
+            LOGGER.warn("Could not get a splash, because splashes are empty");
             return "";
         }
 

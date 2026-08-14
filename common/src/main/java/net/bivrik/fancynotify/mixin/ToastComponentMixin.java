@@ -21,8 +21,7 @@ public class ToastComponentMixin {
     @Inject(at = @At("HEAD"), method = "addToast", cancellable = true)
     private void onAddedToast(Toast toast, CallbackInfo info) {
         if (toast != null) {
-            Log.warn("Registered non supported toast");
-            Log.info("Using vanilla toast system for {}", toast.getClass().getSimpleName());
+            Log.info("Registered unsupported toast. Using vanilla toast system for {}", toast.getClass().getSimpleName());
         } else {
             info.cancel();
             Log.error("Ugh... null toast?");

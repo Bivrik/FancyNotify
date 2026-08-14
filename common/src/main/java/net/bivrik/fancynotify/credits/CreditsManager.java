@@ -3,6 +3,7 @@ package net.bivrik.fancynotify.credits;
 import com.google.gson.Gson;
 import net.bivrik.fancynotify.core.Log;
 import net.bivrik.fancynotify.utility.JsonHelper;
+import org.slf4j.Logger;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -18,6 +19,8 @@ import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
 public class CreditsManager {
+    private static final Logger LOGGER = Log.getSpecificLogger(CreditsManager.class);
+    
     private static final String COMMON_CREDITS_URL = "https://cdn.jsdelivr.net/gh/Bivrik/ModsCredits@master/credits/common.json";
     private static final String CREDITS_URL = "https://cdn.jsdelivr.net/gh/Bivrik/ModsCredits@master/credits/mods/fancynotify.json";
     private static final int CACHE_VALIDITY_HOURS = 6;
@@ -41,7 +44,7 @@ public class CreditsManager {
 
     public CreditsData getCredits() {
         if (credits == null) {
-            Log.warn("Could not access credits because they are null. Hardcoded fallback");
+            LOGGER.warn("Could not access credits because they are null. Hardcoded fallback");
             return getHardcodedFallback();
         }
 
@@ -69,13 +72,13 @@ public class CreditsManager {
             }
             return credits;
         }).exceptionally(e -> {
-            Log.error("Failed to load credits data: {}", e);
+            LOGGER.error("Failed to load credits data:", e);
             return null;
         });
     }
 
     private CreditsData loadCredits(String path, String url) {
-        Log.info("Reading credits from cache '{}'...", path);
+        LOGGER.info("Reading credits from cache '{}'...", path);
 
         boolean isDateOutdated = false;
         CreditsData fallback = null;
@@ -89,19 +92,19 @@ public class CreditsManager {
                 Instant currentDate = Instant.now();
 
                 if (ChronoUnit.HOURS.between(cacheDate, currentDate) <= CACHE_VALIDITY_HOURS + 1) {
-                    Log.info("Successfully read credits");
+                    LOGGER.info("Successfully read credits");
                     return credits;
                 } else {
-                    Log.info("Cache is not valid anymore due to time");
+                    LOGGER.info("Cache is not valid anymore due to time");
                     isDateOutdated = true;
                     fallback = credits;
                 }
             }
         } else {
-            Log.info("There is no cache yet");
+            LOGGER.info("There is no cache yet");
         }
 
-        Log.info("Failed to read cache");
+        LOGGER.info("Failed to read cache");
 
         CreditsData online = readOnlineCredits(path, url);
         if (online == null && isDateOutdated) {
@@ -112,7 +115,7 @@ public class CreditsManager {
     }
 
     private CreditsData readOnlineCredits(String path, String url) {
-        Log.info("Reading credits from host '{}'...", url);
+        LOGGER.info("Reading credits from host '{}'...", url);
 
         URI uri = URI.create(url);
         HttpResponse<String> response;
@@ -130,26 +133,26 @@ public class CreditsManager {
 
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (IOException | InterruptedException e) {
-            Log.error("Failed to access host to get credits: {}", e.getMessage());
+            LOGGER.error("Failed to access host to get credits: {}", e.getMessage());
             return null;
         }
 
         // Verifying response and getting body (value) from it
         try {
             if (response.statusCode() != 200) {
-                Log.error("Failed response status: {}", response.statusCode());
+                LOGGER.error("Failed response status: {}", response.statusCode());
                 return null;
             }
 
             responseValue = response.body();
         } catch (Exception e) {
-            Log.error("Failed to access a response from host: {}", e.getMessage());
+            LOGGER.error("Failed to access a response from host: {}", e.getMessage());
             return null;
         }
 
         // How and why
         if (responseValue == null) {
-            Log.error("Response equals null. Ugh...");
+            LOGGER.error("Response equals null. Ugh...");
             return null;
         }
 
@@ -161,15 +164,15 @@ public class CreditsManager {
             Gson gson = new Gson();
             gson.toJson(credits, writer);
         } catch (Exception e) {
-            Log.error("Could not write json file {}: {}", jsonFile.getName(), e.getMessage());
+            LOGGER.error("Could not write json file {}: {}", jsonFile.getName(), e.getMessage());
         }
 
-        Log.info("Successfully read credits");
+        LOGGER.info("Successfully read credits");
         return credits;
     }
 
     public CreditsData getHardcodedFallback() {
-        Log.info("Returning hardcoded fallback for credits");
+        LOGGER.info("Returning hardcoded fallback for credits");
 
         CreditsData data = new CreditsData();
         data.addCategory("credits_fallback", data.addUsers(

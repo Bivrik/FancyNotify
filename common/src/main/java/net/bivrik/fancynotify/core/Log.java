@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
  */
 public final class Log {
     private Log() {}
+
     /**
      * Standard logger with constant mod id that is used by default.
      */

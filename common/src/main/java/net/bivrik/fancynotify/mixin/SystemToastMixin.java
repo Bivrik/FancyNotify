@@ -1,7 +1,6 @@
 package net.bivrik.fancynotify.mixin;
 
 import net.bivrik.fancynotify.FancyNotify;
-import net.bivrik.fancynotify.core.Log;
 import net.bivrik.fancynotify.notification.NotificationManager;
 import net.bivrik.fancynotify.notification.gui.SystemNotification;
 import net.minecraft.client.Minecraft;
@@ -49,13 +48,11 @@ public class SystemToastMixin {
 
         NotificationManager manager = FancyNotify.getInstance().getNotificationManager();
         manager.remove(SystemNotification.class, SystemNotification.Identifier.fromSystemToastId(id));
-        Log.info("[!] Forced to hide FREAKING system notification");
     }
 
     @Unique
     private static void fancyNotify$add(SystemToast.SystemToastId id, Component title, Component message) {
         NotificationManager manager = FancyNotify.getInstance().getNotificationManager();
         manager.add(new SystemNotification(manager, SystemNotification.Identifier.fromSystemToastId(id), title, message));
-        Log.info("[!] Added new FREAKING system notification");
     }
 }
