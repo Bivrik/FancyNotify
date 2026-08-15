@@ -72,7 +72,7 @@ public abstract class Notification implements NotificationStateMachine.Listener 
     }
 
     private List<FormattedCharSequence> getWrappedText(@NotNull Component text) {
-        return minecraft.font.split(text, getWidth() - 36);
+        return minecraft.font.split(text, getWidth() - 7 - getTextOffset());
     }
 
     @SubscribeEvent
