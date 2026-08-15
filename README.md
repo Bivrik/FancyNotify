@@ -1,4 +1,4 @@
-> Version 1.4.7 - Minecraft 1.21.1
+> Version 1.0.0 - Minecraft 1.21.1
 
 # Fancy Notify
 
