@@ -7,7 +7,7 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.Entity;
@@ -22,7 +22,7 @@ public class BiomeManager {
     // maybe check biome specific first
     // then check for tags
     // and in the end to default icon if nothing is found
-    private static final Map<TagKey<Biome>, ItemStack> TAGS_ICONS = Map.ofEntries(
+    /*private static final Map<TagKey<Biome>, ItemStack> TAGS_ICONS = Map.ofEntries(
             Map.entry(BiomeTags.IS_FOREST, new ItemStack(Items.OAK_SAPLING)),
             Map.entry(BiomeTags.IS_BADLANDS, new ItemStack(Items.TERRACOTTA)),
             Map.entry(BiomeTags.IS_BEACH, new ItemStack(Items.SAND)),
@@ -68,7 +68,7 @@ public class BiomeManager {
             }
 
             currentBiome = biomeHolder.value();
-            ResourceLocation biomeId = biomeHolder.unwrap().map(ResourceKey::location, null);
+            Identifier biomeId = biomeHolder.unwrap().map(ResourceKey::identifier, null);
             Component biomeName = getBiomeComponent(biomeId, currentBiome);
             ItemStack icon = DEFAULT_ICON;
             for (var entry : TAGS_ICONS.entrySet()) {
@@ -81,14 +81,14 @@ public class BiomeManager {
         }
     }
 
-    private Component getBiomeComponent(ResourceLocation id, Biome biome) {
+    private Component getBiomeComponent(Identifier id, Biome biome) {
         if (id == null) {
             return Component.translatable("fancynotify.gui.biome.unknown", Component.literal(biome.toString()));
         }
         return locationToTitle(id);
     }
 
-    private @NotNull Component locationToTitle(ResourceLocation location) {
+    private @NotNull Component locationToTitle(Identifier location) {
         String title = location.getPath();
         StringBuilder output = new StringBuilder(title.length());
         boolean isNextCharCapitalized = true;
@@ -102,5 +102,5 @@ public class BiomeManager {
         return Component.literal(output.toString());
     }
 
-
+*/
 }

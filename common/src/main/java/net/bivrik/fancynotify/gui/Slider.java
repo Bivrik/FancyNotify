@@ -2,6 +2,7 @@ package net.bivrik.fancynotify.gui;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractSliderButton;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.client.sounds.SoundManager;
 import net.minecraft.network.chat.CommonComponents;
@@ -33,8 +34,8 @@ public class Slider extends AbstractSliderButton {
     }
 
     @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        boolean clicked = super.mouseClicked(mouseX, mouseY, button);
+    public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
+        boolean clicked = super.mouseClicked(event, doubleClick);
 
         if (clicked) {
             isPressed = true;
@@ -44,11 +45,13 @@ public class Slider extends AbstractSliderButton {
     }
 
     @Override
-    public void onRelease(double mouseX, double mouseY) {
+    public void onRelease(MouseButtonEvent event) {
         if (isPressed) {
             playSound(Minecraft.getInstance().getSoundManager());
         }
         isPressed = false;
+
+        super.onRelease(event);
     }
 
     private void playSound(SoundManager soundManager) {

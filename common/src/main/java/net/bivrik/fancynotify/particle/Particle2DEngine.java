@@ -3,8 +3,10 @@ package net.bivrik.fancynotify.particle;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.bivrik.fancynotify.config.ConfigManager;
 import net.bivrik.fancynotify.config.GeneralConfig;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
+import org.joml.Matrix3x2fStack;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -16,11 +18,11 @@ public class Particle2DEngine {
     private static final Random RANDOM = new Random();
 
     private final List<Particle2D> particles = new ArrayList<>();
-    private final Options options;
+    private final Minecraft minecraft;
     private final GeneralConfig generalConfig;
 
-    public Particle2DEngine(Options options, ConfigManager configManager) {
-        this.options = options;
+    public Particle2DEngine(Minecraft minecraft, ConfigManager configManager) {
+        this.minecraft = minecraft;
         this.generalConfig = configManager.getGeneralConfig();
     }
 
@@ -87,19 +89,19 @@ public class Particle2DEngine {
     }
 
     // Better do batching in the future, but it's fine for now
-    public void render(GuiGraphics guiGraphics, float partialTick) {
-        if (particles.isEmpty() || options.hideGui) {
+    public void render(GuiGraphicsExtractor guiGraphicsExtractor, float partialTick) {
+        if (particles.isEmpty() || minecraft.gui.hud.isHidden()) {
             return;
         }
 
-        PoseStack stack = guiGraphics.pose();
-        stack.pushPose();
-        stack.translate(0, 0, 1200);
+        Matrix3x2fStack stack = guiGraphicsExtractor.pose();
+        stack.pushMatrix();
+        stack.translate(0, 0);
         synchronized (particles) {
             for (Particle2D particle : particles) {
-                particle.render(guiGraphics, partialTick);
+                particle.render(guiGraphicsExtractor, partialTick);
             }
         }
-        stack.popPose();
+        stack.popMatrix();
     }
 }

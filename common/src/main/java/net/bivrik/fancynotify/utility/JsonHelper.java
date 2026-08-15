@@ -3,7 +3,7 @@ package net.bivrik.fancynotify.utility;
 import com.google.gson.*;
 import net.bivrik.fancynotify.config.Setting;
 import net.bivrik.fancynotify.core.Log;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import java.io.File;
 import java.io.FileReader;
@@ -17,18 +17,18 @@ public final class JsonHelper {
 
     public static final Gson GSON = new GsonBuilder()
             .setPrettyPrinting()
-            .registerTypeAdapter(ResourceLocation.class, new ResourceLocationAdapter())
+            .registerTypeAdapter(Identifier.class, new IdentifierAdapter())
             .registerTypeAdapter(Setting.class, new SettingAdapter())
             .create();
 
-    private static class ResourceLocationAdapter implements JsonSerializer<ResourceLocation>, JsonDeserializer<ResourceLocation> {
+    private static class IdentifierAdapter implements JsonSerializer<Identifier>, JsonDeserializer<Identifier> {
         @Override
-        public ResourceLocation deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-            return ResourceLocation.parse(json.getAsString());
+        public Identifier deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+            return Identifier.parse(json.getAsString());
         }
 
         @Override
-        public JsonElement serialize(ResourceLocation source, Type typeOfSource, JsonSerializationContext context) {
+        public JsonElement serialize(Identifier source, Type typeOfSource, JsonSerializationContext context) {
             return new JsonPrimitive(source.toString());
         }
     }

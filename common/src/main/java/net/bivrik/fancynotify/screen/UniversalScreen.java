@@ -1,6 +1,6 @@
 package net.bivrik.fancynotify.screen;
 
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
@@ -23,7 +23,7 @@ public class UniversalScreen extends Screen {
     }
 
     protected void setScreen(Screen screen) {
-        Objects.requireNonNull(this.minecraft).setScreen(screen);
+        Objects.requireNonNull(this.minecraft).setScreenAndShow(screen);
     }
 
     protected <T extends GuiEventListener & Renderable & NarratableEntry> T addSimpleWidget(T widget) {
@@ -57,21 +57,21 @@ public class UniversalScreen extends Screen {
     }
 
     @Override
-    public void render(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-        this.renderBackground(guiGraphics, mouseX, mouseY, partialTick);
-        drawRenderables(guiGraphics, mouseX, mouseY, partialTick);
-        drawTitle(guiGraphics);
+    public void extractRenderState(@NotNull GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTick) {
+        this.extractBackground(graphics, mouseX, mouseY, partialTick);
+        drawRenderables(graphics, mouseX, mouseY, partialTick);
+        drawTitle(graphics);
     }
 
-    protected void drawRenderables(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+    protected void drawRenderables(GuiGraphicsExtractor GuiGraphicsExtractor, int mouseX, int mouseY, float partialTick) {
         for (Renderable renderable : renderables) {
-            renderable.render(guiGraphics, mouseX, mouseY, partialTick);
+            renderable.extractRenderState(GuiGraphicsExtractor, mouseX, mouseY, partialTick);
         }
     }
 
-    protected void drawTitle(GuiGraphics guiGraphics) {
+    protected void drawTitle(GuiGraphicsExtractor GuiGraphicsExtractor) {
         int xCenter = this.width / 2;
         int yOffset = 12;
-        guiGraphics.drawCenteredString(this.font, this.title, xCenter, yOffset, -1);
+        GuiGraphicsExtractor.centeredText(this.font, this.title, xCenter, yOffset, -1);
     }
 }

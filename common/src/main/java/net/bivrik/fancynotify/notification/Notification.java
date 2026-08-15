@@ -13,15 +13,16 @@ import net.bivrik.fancynotify.eventbus.event.NotificationWidthChangedEvent;
 import net.bivrik.fancynotify.particle.Particle2DEngine;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.FormattedCharSequence;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Matrix3x2fStack;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -163,96 +164,54 @@ public abstract class Notification implements NotificationStateMachine.Listener 
 
     protected void onUpdate() {}
 
-    public final void render(GuiGraphics guiGraphics) {
+    public final void render(GuiGraphicsExtractor GuiGraphicsExtractor) {
         if (stateMachine.isInState(NotificationState.HIDDEN) || stateMachine.isInState(NotificationState.REMOVAL)) {
             return;
         }
 
         float halfWidth = getWidth() / 2.0f;
         float halfHeight = getHeight() / 2.0f;
-        PoseStack stack = guiGraphics.pose();
-        stack.pushPose();
-        stack.translate(halfWidth, halfHeight, 0);
-        stack.scale(animator.getScaleX(), animator.getScaleY(), 1);
-        stack.translate(-halfWidth, -halfHeight, 0);
-        stack.rotateAround(Axis.ZP.rotation(animator.getRotation()), halfWidth, halfHeight, 0);
-        stack.translate(animator.getX(), animator.getY(), 0);
-        draw(guiGraphics);
-        stack.popPose();
+        Matrix3x2fStack stack = GuiGraphicsExtractor.pose();
+        stack.pushMatrix();
+        stack.translate(halfWidth, halfHeight);
+        stack.scale(animator.getScaleX(), animator.getScaleY());
+        stack.translate(-halfWidth, -halfHeight);
+        stack.rotateAbout(animator.getRotation(), halfWidth, halfHeight);
+        stack.translate(animator.getX(), animator.getY());
+        draw(GuiGraphicsExtractor);
+        stack.popMatrix();
     }
 
-    protected abstract void draw(GuiGraphics guiGraphics);
+    protected abstract void draw(GuiGraphicsExtractor GuiGraphicsExtractor);
 
-    protected void drawSprite(GuiGraphics guiGraphics, ResourceLocation sprite, int x, int y, int width, int height) {
-        if (animator.getAlpha() == 1) {
-            guiGraphics.blitSprite(sprite, x, y, width, height);
-            return;
-        }
-
-        RenderSystem.enableBlend();
-        guiGraphics.setColor(1, 1, 1, animator.getAlpha());
-        guiGraphics.blitSprite(sprite, x, y, width, height);
-        guiGraphics.setColor(1, 1, 1, 1);
-        RenderSystem.disableBlend();
+    protected void drawSprite(GuiGraphicsExtractor GuiGraphicsExtractor, Identifier sprite, int x, int y, int width, int height) {
+        GuiGraphicsExtractor.blitSprite(RenderPipelines.GUI, sprite, x, y, width, height, animator.alpha);
     }
 
-    protected void drawTexture(GuiGraphics guiGraphics, ResourceLocation texture, int x, int y, int width, int height, int textureWidth, int textureHeight, int uOffset, int vOffset, int uWidth, int vHeight) {
-        if (animator.getAlpha() == 1) {
-            guiGraphics.blit(texture, x, y, width, height, uOffset, vOffset, uWidth, vHeight, textureWidth, textureHeight);
-            return;
-        }
-
-        RenderSystem.enableBlend();
-        guiGraphics.setColor(1, 1, 1, animator.getAlpha());
-        guiGraphics.blit(texture, x, y, width, height, uOffset, vOffset, uWidth, vHeight, textureWidth, textureHeight);
-        guiGraphics.setColor(1, 1, 1, 1);
-        RenderSystem.disableBlend();
+    protected void drawTexture(GuiGraphicsExtractor GuiGraphicsExtractor, Identifier texture, int x, int y, int width, int height, int textureWidth, int textureHeight, int uOffset, int vOffset, int uWidth, int vHeight) {
+        GuiGraphicsExtractor.blit(RenderPipelines.GUI, texture, x, y, width, height, uOffset, vOffset, uWidth, vHeight, textureWidth, textureHeight, (((int) (animator.alpha * 255)) << 24) | 0x00FFFFFF);
     }
 
-    protected void drawTexture(GuiGraphics guiGraphics, ResourceLocation texture, int x, int y, int width, int height, int textureWidth, int textureHeight, int uOffset, int vOffset) {
-        drawTexture(guiGraphics, texture, x, y, width, height, textureWidth, textureHeight, uOffset, vOffset, width, height);
+    protected void drawTexture(GuiGraphicsExtractor GuiGraphicsExtractor, Identifier texture, int x, int y, int width, int height, int textureWidth, int textureHeight, int uOffset, int vOffset) {
+        drawTexture(GuiGraphicsExtractor, texture, x, y, width, height, textureWidth, textureHeight, uOffset, vOffset, width, height);
     }
 
-    protected void drawTexture(GuiGraphics guiGraphics, ResourceLocation texture, int x, int y, int width, int height, int textureWidth, int textureHeight) {
-        drawTexture(guiGraphics, texture, x, y, width, height, textureWidth, textureHeight, 0, 0, width, height);
+    protected void drawTexture(GuiGraphicsExtractor GuiGraphicsExtractor, Identifier texture, int x, int y, int width, int height, int textureWidth, int textureHeight) {
+        drawTexture(GuiGraphicsExtractor, texture, x, y, width, height, textureWidth, textureHeight, 0, 0, width, height);
     }
 
-    protected void drawText(GuiGraphics guiGraphics, FormattedCharSequence text, int x, int y, int color) {
-        if (animator.getAlpha() == 1) {
-            guiGraphics.drawString(minecraft.font, text, x, y, color, false);
-            return;
-        }
-
-        // Am I not understanding something
-        // or why is it so complicated?
-        // I mean... why doesn't it work
-        // as intended from the start???
-        // Why without all of this there is a bug,
-        // when using guiGraphics.setColor(),
-        // it makes all the tooltips with the same color?
-        MultiBufferSource.BufferSource isolatedBuffer = MultiBufferSource.immediate(new ByteBufferBuilder(256));
-        int iAlpha = Math.max((int) (animator.getAlpha() * 255), 25);
-        int alphaColor = (iAlpha << 24) | (color & 0x00FFFFFF);
-        RenderSystem.enableBlend();
-        minecraft.font.drawInBatch(
-                text, x, y, alphaColor, false,
-                guiGraphics.pose().last().pose(),
-                isolatedBuffer,
-                Font.DisplayMode.NORMAL,
-                0, 15728880
-        );
-        isolatedBuffer.endBatch();
-        RenderSystem.disableBlend();
+    protected void drawText(GuiGraphicsExtractor GuiGraphicsExtractor, FormattedCharSequence text, int x, int y, int color) {
+        GuiGraphicsExtractor.text(minecraft.font, text, x, y, color, false);
     }
 
-    protected void drawText(GuiGraphics guiGraphics, Component text, int x, int y, int color) {
-        drawText(guiGraphics, text.getVisualOrderText(), x, y, color);
+    protected void drawText(GuiGraphicsExtractor GuiGraphicsExtractor, Component text, int x, int y, int color) {
+        drawText(GuiGraphicsExtractor, text.getVisualOrderText(), x, y, color);
     }
 
-    protected void drawMessage(GuiGraphics guiGraphics, int x, int y, int color) {
+    protected void drawMessage(GuiGraphicsExtractor GuiGraphicsExtractor, int x, int y, int color) {
         for (int i = 0; i < wrappedMessage.size(); i++) {
             FormattedCharSequence line = wrappedMessage.get(i);
-            drawText(guiGraphics, line, x, y + i * 9, color);
+            drawText(GuiGraphicsExtractor, line, x, y + i * 9, color);
         }
     }
 }

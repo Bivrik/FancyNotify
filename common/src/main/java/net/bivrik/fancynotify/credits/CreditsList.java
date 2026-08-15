@@ -3,9 +3,10 @@ package net.bivrik.fancynotify.credits;
 import net.bivrik.fancynotify.core.Constants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.AbstractSelectionList;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
+import net.minecraft.client.input.KeyEvent;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.glfw.GLFW;
@@ -26,7 +27,7 @@ public class CreditsList extends AbstractSelectionList<CreditsList.Entry> {
     }
 
     private void updateList(CreditsManager.CreditsData data) {
-        for (int i = 0; i < this.height / this.itemHeight + 2; i++) {
+        for (int i = 0; i < this.height / this.defaultEntryHeight + 2; i++) {
             addSpace();
         }
 
@@ -40,7 +41,7 @@ public class CreditsList extends AbstractSelectionList<CreditsList.Entry> {
             }
         }
 
-        for (int i = 0; i < this.height / this.itemHeight; i++) {
+        for (int i = 0; i < this.height / this.defaultEntryHeight; i++) {
             addSpace();
         }
 
@@ -67,43 +68,30 @@ public class CreditsList extends AbstractSelectionList<CreditsList.Entry> {
     }
 
     public void scroll() {
-        this.setScrollAmount(getScrollAmount() + scrollSpeed);
+        this.setScrollAmount(scrollAmount() + scrollSpeed);
 
-        if (getScrollAmount() == getMaxScroll()) {
+        if (scrollAmount() == maxScrollAmount()) {
             setScrollAmount(0);
         }
     }
 
     @Override
-    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-        if (keyCode == GLFW.GLFW_KEY_SPACE) {
+    public boolean keyPressed(KeyEvent event) {
+        if (event.key() == GLFW.GLFW_KEY_SPACE) {
             scrollSpeed = 1.2f;
         }
 
-        return super.keyPressed(keyCode, scanCode, modifiers);
+        return super.keyPressed(event);
     }
 
     @Override
-    public boolean keyReleased(int keyCode, int scanCode, int modifiers) {
-        if (keyCode == GLFW.GLFW_KEY_SPACE) {
+    public boolean keyReleased(KeyEvent event) {
+        if (event.key() == GLFW.GLFW_KEY_SPACE) {
             scrollSpeed = 0.4f;
         }
 
-        return super.keyReleased(keyCode, scanCode, modifiers);
+        return super.keyReleased(event);
     }
-
-    // Don't move bro, stop it
-    @Override
-    protected void renderListBackground(@NotNull GuiGraphics guiGraphics) {}
-
-    @Override
-    protected void renderListSeparators(@NotNull GuiGraphics guiGraphics) {}
-
-    @Override
-    protected boolean scrollbarVisible() {
-        return false;
-    }
-    //
 
     @Override
     protected void updateWidgetNarration(@NotNull NarrationElementOutput narrationElementOutput) {}
@@ -120,7 +108,7 @@ public class CreditsList extends AbstractSelectionList<CreditsList.Entry> {
         }
 
         @Override
-        public void render(@NotNull GuiGraphics guiGraphics, int index, int y, int x, int width, int height, int mouseX, int mouseY, boolean isHovering, float partialTick) {}
+        public void extractContent(@NotNull GuiGraphicsExtractor guiGraphicsExtractor, int mouseX, int mouseY, boolean isHovered, float partialTick) {}
     }
 
     private static class CategoryEntry extends Entry {
@@ -135,8 +123,8 @@ public class CreditsList extends AbstractSelectionList<CreditsList.Entry> {
         }
 
         @Override
-        public void render(@NotNull GuiGraphics guiGraphics, int index, int y, int x, int width, int height, int mouseX, int mouseY, boolean isHovering, float partialTick) {
-            guiGraphics.drawCenteredString(font, displayName, xCenter, y, Color.yellow.getRGB());
+        public void extractContent(@NotNull GuiGraphicsExtractor guiGraphicsExtractor, int mouseX, int mouseY, boolean isHovered, float partialTick) {
+            guiGraphicsExtractor.centeredText(font, displayName, xCenter, getY(), Color.yellow.getRGB());
         }
     }
 
@@ -157,11 +145,11 @@ public class CreditsList extends AbstractSelectionList<CreditsList.Entry> {
         }
 
         @Override
-        public void render(@NotNull GuiGraphics guiGraphics, int index, int y, int x, int width, int height, int mouseX, int mouseY, boolean isHovering, float partialTick) {
-            guiGraphics.drawString(this.font, this.content, x, y, Color.white.getRGB());
+        public void extractContent(@NotNull GuiGraphicsExtractor guiGraphicsExtractor, int mouseX, int mouseY, boolean isHovered, float partialTick) {
+            guiGraphicsExtractor.text(this.font, this.content, getX(), getY(), Color.white.getRGB());
 
             if (isValidAnnotation) {
-                guiGraphics.drawString(this.font, annotation, x + font.width(this.content) + 8, y, Color.lightGray.getRGB());
+                guiGraphicsExtractor.text(this.font, annotation, getX() + font.width(this.content) + 8, getY(), Color.lightGray.getRGB());
             }
         }
     }

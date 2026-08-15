@@ -3,11 +3,11 @@ package net.bivrik.fancynotify;
 import net.bivrik.fancynotify.core.Log;
 import net.bivrik.fancynotify.notification.NotificationManager;
 import net.bivrik.fancynotify.notification.gui.MusicNotification;
-import net.bivrik.fancynotify.utility.ResourceLocations;
+import net.bivrik.fancynotify.utility.Identifiers;
 import net.minecraft.client.Options;
 import net.minecraft.locale.Language;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundSource;
 
 public class MusicManager {
@@ -21,7 +21,7 @@ public class MusicManager {
         this.notificationManager = notificationManager;
     }
 
-    public void onStartedPlaying(ResourceLocation musicId) {
+    public void onStartedPlaying(Identifier musicId) {
         if (options.getSoundSourceVolume(SoundSource.MUSIC) <= 0.0f) {
             return;
         }
@@ -29,7 +29,7 @@ public class MusicManager {
         // minecraft.music.game.clark -> fancynotify.music.game.clark -> C418 - Clark
         // coolassmod.music.end.no_escape -> 1) End No Escape; 2) MTQ - No Escape
         if (musicId.getNamespace().equals("minecraft")) { // handle vanilla ones
-            ResourceLocation nonVanillaMusicId = ResourceLocations.of(musicId.getPath());
+            Identifier nonVanillaMusicId = Identifiers.of(musicId.getPath());
             String key = nonVanillaMusicId.toLanguageKey().replace("/", ".");
             Component musicName = Component.translatable(key);
 

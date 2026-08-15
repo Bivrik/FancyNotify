@@ -83,17 +83,15 @@ public class SettingsScreen extends UniversalScreen {
         list.addElement(transparencySlider, SettingsList.WidgetWidth.BIG);
 
         Setting<GeneralConfig.Orientation> orientation = configManager.getGeneralConfig().orientation;
-        orientationCycleButton = CycleButton.builder(GeneralConfig.Orientation::getDisplayName)
+        orientationCycleButton = CycleButton.builder(GeneralConfig.Orientation::getDisplayName, orientation.get())
                 .withValues(GeneralConfig.Orientation.values())
-                .withInitialValue(orientation.get())
                 .withTooltip(value -> Tooltip.create(ORIENTATION_TOOLTIP))
                 .create(0, 0, Button.DEFAULT_WIDTH, Button.DEFAULT_HEIGHT, ORIENTATION_LABEL, (button, value) -> orientation.set(value));
         list.addElement(orientationCycleButton);
 
         Setting<GeneralConfig.Anchor> anchor = configManager.getGeneralConfig().anchor;
-        anchorCycleButton = CycleButton.builder(GeneralConfig.Anchor::getDisplayName)
+        anchorCycleButton = CycleButton.builder(GeneralConfig.Anchor::getDisplayName, anchor.get())
                 .withValues(GeneralConfig.Anchor.values())
-                .withInitialValue(anchor.get())
                 .withTooltip(value -> Tooltip.create(ANCHOR_TOOLTIP))
                 .create(0, 0, Button.DEFAULT_WIDTH, Button.DEFAULT_HEIGHT, ANCHOR_LABEL, (button, value) -> anchor.set(value));
         list.addElement(anchorCycleButton);
@@ -110,9 +108,8 @@ public class SettingsScreen extends UniversalScreen {
         list.addElement(paddingSlider);
 
         Setting<GeneralConfig.Animation> animation = configManager.getGeneralConfig().animation;
-        animationCycleButton = CycleButton.builder(GeneralConfig.Animation::getDisplayName)
+        animationCycleButton = CycleButton.builder(GeneralConfig.Animation::getDisplayName, animation.get())
                 .withValues(GeneralConfig.Animation.values())
-                .withInitialValue(animation.get())
                 .withTooltip(value -> Tooltip.create(ANIMATION_TOOLTIP))
                 .create(0, 0, SettingsList.WidgetWidth.BIG.getWidth(), Button.DEFAULT_HEIGHT, ANIMATION_LABEL, (button, value) -> animation.set(value));
         list.addElement(animationCycleButton, SettingsList.WidgetWidth.BIG);
@@ -136,8 +133,7 @@ public class SettingsScreen extends UniversalScreen {
         list.addElement(animationDurationSlider);
 
         Setting<Boolean> particlesEnabled = configManager.getGeneralConfig().particlesEnabled;
-        particlesCycleButton = CycleButton.onOffBuilder()
-                .withInitialValue(particlesEnabled.get())
+        particlesCycleButton = CycleButton.onOffBuilder(particlesEnabled.get())
                 .withTooltip(value -> Tooltip.create(PARTICLES_TOOLTIP))
                 .create(0, 0, Button.DEFAULT_WIDTH, Button.DEFAULT_HEIGHT, PARTICLES_LABEL, (button, value) -> particlesEnabled.set(value));
         list.addElement(particlesCycleButton);
@@ -147,12 +143,12 @@ public class SettingsScreen extends UniversalScreen {
 
     private void sendDummy() {
         List<SystemNotification> notifications = List.of(
-                new SystemNotification(notificationManager, SystemNotification.Identifier.PERIODIC_NOTIFICATION, Component.literal("Bivrik is lazy"), Component.literal("WHO WROTE THAT?!")),
-                new SystemNotification(notificationManager, SystemNotification.Identifier.CHUNK_SAVE_FAILURE, Component.literal("Some title"), Component.literal("Some error message")),
-                new SystemNotification(notificationManager, SystemNotification.Identifier.LOW_DISK_SPACE, Component.literal("Low disk space"), Component.literal("Oh no! Your disk is full of stuff! You cannot save or smth idk")),
-                new SystemNotification(notificationManager, SystemNotification.Identifier.UNSECURE_SERVER_WARNING, Component.literal("Unsecure server connection"), Component.literal("Oh no, you cannot connect to this unsecure and totally legit server")),
-                new SystemNotification(notificationManager, SystemNotification.Identifier.PACK_LOAD_FAILURE, Component.literal("Resource pack failure"), Component.literal("Failed to load non-existent resource pack")),
-                new SystemNotification(notificationManager, SystemNotification.Identifier.WORLD_ACCESS_FAILURE, Component.literal("No worlds"), Component.literal("\"NO WORLDS?\""))
+                new SystemNotification(notificationManager, SystemNotification.Ids.PERIODIC_NOTIFICATION, Component.literal("Bivrik is lazy"), Component.literal("WHO WROTE THAT?!")),
+                new SystemNotification(notificationManager, SystemNotification.Ids.CHUNK_SAVE_FAILURE, Component.literal("Some title"), Component.literal("Some error message")),
+                new SystemNotification(notificationManager, SystemNotification.Ids.LOW_DISK_SPACE, Component.literal("Low disk space"), Component.literal("Oh no! Your disk is full of stuff! You cannot save or smth idk")),
+                new SystemNotification(notificationManager, SystemNotification.Ids.UNSECURE_SERVER_WARNING, Component.literal("Unsecure server connection"), Component.literal("Oh no, you cannot connect to this unsecure and totally legit server")),
+                new SystemNotification(notificationManager, SystemNotification.Ids.PACK_LOAD_FAILURE, Component.literal("Resource pack failure"), Component.literal("Failed to load non-existent resource pack")),
+                new SystemNotification(notificationManager, SystemNotification.Ids.WORLD_ACCESS_FAILURE, Component.literal("No worlds"), Component.literal("\"NO WORLDS?\""))
         );
 
         Random random = new Random();

@@ -2,9 +2,8 @@ package net.bivrik.fancynotify.screen;
 
 import net.bivrik.fancynotify.FancyNotify;
 import net.bivrik.fancynotify.core.Constants;
-import net.bivrik.fancynotify.utility.ResourceLocations;
-import net.minecraft.Util;
-import net.minecraft.client.gui.GuiGraphics;
+import net.bivrik.fancynotify.utility.Identifiers;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.*;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.ConfirmLinkScreen;
@@ -12,6 +11,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
+import org.joml.Matrix3x2fStack;
 
 import java.awt.*;
 import java.net.URI;
@@ -94,28 +94,28 @@ public class FancyNotifyScreen extends UniversalScreen {
 
     private ImageButton createLinkButton(int width, int height, String icon, String iconHovered, URI link, Component tooltip) {
         Button.OnPress action = ConfirmLinkScreen.confirmLink(this, link);
-        ImageButton button = new ImageButton(0, 0, width, height, new WidgetSprites(ResourceLocations.of(icon), ResourceLocations.of(iconHovered)), action);
+        ImageButton button = new ImageButton(0, 0, width, height, new WidgetSprites(Identifiers.of(icon), Identifiers.of(iconHovered)), action);
         button.setTooltip(Tooltip.create(tooltip));
         return button;
     }
 
     @Override
-    public void render(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-        super.render(guiGraphics, mouseX, mouseY, partialTick);
-        drawSplash(guiGraphics);
+    public void extractRenderState(@NotNull GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTick) {
+        super.extractRenderState(graphics, mouseX, mouseY, partialTick);
+        drawSplash(graphics);
     }
 
-    private void drawSplash(@NotNull GuiGraphics guiGraphics) {
-        float size = (float) (Math.abs(Math.cos((double) Util.getMillis() / 250) * 0.1f) + 0.9f);
+    private void drawSplash(@NotNull GuiGraphicsExtractor GuiGraphicsExtractor) {
+        float size = (float) (Math.abs(Math.cos((double) net.minecraft.util.Util.getMillis() / 250) * 0.1f) + 0.9f);
         float x = this.width / 2.0f;
         float y = 12 + 9 + 4.5f;
 
-        var stack = guiGraphics.pose();
-        stack.pushPose();
-        stack.translate(x, y, 0);
-        stack.scale(size, size, 1);
-        stack.translate(-x, -y, 0);
-        guiGraphics.drawCenteredString(this.font, splash, this.width / 2, 12 + 9, Color.yellow.getRGB());
-        stack.popPose();
+        Matrix3x2fStack stack = GuiGraphicsExtractor.pose();
+        stack.pushMatrix();
+        stack.translate(x, y);
+        stack.scale(size, size);
+        stack.translate(-x, -y);
+        GuiGraphicsExtractor.centeredText(this.font, splash, this.width / 2, 12 + 9, Color.yellow.getRGB());
+        stack.popMatrix();
     }
 }

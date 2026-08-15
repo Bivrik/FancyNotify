@@ -42,11 +42,11 @@ public abstract class ClientPacketListenerMixin {
 
         if (FancyNotify.getInstance().getConfigManager().getFiltersConfig().isLoginPlayerNotificationEnabled.get()) {
             GameProfile profile = playerInfo.getProfile();
-            Minecraft.getInstance().getSkinManager().getOrLoad(profile).thenAcceptAsync(skin -> {
-                Player player = this.level.getPlayerByUUID(profile.getId());
+            Minecraft.getInstance().getSkinManager().get(profile).thenAcceptAsync(skin -> {
+                Player player = this.level.getPlayerByUUID(profile.id());
                 boolean hasHat = player != null && player.isModelPartShown(PlayerModelPart.HAT);
                 NotificationManager manager = FancyNotify.getInstance().getNotificationManager();
-                manager.add(new PlayerLoginNotification(manager, profile.getName(), skin.texture(), hasHat));
+                skin.ifPresent(playerSkin -> manager.add(new PlayerLoginNotification(manager, profile.name(), playerSkin.body().id(), hasHat)));
             });
         }
     }

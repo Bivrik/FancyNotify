@@ -1,18 +1,17 @@
 package net.bivrik.fancynotify.screen;
 
-import com.mojang.blaze3d.platform.GlStateManager;
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.bivrik.fancynotify.FancyNotify;
 import net.bivrik.fancynotify.credits.CreditsList;
 import net.bivrik.fancynotify.credits.CreditsManager;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.NotNull;
 
 public class CreditsScreen extends UniversalScreen {
-    private static final ResourceLocation VIGNETTE_LOCATION = ResourceLocation.withDefaultNamespace("textures/misc/credits_vignette.png");
+    private static final Identifier VIGNETTE_LOCATION = Identifier.withDefaultNamespace("textures/misc/credits_vignette.png");
     private static final Component TITLE = Component.translatable("fancynotify.title.credits");
 
     private final CreditsManager.CreditsData creditsData;
@@ -34,22 +33,18 @@ public class CreditsScreen extends UniversalScreen {
     }
 
     @Override
-    public void render(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-        renderBackground(guiGraphics, mouseX, mouseY, partialTick);
+    public void extractRenderState(@NotNull GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTick) {
+        extractBackground(graphics, mouseX, mouseY, partialTick);
 
         int offset = 12 + 9 + 12;
         int width = this.width;
         int height = this.height - offset * 2;
-        RenderSystem.enableBlend();
-        RenderSystem.blendFunc(GlStateManager.SourceFactor.ZERO, GlStateManager.DestFactor.ONE_MINUS_SRC_COLOR);
-        guiGraphics.blit(VIGNETTE_LOCATION, 0, 0, 0, 0, this.width, this.height, this.width, this.height);
-        guiGraphics.blit(VIGNETTE_LOCATION, 0, offset, 0, 0, width, height, width, height);
-        RenderSystem.defaultBlendFunc();
-        RenderSystem.disableBlend();
+        graphics.blit(RenderPipelines.VIGNETTE, VIGNETTE_LOCATION, 0, 0, 0, 0, this.width, this.height, this.width, this.height);
+        graphics.blit(RenderPipelines.VIGNETTE, VIGNETTE_LOCATION, 0, offset, 0, 0, width, height, width, height);
 
         creditsList.scroll();
 
-        drawRenderables(guiGraphics, mouseX, mouseY, partialTick);
-        drawTitle(guiGraphics);
+        drawRenderables(graphics, mouseX, mouseY, partialTick);
+        drawTitle(graphics);
     }
 }

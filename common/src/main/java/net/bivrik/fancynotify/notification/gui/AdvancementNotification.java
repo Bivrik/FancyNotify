@@ -3,21 +3,21 @@ package net.bivrik.fancynotify.notification.gui;
 import net.bivrik.fancynotify.notification.Notification;
 import net.bivrik.fancynotify.notification.NotificationManager;
 import net.bivrik.fancynotify.particle.Particle2DSetup;
-import net.bivrik.fancynotify.utility.ResourceLocations;
+import net.bivrik.fancynotify.utility.Identifiers;
 import net.minecraft.advancements.AdvancementType;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.ItemStack;
 
 import java.awt.*;
 
 public class AdvancementNotification extends Notification {
-    private static final ResourceLocation TASK_BACKGROUND = ResourceLocations.of("notifications/task");
-    private static final ResourceLocation GOAL_BACKGROUND = ResourceLocations.of("notifications/goal");
-    private static final ResourceLocation CHALLENGE_BACKGROUND = ResourceLocations.of("notifications/challenge");
+    private static final Identifier TASK_BACKGROUND = Identifiers.of("notifications/task");
+    private static final Identifier GOAL_BACKGROUND = Identifiers.of("notifications/goal");
+    private static final Identifier CHALLENGE_BACKGROUND = Identifiers.of("notifications/challenge");
     private static final Color TASK_COLOR = Color.yellow;
     private static final Color GOAL_COLOR = Color.cyan;
     private static final Color CHALLENGE_COLOR = new Color(255, 94, 209);
@@ -25,7 +25,7 @@ public class AdvancementNotification extends Notification {
     private final AdvancementType type;
     private final ItemStack icon;
     private final int textColor;
-    private final ResourceLocation background;
+    private final Identifier background;
 
     private boolean isCelebrated;
 
@@ -98,10 +98,10 @@ public class AdvancementNotification extends Notification {
     }
 
     @Override
-    public void draw(GuiGraphics guiGraphics) {
-        drawSprite(guiGraphics, background, 0, 0, getWidth(), getHeight());
-        drawText(guiGraphics, getTitle(), getTextOffset(), 7, textColor);
-        drawMessage(guiGraphics, getTextOffset(), 18, -1);
-        guiGraphics.renderFakeItem(icon, 8, getCenterY() - 8);
+    public void draw(GuiGraphicsExtractor GuiGraphicsExtractor) {
+        drawSprite(GuiGraphicsExtractor, background, 0, 0, getWidth(), getHeight());
+        drawText(GuiGraphicsExtractor, getTitle(), getTextOffset(), 7, textColor);
+        drawMessage(GuiGraphicsExtractor, getTextOffset(), 18, -1);
+        GuiGraphicsExtractor.fakeItem(icon, 8, getCenterY() - 8);
     }
 }

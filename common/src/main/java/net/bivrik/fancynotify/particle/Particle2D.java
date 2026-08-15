@@ -2,7 +2,8 @@ package net.bivrik.fancynotify.particle;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
+import org.joml.Matrix3x2fStack;
 
 import java.awt.*;
 
@@ -74,7 +75,7 @@ public class Particle2D {
     }
 
     // Batching but it's too much effort for now
-    public void render(GuiGraphics guiGraphics, float partialTick) {
+    public void render(GuiGraphicsExtractor GuiGraphicsExtractor, float partialTick) {
         if (!isAlive || timeTicks == 0) {
             return;
         }
@@ -84,15 +85,15 @@ public class Particle2D {
 
         float renderX = previousX + (currentX - previousX) * partialTick;
         float renderY = previousY + (currentY - previousY) * partialTick;
-        float renderRotation = startRotation + (endRotation - startRotation) * progress;
+        float renderRotation = (startRotation + (endRotation - startRotation) * progress) / 360.0f;
         float renderScale = startScale + (endScale - startScale) * progress;
 
-        PoseStack stack = guiGraphics.pose();
-        stack.pushPose();
-        stack.translate(renderX, renderY, 0);
-        stack.scale(renderScale, renderScale, 1);
-        stack.rotateAround(Axis.ZP.rotationDegrees(renderRotation), 0, 0, 0);
-        guiGraphics.fill(-2, -2, 2, 2, color.getRGB());
-        stack.popPose();
+        Matrix3x2fStack stack = GuiGraphicsExtractor.pose();
+        stack.pushMatrix();
+        stack.translate(renderX, renderY);
+        stack.scale(renderScale);
+        stack.rotate(renderRotation);
+        GuiGraphicsExtractor.fill(-2, -2, 2, 2, color.getRGB());
+        stack.popMatrix();
     }
 }

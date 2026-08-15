@@ -2,7 +2,7 @@ package net.bivrik.fancynotify.screen;
 
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.ContainerObjectSelectionList;
 import net.minecraft.client.gui.components.events.GuiEventListener;
@@ -106,11 +106,11 @@ public class SettingsList extends ContainerObjectSelectionList<SettingsList.Entr
         }
 
         @Override
-        public void render(@NotNull GuiGraphics guiGraphics, int index, int y, int x, int width, int height, int mouseX, int mouseY, boolean hovering, float partialTick) {
+        public void extractContent(@NotNull GuiGraphicsExtractor graphics, int mouseX, int mouseY, boolean isHovered, float partialTick) {
             int i = -2;
             for (var widget : children) {
-                widget.setPosition(list.getRowLeft() + i, y);
-                widget.render(guiGraphics, mouseX, mouseY, partialTick);
+                widget.setPosition(list.getRowLeft() + i, getY());
+                widget.extractRenderState(graphics, mouseX, mouseY, partialTick);
                 i += widget.getWidth() + 10;
             }
         }

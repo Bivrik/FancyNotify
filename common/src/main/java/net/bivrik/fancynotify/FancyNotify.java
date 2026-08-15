@@ -10,7 +10,7 @@ import net.bivrik.fancynotify.notification.NotificationManager;
 import net.bivrik.fancynotify.particle.Particle2DEngine;
 import net.bivrik.fancynotify.platform.Services;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 
 public final class FancyNotify {
     private FancyNotify() {}
@@ -54,21 +54,21 @@ public final class FancyNotify {
         isMinecraftInitialized = true;
         Log.info("Minecraft initialized");
 
-        particleEngine = new Particle2DEngine(minecraft.options, configManager);
+        particleEngine = new Particle2DEngine(minecraft, configManager);
         splashesManager = new SplashesManager(minecraft);
         notificationManager = new NotificationManager(minecraft, configManager, particleEngine);
         weatherManager = new WeatherManager(notificationManager);
-        biomeManager = new BiomeManager(minecraft, notificationManager);
+        //biomeManager = new BiomeManager(minecraft, notificationManager);
         musicManager = new MusicManager(minecraft.options, notificationManager);
     }
 
     public void onClientTick() {
-        biomeManager.tick();
+        //biomeManager.tick();
         particleEngine.tick();
     }
 
-    public void onGuiRender(GuiGraphics guiGraphics, float partialTick) {
-        particleEngine.render(guiGraphics, partialTick);
+    public void onGuiRender(GuiGraphicsExtractor GuiGraphicsExtractor, float partialTick) {
+        particleEngine.render(GuiGraphicsExtractor, partialTick);
     }
 
     public NotificationManager getNotificationManager() {

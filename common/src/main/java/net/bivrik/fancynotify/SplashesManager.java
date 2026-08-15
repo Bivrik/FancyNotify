@@ -1,9 +1,9 @@
 package net.bivrik.fancynotify;
 
 import net.bivrik.fancynotify.core.Log;
-import net.bivrik.fancynotify.utility.ResourceLocations;
+import net.bivrik.fancynotify.utility.Identifiers;
 import net.minecraft.client.Minecraft;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import org.slf4j.Logger;
@@ -18,7 +18,7 @@ import java.util.Random;
 public class SplashesManager {
     private static final Logger LOGGER = Log.getSpecificLogger(SplashesManager.class);
 
-    private static final ResourceLocation SPLASHES_LOCATION = ResourceLocations.of("splashes.txt");
+    private static final Identifier SPLASHES_LOCATION = Identifiers.of("splashes.txt");
     private static final Random RANDOM = new Random();
 
     private final List<String> splashes = new ArrayList<>();

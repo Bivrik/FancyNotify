@@ -1,6 +1,5 @@
 plugins {
     id 'java-library'
-    id 'maven-publish'
 }
 
 base {
@@ -13,30 +12,14 @@ java {
     withJavadocJar()
 }
 
+tasks.withType(Jar).configureEach {
+    from(rootProject.file('LICENSE')) {
+        rename { "${it}_${mod_name}" }
+    }
+}
+
 repositories {
-    mavenLocal()
     mavenCentral()
-    // https://docs.gradle.org/current/userguide/declaring_repositories.html#declaring_content_exclusively_found_in_one_repository
-    exclusiveContent {
-        forRepository {
-            maven {
-                name = 'Sponge'
-                url = 'https://repo.spongepowered.org/repository/maven-public'
-            }
-        }
-        filter { includeGroupAndSubgroups('org.spongepowered') }
-    }
-    exclusiveContent {
-        forRepositories(maven {
-            name = 'ParchmentMC'
-            url = 'https://maven.parchmentmc.org/'
-        },
-                maven {
-                    name = "NeoForge"
-                    url = 'https://maven.neoforged.net/releases'
-                })
-        filter { includeGroup('org.parchmentmc.data') }
-    }
     maven {
         name = 'BlameJared'
         url = 'https://maven.blamejared.com'
@@ -51,33 +34,7 @@ repositories {
     }
 }
 
-// Declare capabilities on the outgoing configurations.
-// Read more about capabilities here: https://docs.gradle.org/current/userguide/component_capabilities.html#sec:declaring-additional-capabilities-for-a-local-component
-['apiElements', 'runtimeElements', 'sourcesElements', 'javadocElements'].each { variant ->
-    configurations."$variant".outgoing {
-        capability("$group:${base.archivesName.get()}:$version")
-        capability("$group:$mod_id-${project.name}-${minecraft_version}:$version")
-        capability("$group:$mod_id:$version")
-    }
-    publishing.publications.configureEach {
-        suppressPomMetadataWarningsFor(variant)
-    }
-}
-
-sourcesJar {
-    from(rootProject.file('LICENSE')) {
-        rename { "${it}_${mod_name}" }
-    }
-}
-
 jar {
-    destinationDirectory = rootProject.file('build/libs')
-    archiveVersion = ""
-
-    from(rootProject.file('LICENSE')) {
-        rename { "${it}_${mod_name}" }
-    }
-
     manifest {
         attributes(['Specification-Title'   : mod_name,
                     'Specification-Vendor'  : mod_author,
@@ -88,10 +45,13 @@ jar {
                     'Built-On-Minecraft'    : minecraft_version
         ])
     }
+
+    destinationDirectory = rootProject.file('build/libs')
+    archiveVersion = ""
 }
 
 processResources {
-    var properties = [
+    var expandProps = [
             'version'                      : version,
             'group'                        : project.group,
             'java_version'                 : java_version,
@@ -112,30 +72,21 @@ processResources {
             'fabric_version'               : fabric_version,
             'fabric_loader_version'        : fabric_loader_version,
 
-            'forge_version'                : forge_version,
-            'forge_loader_version_range'   : forge_loader_version_range,
-
             'neoforge_version'             : neoforge_version,
             'neoforge_loader_version_range': neoforge_loader_version_range
     ]
 
-    filesMatching(['pack.mcmeta', 'fabric.mod.json', 'META-INF/mods.toml', 'META-INF/neoforge.mods.toml', '*.mixins.json']) {
-        expand properties
+    var jsonExpandProps = expandProps.collectEntries {
+        key, value -> [(key): value instanceof String ? value.replace('\n', '\\\\n') : value]
     }
-    inputs.properties(properties)
-}
 
-publishing {
-    publications {
-        register('mavenJava', MavenPublication) {
-            artifactId base.archivesName.get()
-            from components.java
-        }
+    filesMatching(['META-INF/mods.toml', 'META-INF/neoforge.mods.toml']) {
+        expand expandProps
     }
-    repositories {
-        maven {
-            url System.getenv('local_maven_url')
-        }
-    }
-}
 
+    filesMatching(['pack.mcmeta', 'fabric.mod.json', '*.mixins.json']) {
+        expand jsonExpandProps
+    }
+
+    inputs.properties(expandProps)
+}

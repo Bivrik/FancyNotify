@@ -3,16 +3,17 @@ package net.bivrik.fancynotify.notification.gui;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.bivrik.fancynotify.notification.ExpandableNotification;
 import net.bivrik.fancynotify.notification.NotificationManager;
-import net.bivrik.fancynotify.utility.ResourceLocations;
-import net.minecraft.client.gui.GuiGraphics;
+import net.bivrik.fancynotify.utility.Identifiers;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
+import org.joml.Matrix3x2fStack;
 
 import java.awt.*;
 
 public class BiomeNotification extends ExpandableNotification {
-    private static final ResourceLocation BACKGROUND = ResourceLocations.of("notifications/biome");
+    private static final Identifier BACKGROUND = Identifiers.of("notifications/biome");
     private static final int COLOR = new Color(41, 92, 38).getRGB();
 
     private ItemStack icon;
@@ -37,13 +38,13 @@ public class BiomeNotification extends ExpandableNotification {
     }
 
     @Override
-    public void draw(GuiGraphics guiGraphics) {
-        drawSprite(guiGraphics, BACKGROUND, 0, 0, getWidth(), getHeight());
-        drawText(guiGraphics, getTitle(), getTextOffset(), 8, COLOR);
-        PoseStack stack = guiGraphics.pose();
-        stack.pushPose();
-        stack.scale(0.85f, 0.85f, 1);
-        guiGraphics.renderFakeItem(icon, 10, getCenterY() - 6);
-        stack.popPose();
+    public void draw(GuiGraphicsExtractor GuiGraphicsExtractor) {
+        drawSprite(GuiGraphicsExtractor, BACKGROUND, 0, 0, getWidth(), getHeight());
+        drawText(GuiGraphicsExtractor, getTitle(), getTextOffset(), 8, COLOR);
+        Matrix3x2fStack stack = GuiGraphicsExtractor.pose();
+        stack.pushMatrix();
+        stack.scale(0.85f, 0.85f);
+        GuiGraphicsExtractor.fakeItem(icon, 10, getCenterY() - 6);
+        stack.popMatrix();
     }
 }

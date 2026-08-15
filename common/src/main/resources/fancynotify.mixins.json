@@ -7,13 +7,13 @@
   "client": [
     "ClientAdvancementsMixin",
     "ClientPacketListenerMixin",
-    "GameRendererMixin",
+    "GuiMixin",
     "MinecraftMixin",
     "MusicManagerMixin",
     "RecipeToastMixin",
     "ScreenshotMixin",
     "SystemToastMixin",
-    "ToastComponentMixin",
+    "ToastManagerMixin",
     "accessor.AdvancementToastMixinAccessor"
   ],
   "server": [],

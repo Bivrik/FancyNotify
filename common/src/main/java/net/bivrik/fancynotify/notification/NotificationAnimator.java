@@ -33,7 +33,7 @@ public abstract class NotificationAnimator {
     }
 
     public final float getRotation() {
-        return rotation;
+        return rotation / 360.0f;
     }
 
     public final float getAlpha() {

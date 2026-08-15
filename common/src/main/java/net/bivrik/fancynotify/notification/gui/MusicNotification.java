@@ -2,16 +2,16 @@ package net.bivrik.fancynotify.notification.gui;
 
 import net.bivrik.fancynotify.notification.Notification;
 import net.bivrik.fancynotify.notification.NotificationManager;
-import net.bivrik.fancynotify.utility.ResourceLocations;
-import net.minecraft.client.gui.GuiGraphics;
+import net.bivrik.fancynotify.utility.Identifiers;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import java.awt.*;
 
 public class MusicNotification extends Notification {
-    private static final ResourceLocation BACKGROUND = ResourceLocations.of("notifications/music");
-    private static final ResourceLocation ICON = ResourceLocations.of("icons/music");
+    private static final Identifier BACKGROUND = Identifiers.of("notifications/music");
+    private static final Identifier ICON = Identifiers.of("icons/music");
 
     public MusicNotification(NotificationManager manager, Component title, Component message) {
         super(manager, title, message);
@@ -23,10 +23,10 @@ public class MusicNotification extends Notification {
     }
 
     @Override
-    public void draw(GuiGraphics guiGraphics) {
-        drawSprite(guiGraphics, BACKGROUND, 0, 0, getWidth(), getHeight());
-        drawText(guiGraphics, getTitle(), getTextOffset(), 7, Color.cyan.getRGB());
-        drawMessage(guiGraphics, getTextOffset(), 18, -1);
-        drawSprite(guiGraphics, ICON, 4, getCenterY() - 10, 21, 21);
+    public void draw(GuiGraphicsExtractor GuiGraphicsExtractor) {
+        drawSprite(GuiGraphicsExtractor, BACKGROUND, 0, 0, getWidth(), getHeight());
+        drawText(GuiGraphicsExtractor, getTitle(), getTextOffset(), 7, Color.cyan.getRGB());
+        drawMessage(GuiGraphicsExtractor, getTextOffset(), 18, -1);
+        drawSprite(GuiGraphicsExtractor, ICON, 4, getCenterY() - 10, 21, 21);
     }
 }
