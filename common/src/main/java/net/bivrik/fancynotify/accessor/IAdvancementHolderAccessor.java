@@ -1,7 +1,7 @@
 package net.bivrik.fancynotify.accessor;
 
-import net.minecraft.advancements.AdvancementHolder;
+import net.minecraft.advancements.Advancement;
 
 public interface IAdvancementHolderAccessor {
-    AdvancementHolder getAdvancementHolder();
+    Advancement getAdvancement();
 }

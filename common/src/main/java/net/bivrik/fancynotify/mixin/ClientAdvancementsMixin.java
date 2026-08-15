@@ -13,8 +13,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-import java.util.Optional;
-
 @Mixin(ClientAdvancements.class)
 public class ClientAdvancementsMixin {
     @Redirect(method = "update", at = @At(
@@ -24,7 +22,9 @@ public class ClientAdvancementsMixin {
     private void onUpdate(ToastComponent instance, Toast toast) {
         NotificationManager manager = FancyNotify.getInstance().getNotificationManager();
         AdvancementToast advancementToast = (AdvancementToast) toast;
-        Optional<DisplayInfo> optionalDisplay = ((IAdvancementHolderAccessor) advancementToast).getAdvancementHolder().value().display();
-        optionalDisplay.ifPresent(displayInfo -> manager.add(new AdvancementNotification(manager, displayInfo.getTitle(), displayInfo.getType(), displayInfo.getIcon())));
+        DisplayInfo displayInfo = ((IAdvancementHolderAccessor) advancementToast).getAdvancement().getDisplay();
+        if (displayInfo != null) {
+            manager.add(new AdvancementNotification(manager, displayInfo.getTitle(), displayInfo.getFrame(), displayInfo.getIcon()));
+        }
     }
 }

@@ -12,8 +12,6 @@ import java.awt.*;
 import java.util.Map;
 
 public class SystemNotification extends ExpandableNotification {
-    private static final ResourceLocation BACKGROUND = ResourceLocations.of("notifications/system");
-
     private final Identifier id;
 
     public SystemNotification(NotificationManager manager, Identifier id, Component title, Component description) {
@@ -46,38 +44,30 @@ public class SystemNotification extends ExpandableNotification {
 
     @Override
     public void draw(GuiGraphics guiGraphics) {
-        drawSprite(guiGraphics, BACKGROUND, 0, 0, getWidth(), getHeight());
+        drawBackground(guiGraphics, 0, 192);
         int alignment = Math.min(getWrappedMessage().size(), 1);
         drawText(guiGraphics, getTitle(), getTextOffset(), 8 - alignment, Color.yellow.getRGB());
         drawMessage(guiGraphics, getTextOffset(), 18, -1);
-        drawSprite(guiGraphics, id.getSprite(), 6, getCenterY() - 10, 20, 20);
+        drawTexture(guiGraphics, id.getSprite(), 6, getCenterY() - 10, 20, 20, 20, 20);
     }
 
     public enum Identifier {
-        NARRATOR(ResourceLocations.of("icons/narrator"), 80),
-        WORLD_BACKUP(ResourceLocations.of("icons/storage")),
-        PACK_LOAD_FAILURE(ResourceLocations.of("icons/folder")),
-        WORLD_ACCESS_FAILURE(ResourceLocations.of("icons/storage")),
-        PACK_COPY_FAILURE(ResourceLocations.of("icons/folder")),
-        FILE_DROP_FAILURE(ResourceLocations.of("icons/storage")),
+        NARRATOR(ResourceLocations.of("textures/gui/icons/narrator.png"), 80),
+        WORLD_BACKUP(ResourceLocations.of("textures/gui/icons/storage.png")),
+        PACK_LOAD_FAILURE(ResourceLocations.of("textures/gui/icons/folder.png")),
+        WORLD_ACCESS_FAILURE(ResourceLocations.of("textures/gui/icons/storage.png")),
+        PACK_COPY_FAILURE(ResourceLocations.of("textures/gui/icons/folder.png")),
         PERIODIC_NOTIFICATION,
-        LOW_DISK_SPACE(ResourceLocations.of("icons/storage"), 220),
-        CHUNK_LOAD_FAILURE(ResourceLocations.of("icons/chunk")),
-        CHUNK_SAVE_FAILURE(ResourceLocations.of("icons/chunk")),
         UNSECURE_SERVER_WARNING(220);
 
-        private static final Map<SystemToast.SystemToastId, Identifier> SYSTEM_TOAST_TO_ID = Map.ofEntries(
-                Map.entry(SystemToast.SystemToastId.NARRATOR_TOGGLE, NARRATOR),
-                Map.entry(SystemToast.SystemToastId.WORLD_BACKUP, WORLD_BACKUP),
-                Map.entry(SystemToast.SystemToastId.PACK_LOAD_FAILURE, PACK_LOAD_FAILURE),
-                Map.entry(SystemToast.SystemToastId.WORLD_ACCESS_FAILURE, WORLD_ACCESS_FAILURE),
-                Map.entry(SystemToast.SystemToastId.PACK_COPY_FAILURE, PACK_COPY_FAILURE),
-                Map.entry(SystemToast.SystemToastId.FILE_DROP_FAILURE, FILE_DROP_FAILURE),
-                Map.entry(SystemToast.SystemToastId.PERIODIC_NOTIFICATION, PERIODIC_NOTIFICATION),
-                Map.entry(SystemToast.SystemToastId.LOW_DISK_SPACE, LOW_DISK_SPACE),
-                Map.entry(SystemToast.SystemToastId.CHUNK_LOAD_FAILURE, CHUNK_LOAD_FAILURE),
-                Map.entry(SystemToast.SystemToastId.CHUNK_SAVE_FAILURE, CHUNK_SAVE_FAILURE),
-                Map.entry(SystemToast.SystemToastId.UNSECURE_SERVER_WARNING, UNSECURE_SERVER_WARNING)
+        private static final Map<SystemToast.SystemToastIds, Identifier> SYSTEM_TOAST_TO_ID = Map.ofEntries(
+                Map.entry(SystemToast.SystemToastIds.NARRATOR_TOGGLE, NARRATOR),
+                Map.entry(SystemToast.SystemToastIds.WORLD_BACKUP, WORLD_BACKUP),
+                Map.entry(SystemToast.SystemToastIds.PACK_LOAD_FAILURE, PACK_LOAD_FAILURE),
+                Map.entry(SystemToast.SystemToastIds.WORLD_ACCESS_FAILURE, WORLD_ACCESS_FAILURE),
+                Map.entry(SystemToast.SystemToastIds.PACK_COPY_FAILURE, PACK_COPY_FAILURE),
+                Map.entry(SystemToast.SystemToastIds.PERIODIC_NOTIFICATION, PERIODIC_NOTIFICATION),
+                Map.entry(SystemToast.SystemToastIds.UNSECURE_SERVER_WARNING, UNSECURE_SERVER_WARNING)
         );
 
         private final ResourceLocation sprite;
@@ -89,7 +79,7 @@ public class SystemNotification extends ExpandableNotification {
         }
 
         Identifier(int lifeTimeTicks) {
-            this(ResourceLocations.of("icons/important"), lifeTimeTicks);
+            this(ResourceLocations.of("textures/gui/icons/important.png"), lifeTimeTicks);
         }
 
         Identifier(ResourceLocation sprite) {
@@ -97,7 +87,7 @@ public class SystemNotification extends ExpandableNotification {
         }
 
         Identifier() {
-            this(ResourceLocations.of("icons/important"), 120);
+            this(ResourceLocations.of("textures/gui/icons/important.png"), 120);
         }
 
         public int getLifeTimeTicks() {
@@ -108,7 +98,7 @@ public class SystemNotification extends ExpandableNotification {
             return sprite;
         }
 
-        public static Identifier fromSystemToastId(SystemToast.SystemToastId id) {
+        public static Identifier fromSystemToastId(SystemToast.SystemToastIds id) {
             return SYSTEM_TOAST_TO_ID.get(id);
         }
     }

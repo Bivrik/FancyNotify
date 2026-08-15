@@ -41,7 +41,7 @@ public class IntegerEditBox extends EditBox {
     @Override
     public void renderWidget(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         super.renderWidget(guiGraphics, mouseX, mouseY, partialTick);
-        guiGraphics.fill(this.getX() + 3, this.getY(), this.getX() + 3 + messageWidth + 2, this.getY() + 1, 0xFF000000);
+        guiGraphics.fill(this.getX() + 3, this.getY() - 1, this.getX() + 3 + messageWidth + 2, this.getY(), 0xFF000000);
         guiGraphics.drawString(font, this.getMessage(), this.getX() + 4, this.getY() - 4, this.isFocused() ? -1 : 0xFF999999);
     }
 }

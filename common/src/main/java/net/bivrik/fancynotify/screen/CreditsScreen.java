@@ -12,7 +12,7 @@ import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
 public class CreditsScreen extends UniversalScreen {
-    private static final ResourceLocation VIGNETTE_LOCATION = ResourceLocation.withDefaultNamespace("textures/misc/credits_vignette.png");
+    private static final ResourceLocation VIGNETTE_LOCATION = new ResourceLocation("textures/misc/vignette.png");
     private static final Component TITLE = Component.translatable("fancynotify.title.credits");
 
     private final CreditsManager.CreditsData creditsData;
@@ -28,14 +28,14 @@ public class CreditsScreen extends UniversalScreen {
     @Override
     protected void init() {
         int offset = 12 + 9 + 12;
-        creditsList = new CreditsList(this.minecraft, this.width, this.height - offset * 2, 8, offset, creditsData);
+        creditsList = new CreditsList(this.minecraft, this.width, this.height - offset * 2, offset, creditsData);
         addSimpleRenderable(creditsList);
         setFocused(creditsList);
     }
 
     @Override
     public void render(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-        renderBackground(guiGraphics, mouseX, mouseY, partialTick);
+        renderDirtBackground(guiGraphics);
 
         int offset = 12 + 9 + 12;
         int width = this.width;
@@ -43,7 +43,7 @@ public class CreditsScreen extends UniversalScreen {
         RenderSystem.enableBlend();
         RenderSystem.blendFunc(GlStateManager.SourceFactor.ZERO, GlStateManager.DestFactor.ONE_MINUS_SRC_COLOR);
         guiGraphics.blit(VIGNETTE_LOCATION, 0, 0, 0, 0, this.width, this.height, this.width, this.height);
-        guiGraphics.blit(VIGNETTE_LOCATION, 0, offset, 0, 0, width, height, width, height);
+        guiGraphics.blit(VIGNETTE_LOCATION, 0, offset, width / 2.0f, 0, width, height, width * 2, height);
         RenderSystem.defaultBlendFunc();
         RenderSystem.disableBlend();
 

@@ -11,7 +11,7 @@ import net.minecraft.resources.ResourceLocation;
 import java.awt.*;
 
 public class PlayerLoginNotification extends Notification {
-    private static final ResourceLocation BACKGROUND = ResourceLocations.of("notifications/player_login");
+    private static final ResourceLocation BACKGROUND = ResourceLocations.of("textures/gui/notifications/player_login.png");
     private static final Component MESSAGE = Component.translatable("fancynotify.gui.player_login.message");
     private static final int COLOR = Color.yellow.getRGB();
 
@@ -32,7 +32,7 @@ public class PlayerLoginNotification extends Notification {
 
     @Override
     protected void draw(GuiGraphics guiGraphics) {
-        drawSprite(guiGraphics, BACKGROUND, 0, 0, getWidth(), getHeight());
+        drawBackground(guiGraphics, 128, 0);
         drawText(guiGraphics, getTitle(), getTextOffset(), 7, COLOR);
         drawMessage(guiGraphics, getTextOffset(), 18, -1);
         drawTexture(guiGraphics, playerTexture, 8, 8, 16, 16, 64, 64, 8, 8, 8, 8);

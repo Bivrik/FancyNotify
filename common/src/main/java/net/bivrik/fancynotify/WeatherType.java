@@ -15,7 +15,7 @@ public enum WeatherType {
 
     WeatherType(String name) {
         this.displayName = Component.translatable(Constants.MOD_ID + ".gui.weather." + name);
-        this.icon = ResourceLocations.of("icons/" + name);
+        this.icon = ResourceLocations.of("textures/gui/icons/" + name + ".png");
     }
 
     public Component getDisplayName() {

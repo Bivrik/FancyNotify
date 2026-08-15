@@ -12,7 +12,6 @@ import net.minecraft.world.item.ItemStack;
 import java.awt.*;
 
 public class BiomeNotification extends ExpandableNotification {
-    private static final ResourceLocation BACKGROUND = ResourceLocations.of("notifications/biome");
     private static final int COLOR = new Color(41, 92, 38).getRGB();
 
     private ItemStack icon;
@@ -38,7 +37,7 @@ public class BiomeNotification extends ExpandableNotification {
 
     @Override
     public void draw(GuiGraphics guiGraphics) {
-        drawSprite(guiGraphics, BACKGROUND, 0, 0, getWidth(), getHeight());
+        drawBackground(guiGraphics, 0, 32);
         drawText(guiGraphics, getTitle(), getTextOffset(), 8, COLOR);
         PoseStack stack = guiGraphics.pose();
         stack.pushPose();

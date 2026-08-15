@@ -17,7 +17,6 @@ import java.util.Random;
 public class ScreenshotNotification extends ExpandableNotification {
     private static final Random RANDOM = new Random();
     private static final Component TITLE = Component.translatable("fancynotify.gui.screenshot.title");
-    private static final ResourceLocation BACKGROUND = ResourceLocations.of("notifications/screenshot");
     private static final ResourceLocation SCREENSHOT_PREVIEW = ResourceLocations.of("screenshot_preview");
 
     private final TextureManager textureManager;
@@ -49,11 +48,11 @@ public class ScreenshotNotification extends ExpandableNotification {
 
     @Override
     public void draw(GuiGraphics guiGraphics) {
-        drawSprite(guiGraphics, BACKGROUND, 0, 0, getWidth(), getHeight());
+        drawBackground(guiGraphics, 0, 0);
         drawText(guiGraphics, getTitle(), getTextOffset(), 7, new Color(43, 181, 43).getRGB());
         drawMessage(guiGraphics, getTextOffset(), 18, -1);
-        int width = 38;
-        int height = 22;
-        drawTexture(guiGraphics, SCREENSHOT_PREVIEW, 5, getCenterY() - height / 2, width, height, width * 4, height * 4, ((width * 4) - width) / 2, ((height * 4) - height) / 2);
+        int previewWidth = 38;
+        int previewHeight = 22;
+        drawTexture(guiGraphics, SCREENSHOT_PREVIEW, 5, getCenterY() - previewHeight / 2, previewWidth, previewHeight, previewWidth * 4, previewHeight * 4, ((previewWidth * 4) - previewWidth) / 2, ((previewHeight * 4) - previewHeight) / 2);
     }
 }

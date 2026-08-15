@@ -24,7 +24,7 @@ public final class JsonHelper {
     private static class ResourceLocationAdapter implements JsonSerializer<ResourceLocation>, JsonDeserializer<ResourceLocation> {
         @Override
         public ResourceLocation deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-            return ResourceLocation.parse(json.getAsString());
+            return ResourceLocation.tryParse(json.getAsString());
         }
 
         @Override

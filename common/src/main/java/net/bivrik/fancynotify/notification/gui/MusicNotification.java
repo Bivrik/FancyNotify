@@ -1,5 +1,6 @@
 package net.bivrik.fancynotify.notification.gui;
 
+import net.bivrik.fancynotify.core.Log;
 import net.bivrik.fancynotify.notification.Notification;
 import net.bivrik.fancynotify.notification.NotificationManager;
 import net.bivrik.fancynotify.utility.ResourceLocations;
@@ -10,8 +11,7 @@ import net.minecraft.resources.ResourceLocation;
 import java.awt.*;
 
 public class MusicNotification extends Notification {
-    private static final ResourceLocation BACKGROUND = ResourceLocations.of("notifications/music");
-    private static final ResourceLocation ICON = ResourceLocations.of("icons/music");
+    private static final ResourceLocation ICON = ResourceLocations.of("textures/gui/icons/music.png");
 
     public MusicNotification(NotificationManager manager, Component title, Component message) {
         super(manager, title, message);
@@ -24,9 +24,13 @@ public class MusicNotification extends Notification {
 
     @Override
     public void draw(GuiGraphics guiGraphics) {
-        drawSprite(guiGraphics, BACKGROUND, 0, 0, getWidth(), getHeight());
+        drawBackground(guiGraphics, 128, 32);
         drawText(guiGraphics, getTitle(), getTextOffset(), 7, Color.cyan.getRGB());
         drawMessage(guiGraphics, getTextOffset(), 18, -1);
-        drawSprite(guiGraphics, ICON, 4, getCenterY() - 10, 21, 21);
+        long animationTiming = (System.currentTimeMillis() / 250 % 5) * 21;
+        guiGraphics.blit(ICON,
+                4, getCenterY() - 10,
+                0, animationTiming,
+                21, 21, 21, 105);
     }
 }

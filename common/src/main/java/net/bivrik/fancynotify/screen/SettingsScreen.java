@@ -8,12 +8,15 @@ import net.bivrik.fancynotify.gui.IntegerEditBox;
 import net.bivrik.fancynotify.gui.Slider;
 import net.bivrik.fancynotify.notification.NotificationManager;
 import net.bivrik.fancynotify.notification.gui.SystemNotification;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.CycleButton;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.Mth;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Random;
@@ -100,7 +103,7 @@ public class SettingsScreen extends UniversalScreen {
 
         Setting<Integer> notificationWidth = configManager.getGeneralConfig().notificationsWidth;
         widthEditBox = new IntegerEditBox(this.font, 0, 0, SettingsList.WidgetWidth.MEDIUM.getWidth(), Button.DEFAULT_HEIGHT, widthEditBox, WIDTH_LABEL, notificationWidth.get());
-        widthEditBox.setResponder(value -> widthEditBox.setIntegerResponder(iValue -> notificationWidth.set(Math.clamp(iValue, 20, this.width - configManager.getGeneralConfig().padding.get() * 2))));
+        widthEditBox.setResponder(value -> widthEditBox.setIntegerResponder(iValue -> notificationWidth.set(Mth.clamp(iValue, 20, this.width - configManager.getGeneralConfig().padding.get() * 2))));
         list.addElement(widthEditBox);
 
         Setting<Integer> padding = configManager.getGeneralConfig().padding;
@@ -145,11 +148,18 @@ public class SettingsScreen extends UniversalScreen {
         list.alignElements();
     }
 
+    @Override
+    public void render(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+        renderDirtBackground(guiGraphics);
+        drawRenderables(guiGraphics, mouseX, mouseY, partialTick);
+        drawTitle(guiGraphics);
+    }
+
     private void sendDummy() {
         List<SystemNotification> notifications = List.of(
                 new SystemNotification(notificationManager, SystemNotification.Identifier.PERIODIC_NOTIFICATION, Component.literal("Bivrik is lazy"), Component.literal("WHO WROTE THAT?!")),
-                new SystemNotification(notificationManager, SystemNotification.Identifier.CHUNK_SAVE_FAILURE, Component.literal("Some title"), Component.literal("Some error message")),
-                new SystemNotification(notificationManager, SystemNotification.Identifier.LOW_DISK_SPACE, Component.literal("Low disk space"), Component.literal("Oh no! Your disk is full of stuff! You cannot save or smth idk")),
+                new SystemNotification(notificationManager, SystemNotification.Identifier.NARRATOR, Component.literal("Some title"), Component.literal("Some error message")),
+                new SystemNotification(notificationManager, SystemNotification.Identifier.WORLD_BACKUP, Component.literal("World backup thing"), Component.literal("Oh no! Your world is full of stuff! You should make a world backup")),
                 new SystemNotification(notificationManager, SystemNotification.Identifier.UNSECURE_SERVER_WARNING, Component.literal("Unsecure server connection"), Component.literal("Oh no, you cannot connect to this unsecure and totally legit server")),
                 new SystemNotification(notificationManager, SystemNotification.Identifier.PACK_LOAD_FAILURE, Component.literal("Resource pack failure"), Component.literal("Failed to load non-existent resource pack")),
                 new SystemNotification(notificationManager, SystemNotification.Identifier.WORLD_ACCESS_FAILURE, Component.literal("No worlds"), Component.literal("\"NO WORLDS?\""))

@@ -3,8 +3,7 @@ package net.bivrik.fancynotify.notification.gui;
 import net.bivrik.fancynotify.notification.Notification;
 import net.bivrik.fancynotify.notification.NotificationManager;
 import net.bivrik.fancynotify.particle.Particle2DSetup;
-import net.bivrik.fancynotify.utility.ResourceLocations;
-import net.minecraft.advancements.AdvancementType;
+import net.minecraft.advancements.FrameType;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
@@ -15,21 +14,18 @@ import net.minecraft.world.item.ItemStack;
 import java.awt.*;
 
 public class AdvancementNotification extends Notification {
-    private static final ResourceLocation TASK_BACKGROUND = ResourceLocations.of("notifications/task");
-    private static final ResourceLocation GOAL_BACKGROUND = ResourceLocations.of("notifications/goal");
-    private static final ResourceLocation CHALLENGE_BACKGROUND = ResourceLocations.of("notifications/challenge");
     private static final Color TASK_COLOR = Color.yellow;
     private static final Color GOAL_COLOR = Color.cyan;
     private static final Color CHALLENGE_COLOR = new Color(255, 94, 209);
 
-    private final AdvancementType type;
+    private final FrameType type;
     private final ItemStack icon;
     private final int textColor;
-    private final ResourceLocation background;
+    private final int backgroundOffset;
 
     private boolean isCelebrated;
 
-    public AdvancementNotification(NotificationManager manager, Component title, AdvancementType type, ItemStack icon) {
+    public AdvancementNotification(NotificationManager manager, Component title, FrameType type, ItemStack icon) {
         super(manager, type.getDisplayName(), title);
 
         this.type = type;
@@ -37,15 +33,15 @@ public class AdvancementNotification extends Notification {
         switch (type) {
             case GOAL -> {
                 this.textColor = GOAL_COLOR.getRGB();
-                this.background = GOAL_BACKGROUND;
+                this.backgroundOffset = 96;
             }
             case CHALLENGE -> {
                 this.textColor = CHALLENGE_COLOR.getRGB();
-                this.background = CHALLENGE_BACKGROUND;
+                this.backgroundOffset = 128;
             }
             default -> {
                 this.textColor = TASK_COLOR.getRGB();
-                this.background = TASK_BACKGROUND;
+                this.backgroundOffset = 64;
             }
         }
     }
@@ -99,7 +95,7 @@ public class AdvancementNotification extends Notification {
 
     @Override
     public void draw(GuiGraphics guiGraphics) {
-        drawSprite(guiGraphics, background, 0, 0, getWidth(), getHeight());
+        drawBackground(guiGraphics, 0, backgroundOffset);
         drawText(guiGraphics, getTitle(), getTextOffset(), 7, textColor);
         drawMessage(guiGraphics, getTextOffset(), 18, -1);
         guiGraphics.renderFakeItem(icon, 8, getCenterY() - 8);

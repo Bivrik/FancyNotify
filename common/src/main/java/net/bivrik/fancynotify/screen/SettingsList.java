@@ -22,7 +22,7 @@ public class SettingsList extends ContainerObjectSelectionList<SettingsList.Entr
     private final Screen screen;
 
     public SettingsList(Minecraft minecraft, int width, int height, int y, int itemHeight, Screen screen) {
-        super(minecraft, width, height, y, itemHeight);
+        super(minecraft, width, height, y, y + height, itemHeight);
         this.screen = screen;
     }
 

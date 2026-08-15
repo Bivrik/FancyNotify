@@ -1,7 +1,7 @@
 package net.bivrik.fancynotify.notification;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.ByteBufferBuilder;
+import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.bivrik.fancynotify.FancyNotify;
@@ -11,6 +11,7 @@ import net.bivrik.fancynotify.config.GeneralConfig;
 import net.bivrik.fancynotify.eventbus.SubscribeEvent;
 import net.bivrik.fancynotify.eventbus.event.NotificationWidthChangedEvent;
 import net.bivrik.fancynotify.particle.Particle2DEngine;
+import net.bivrik.fancynotify.utility.ResourceLocations;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -28,6 +29,7 @@ import java.util.List;
 
 public abstract class Notification implements NotificationStateMachine.Listener {
     private static final Object NO_ID = new Object();
+    protected static final ResourceLocation BACKGROUND = ResourceLocations.of("textures/gui/notifications.png");
 
     private Component title;
     private Component message;
@@ -183,15 +185,15 @@ public abstract class Notification implements NotificationStateMachine.Listener 
 
     protected abstract void draw(GuiGraphics guiGraphics);
 
-    protected void drawSprite(GuiGraphics guiGraphics, ResourceLocation sprite, int x, int y, int width, int height) {
+    protected void drawBackground(GuiGraphics guiGraphics, int uOffset, int vOffset) {
         if (animator.getAlpha() == 1) {
-            guiGraphics.blitSprite(sprite, x, y, width, height);
+            guiGraphics.blitNineSliced(BACKGROUND, 0, 0, getWidth(), getHeight(), 4, 128, 32, uOffset, vOffset);
             return;
         }
 
         RenderSystem.enableBlend();
         guiGraphics.setColor(1, 1, 1, animator.getAlpha());
-        guiGraphics.blitSprite(sprite, x, y, width, height);
+        guiGraphics.blitNineSliced(BACKGROUND, 0, 0, getWidth(), getHeight(), 4, 128, 32, uOffset, vOffset);
         guiGraphics.setColor(1, 1, 1, 1);
         RenderSystem.disableBlend();
     }
@@ -230,7 +232,7 @@ public abstract class Notification implements NotificationStateMachine.Listener 
         // Why without all of this there is a bug,
         // when using guiGraphics.setColor(),
         // it makes all the tooltips with the same color?
-        MultiBufferSource.BufferSource isolatedBuffer = MultiBufferSource.immediate(new ByteBufferBuilder(256));
+        MultiBufferSource.BufferSource isolatedBuffer = MultiBufferSource.immediate(new BufferBuilder(256));
         int iAlpha = Math.max((int) (animator.getAlpha() * 255), 25);
         int alphaColor = (iAlpha << 24) | (color & 0x00FFFFFF);
         RenderSystem.enableBlend();

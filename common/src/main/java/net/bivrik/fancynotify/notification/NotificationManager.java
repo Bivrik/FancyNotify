@@ -7,7 +7,6 @@ import net.bivrik.fancynotify.config.ConfigManager;
 import net.bivrik.fancynotify.config.GeneralConfig;
 import net.bivrik.fancynotify.core.Log;
 import net.bivrik.fancynotify.particle.Particle2DEngine;
-import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 
@@ -20,7 +19,6 @@ public class NotificationManager {
     private final Minecraft minecraft;
     private final ConfigManager configManager;
     private final Particle2DEngine particleEngine;
-    private final DeltaTracker deltaTracker;
 
     private final List<Notification> allNotifications = new ArrayList<>();
     private final Deque<Notification> notificationQueue = new ConcurrentLinkedDeque<>();
@@ -30,7 +28,6 @@ public class NotificationManager {
         this.minecraft = minecraft;
         this.configManager = configManager;
         this.particleEngine = particleEngine;
-        this.deltaTracker = minecraft.getTimer();
     }
 
     public Minecraft getMinecraft() {
@@ -152,7 +149,7 @@ public class NotificationManager {
 
     public void update() {
         if (!isCurrentEmpty()) {
-            float deltaTicks = deltaTracker.getGameTimeDeltaTicks();
+            float deltaTicks = minecraft.getDeltaFrameTime();
             for (var iterator = currentNotifications.iterator(); iterator.hasNext();) {
                 var notificationHolder = iterator.next();
 

@@ -122,15 +122,16 @@ public class CreditsManager {
         String responseValue;
 
         // Getting a response from a host provided by a url
-        try (HttpClient client = HttpClient.newBuilder()
+        HttpClient client = HttpClient.newBuilder()
                 .connectTimeout(Duration.ofSeconds(8))
-                .build()) {
+                .build();
 
-            HttpRequest request =  HttpRequest.newBuilder(uri)
-                    .header("User-Agent", "fancy-toasts")
-                    .header("Cache-Control", "no-cache")
-                    .build();
+        HttpRequest request = HttpRequest.newBuilder(uri)
+                .header("User-Agent", "fancy-toasts")
+                .header("Cache-Control", "no-cache")
+                .build();
 
+        try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (IOException | InterruptedException e) {
             LOGGER.error("Failed to access host to get credits: {}", e.getMessage());

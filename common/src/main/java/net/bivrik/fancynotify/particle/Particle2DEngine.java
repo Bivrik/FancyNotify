@@ -39,7 +39,7 @@ public class Particle2DEngine {
     private void addAll(List<Particle2D> newParticles) {
         synchronized (particles) {
             while (particles.size() + newParticles.size() > MAX) {
-                particles.removeFirst();
+                particles.remove(0);
             }
 
             particles.addAll(newParticles);

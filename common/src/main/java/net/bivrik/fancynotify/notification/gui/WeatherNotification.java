@@ -11,7 +11,6 @@ import net.minecraft.resources.ResourceLocation;
 import java.awt.*;
 
 public class WeatherNotification extends ExpandableNotification {
-    private static final ResourceLocation BACKGROUND = ResourceLocations.of("notifications/weather");
     private static final int COLOR = new Color(174, 203, 255).getRGB();
 
     private ResourceLocation icon;
@@ -37,8 +36,8 @@ public class WeatherNotification extends ExpandableNotification {
 
     @Override
     public void draw(GuiGraphics guiGraphics) {
-        drawSprite(guiGraphics, BACKGROUND, 0, 0, getWidth(), getHeight());
+        drawBackground(guiGraphics, 0, 160);
         drawText(guiGraphics, getTitle(), getTextOffset(), 8, COLOR);
-        drawSprite(guiGraphics, this.icon, 5, 1, 20, 20);
+        drawTexture(guiGraphics, icon, 5, 1, 20, 20, 20, 20);
     }
 }

@@ -16,42 +16,34 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(SystemToast.class)
 public class SystemToastMixin {
-    @Inject(at = @At("TAIL"), method = "<init>(Lnet/minecraft/client/gui/components/toasts/SystemToast$SystemToastId;Lnet/minecraft/network/chat/Component;Lnet/minecraft/network/chat/Component;)V")
-    private void onInit(SystemToast.SystemToastId id, Component title, Component message, CallbackInfo info) {
+    @Inject(at = @At("TAIL"), method = "<init>(Lnet/minecraft/client/gui/components/toasts/SystemToast$SystemToastIds;Lnet/minecraft/network/chat/Component;Lnet/minecraft/network/chat/Component;)V")
+    private void onInit(SystemToast.SystemToastIds id, Component title, Component message, CallbackInfo info) {
         fancyNotify$add(id, title, message);
     }
 
     @Inject(at = @At("HEAD"), method = "add", cancellable = true)
-    private static void onAdded(ToastComponent toastComponent, SystemToast.SystemToastId id, Component title, Component message, CallbackInfo info) {
+    private static void onAdded(ToastComponent toastComponent, SystemToast.SystemToastIds id, Component title, Component message, CallbackInfo info) {
         info.cancel();
 
         fancyNotify$add(id, title, message);
     }
 
     @Inject(at = @At("HEAD"), method = "addOrUpdate", cancellable = true)
-    private static void onAddedOrUpdated(ToastComponent toastComponent, SystemToast.SystemToastId id, Component title, Component message, CallbackInfo info) {
+    private static void onAddedOrUpdated(ToastComponent toastComponent, SystemToast.SystemToastIds id, Component title, Component message, CallbackInfo info) {
         info.cancel();
 
         fancyNotify$add(id, title, message);
     }
 
     @Inject(at = @At("HEAD"), method = "multiline", cancellable = true)
-    private static void onMultiline(Minecraft minecraft, SystemToast.SystemToastId id, Component title, Component message, CallbackInfoReturnable<SystemToast> info) {
+    private static void onMultiline(Minecraft minecraft, SystemToast.SystemToastIds id, Component title, Component message, CallbackInfoReturnable<SystemToast> info) {
         info.cancel();
 
         fancyNotify$add(id, title, message);
     }
 
-    @Inject(at = @At("HEAD"), method = "forceHide(Lnet/minecraft/client/gui/components/toasts/ToastComponent;Lnet/minecraft/client/gui/components/toasts/SystemToast$SystemToastId;)V", cancellable = true)
-    private static void onForcedHide(ToastComponent toastComponent, SystemToast.SystemToastId id, CallbackInfo info) {
-        info.cancel();
-
-        NotificationManager manager = FancyNotify.getInstance().getNotificationManager();
-        manager.remove(SystemNotification.class, SystemNotification.Identifier.fromSystemToastId(id));
-    }
-
     @Unique
-    private static void fancyNotify$add(SystemToast.SystemToastId id, Component title, Component message) {
+    private static void fancyNotify$add(SystemToast.SystemToastIds id, Component title, Component message) {
         NotificationManager manager = FancyNotify.getInstance().getNotificationManager();
         manager.add(new SystemNotification(manager, SystemNotification.Identifier.fromSystemToastId(id), title, message));
     }

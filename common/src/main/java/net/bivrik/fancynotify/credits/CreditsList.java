@@ -18,11 +18,18 @@ public class CreditsList extends AbstractSelectionList<CreditsList.Entry> {
     private final List<Entry> lines = new ArrayList<>(10);
     private float scrollSpeed = 0.4f;
 
-    public CreditsList(Minecraft minecraft, int width, int height, int x, int y, CreditsManager.CreditsData data) {
-        super(minecraft, width, height, y, 18);
-        this.setX(x);
+    public CreditsList(Minecraft minecraft, int width, int height, int y, CreditsManager.CreditsData data) {
+        super(minecraft, width, height, y, y + height, 18);
+
+        setRenderTopAndBottom(false);
+        setRenderBackground(false);
 
         updateList(data);
+    }
+
+    @Override
+    protected int getScrollbarPosition() {
+        return this.width * 2;
     }
 
     private void updateList(CreditsManager.CreditsData data) {
@@ -92,21 +99,8 @@ public class CreditsList extends AbstractSelectionList<CreditsList.Entry> {
         return super.keyReleased(keyCode, scanCode, modifiers);
     }
 
-    // Don't move bro, stop it
     @Override
-    protected void renderListBackground(@NotNull GuiGraphics guiGraphics) {}
-
-    @Override
-    protected void renderListSeparators(@NotNull GuiGraphics guiGraphics) {}
-
-    @Override
-    protected boolean scrollbarVisible() {
-        return false;
-    }
-    //
-
-    @Override
-    protected void updateWidgetNarration(@NotNull NarrationElementOutput narrationElementOutput) {}
+    public void updateNarration(@NotNull NarrationElementOutput narrationElementOutput) {}
 
     protected abstract static class Entry extends AbstractSelectionList.Entry<Entry> {
         protected final CreditsList parentList;
@@ -131,7 +125,7 @@ public class CreditsList extends AbstractSelectionList<CreditsList.Entry> {
             super(parentList, content);
 
             this.displayName = Component.translatable(Constants.MOD_ID + ".credits." + this.content);
-            this.xCenter = parentList.getWidth() / 2;
+            this.xCenter = parentList.width / 2;
         }
 
         @Override

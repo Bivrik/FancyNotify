@@ -1,5 +1,7 @@
 package net.bivrik.fancynotify.animation;
 
+import net.minecraft.util.Mth;
+
 public enum Easing {
     LINEAR(t -> t),
     SINE_IN(t -> (float) (1 - Math.cos(t * Math.PI * 0.5f))),
@@ -24,7 +26,7 @@ public enum Easing {
 
     public float lerp(float start, float end, float progress) {
         float delta = end - start;
-        float easedProgress = mathEasing.apply(Math.clamp(progress, 0.0f, 1.0f));
+        float easedProgress = mathEasing.apply(Mth.clamp(progress, 0.0f, 1.0f));
         if (easedProgress + THRESHOLD >= 1.0f) {
             return end;
         }

@@ -60,5 +60,4 @@ plugins {
 rootProject.name = 'FancyNotify'
 include 'common'
 include 'fabric'
-include 'neoforge'
 include 'forge'

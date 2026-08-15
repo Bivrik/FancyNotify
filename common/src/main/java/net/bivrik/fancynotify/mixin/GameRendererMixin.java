@@ -1,12 +1,11 @@
 package net.bivrik.fancynotify.mixin;
 
 import com.mojang.blaze3d.platform.Window;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.bivrik.fancynotify.FancyNotify;
-import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
 import org.joml.Matrix4f;
-import org.joml.Matrix4fStack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -23,14 +22,9 @@ public class GameRendererMixin {
             ),
             locals = LocalCapture.CAPTURE_FAILSOFT
     )
-    private void onRendered(DeltaTracker deltaTracker, boolean renderLevel, CallbackInfo info,
-                            boolean isGameFinishedLoading, int mouseX, int mouseY,
-                            Window window, Matrix4f matrix, Matrix4fStack matrixStack, GuiGraphics guiGraphics) {
-        if (!isGameFinishedLoading) {
-            return;
-        }
-
-        float partialTick = deltaTracker.getGameTimeDeltaPartialTick(false);
+    private void onRendered(float partialTick, long nanoTime, boolean renderLevel, CallbackInfo info,
+                            int mouseX, int MouseY, Window window,
+                            Matrix4f matrix, PoseStack stack, GuiGraphics guiGraphics) {
         FancyNotify.getInstance().onGuiRender(guiGraphics, partialTick);
     }
 }

@@ -3,6 +3,7 @@ package net.bivrik.fancynotify.particle;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.util.Mth;
 
 import java.awt.*;
 
@@ -29,7 +30,7 @@ public class Particle2D {
 
     public Particle2D(int lifetimeTicks, float spawnX, float spawnY, int angle, float speed, float movementFriction, int startRotation, int endRotation, float startScale, float endScale, Color color) {
         this.lifetimeTicks = Math.max(lifetimeTicks, 0);
-        this.movementFriction = Math.clamp(1.0f - movementFriction, 0, 1);
+        this.movementFriction = Mth.clamp(1.0f - movementFriction, 0, 1);
         this.color = color;
 
         previousX = spawnX;

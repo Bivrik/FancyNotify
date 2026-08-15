@@ -4,7 +4,6 @@ import com.mojang.authlib.GameProfile;
 import net.bivrik.fancynotify.FancyNotify;
 import net.bivrik.fancynotify.notification.NotificationManager;
 import net.bivrik.fancynotify.notification.gui.PlayerLoginNotification;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.social.PlayerSocialManager;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.multiplayer.ClientPacketListener;
@@ -42,12 +41,11 @@ public abstract class ClientPacketListenerMixin {
 
         if (FancyNotify.getInstance().getConfigManager().getFiltersConfig().isLoginPlayerNotificationEnabled.get()) {
             GameProfile profile = playerInfo.getProfile();
-            Minecraft.getInstance().getSkinManager().getOrLoad(profile).thenAcceptAsync(skin -> {
-                Player player = this.level.getPlayerByUUID(profile.getId());
-                boolean hasHat = player != null && player.isModelPartShown(PlayerModelPart.HAT);
-                NotificationManager manager = FancyNotify.getInstance().getNotificationManager();
-                manager.add(new PlayerLoginNotification(manager, profile.getName(), skin.texture(), hasHat));
-            });
+
+            Player player = this.level.getPlayerByUUID(profile.getId());
+            boolean hasHat = player != null && player.isModelPartShown(PlayerModelPart.HAT);
+            NotificationManager manager = FancyNotify.getInstance().getNotificationManager();
+            manager.add(new PlayerLoginNotification(manager, profile.getName(), playerInfo.getSkinLocation(), hasHat));
         }
     }
 }

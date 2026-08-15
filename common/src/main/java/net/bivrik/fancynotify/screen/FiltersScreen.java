@@ -4,12 +4,14 @@ import net.bivrik.fancynotify.FancyNotify;
 import net.bivrik.fancynotify.config.ConfigManager;
 import net.bivrik.fancynotify.config.FiltersConfig;
 import net.bivrik.fancynotify.config.Setting;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.CycleButton;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
+import org.jetbrains.annotations.NotNull;
 
 public class FiltersScreen extends UniversalScreen {
     private static final Component TITLE = Component.translatable("fancynotify.title.filters");
@@ -44,7 +46,7 @@ public class FiltersScreen extends UniversalScreen {
     @Override
     protected void init() {
         backButton = Button.builder(CommonComponents.GUI_BACK, button -> this.onClose())
-                .bounds(this.width / 2 - Button.BIG_WIDTH / 2, this.height - Button.DEFAULT_HEIGHT - 6, Button.BIG_WIDTH, Button.DEFAULT_HEIGHT).build();
+                .bounds(this.width / 2 - 200 / 2, this.height - Button.DEFAULT_HEIGHT - 6, 200, Button.DEFAULT_HEIGHT).build();
         this.addSimpleWidget(backButton);
 
         SettingsList list = new SettingsList(this.minecraft, this.width, this.height - 64 - 2, 32, 25, this);
@@ -78,6 +80,13 @@ public class FiltersScreen extends UniversalScreen {
         CycleButton<Boolean> button = createCycleButton(setting, title);
         button.setTooltip(Tooltip.create(tooltip));
         return button;
+    }
+
+    @Override
+    public void render(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+        renderDirtBackground(guiGraphics);
+        drawRenderables(guiGraphics, mouseX, mouseY, partialTick);
+        drawTitle(guiGraphics);
     }
 
     @Override

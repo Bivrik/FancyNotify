@@ -1,14 +1,14 @@
 plugins {
     id 'multiloader-common'
-    id 'net.neoforged.moddev'
+    id 'net.neoforged.moddev.legacyforge'
 }
 
 jar {
     destinationDirectory = rootProject.file('build/libs/common/')
 }
 
-neoForge {
-    neoFormVersion = neo_form_version
+legacyForge  {
+    mcpVersion = minecraft_version
     def at = file('src/main/resources/META-INF/accesstransformer.cfg')
     if (at.exists()) {
         accessTransformers.add(at.absolutePath)
