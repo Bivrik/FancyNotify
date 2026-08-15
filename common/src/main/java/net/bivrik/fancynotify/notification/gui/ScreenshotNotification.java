@@ -54,6 +54,6 @@ public class ScreenshotNotification extends ExpandableNotification {
         drawMessage(guiGraphics, getTextOffset(), 18, -1);
         int width = 38;
         int height = 22;
-        drawTexture(guiGraphics, SCREENSHOT_PREVIEW, 5, 5, width, height, width * 4, height * 4, ((width * 4) - width) / 2, ((height * 4) - height) / 2);
+        drawTexture(guiGraphics, SCREENSHOT_PREVIEW, 5, getCenterY() - height / 2, width, height, width * 4, height * 4, ((width * 4) - width) / 2, ((height * 4) - height) / 2);
     }
 }
