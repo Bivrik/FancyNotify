@@ -3,10 +3,8 @@ package net.bivrik.fancynotify.notification.gui;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.bivrik.fancynotify.notification.ExpandableNotification;
 import net.bivrik.fancynotify.notification.NotificationManager;
-import net.bivrik.fancynotify.utility.ResourceLocations;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
 import java.awt.*;

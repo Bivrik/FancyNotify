@@ -1,6 +1,5 @@
 package net.bivrik.fancynotify.notification.gui;
 
-import net.bivrik.fancynotify.core.Log;
 import net.bivrik.fancynotify.notification.Notification;
 import net.bivrik.fancynotify.notification.NotificationManager;
 import net.bivrik.fancynotify.utility.ResourceLocations;
