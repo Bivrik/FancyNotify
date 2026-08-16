@@ -52,16 +52,16 @@ public class FancyNotifyScreen extends UniversalScreen {
     @Override
     protected void init() {
         backButton = Button.builder(CommonComponents.GUI_BACK, button -> setScreen(parent)).bounds(this.width / 2 - Button.BIG_WIDTH / 2, this.height / 2 + 4 + Button.DEFAULT_HEIGHT + 8, Button.BIG_WIDTH, Button.DEFAULT_HEIGHT).build();
-        addSimpleWidget(backButton);
+        addRenderableWidget(backButton);
 
         settingsButton = Button.builder(SETTINGS_LABEL, button -> setScreen(new SettingsScreen(this))).bounds(this.width / 2 - Button.BIG_WIDTH / 2, this.height / 2 - Button.DEFAULT_HEIGHT - 4, Button.BIG_WIDTH, Button.DEFAULT_HEIGHT).build();
-        addSimpleWidget(settingsButton);
+        addRenderableWidget(settingsButton);
 
         filtersButton = Button.builder(FILTERS_LABEL, button -> setScreen(new FiltersScreen(this))).bounds(this.width / 2 - 100, this.height / 2 + 4, 96, Button.DEFAULT_HEIGHT).build();
-        addSimpleWidget(filtersButton);
+        addRenderableWidget(filtersButton);
 
         creditsButton = Button.builder(CREDITS_LABEL, button -> setScreen(new CreditsScreen(this))).bounds(this.width / 2 + 4, this.height / 2 + 4, 96, Button.DEFAULT_HEIGHT).build();
-        addSimpleWidget(creditsButton);
+        addRenderableWidget(creditsButton);
 
         List<ImageButton> linkButtons = new ArrayList<>();
 
@@ -82,14 +82,14 @@ public class FancyNotifyScreen extends UniversalScreen {
         int y = this.height / 2 - 24;
         for (ImageButton button : linkButtons) {
             button.setPosition(x, y);
-            addSimpleWidget(button);
+            addRenderableWidget(button);
             y += button.getHeight() + padding;
         }
 
         int supportButtonWidth = this.font.width(GITHUB_LABEL);
         Button.OnPress openGithubAction = ConfirmLinkScreen.confirmLink(this, GITHUB_URI);
         supportButton = new PlainTextButton(this.width - supportButtonWidth - 2, this.height - 9 - 1, supportButtonWidth, 9, GITHUB_LABEL, openGithubAction, this.font);
-        addSimpleWidget(supportButton);
+        addRenderableWidget(supportButton);
     }
 
     private ImageButton createLinkButton(int width, int height, String icon, String iconHovered, URI link, Component tooltip) {

@@ -45,10 +45,10 @@ public class FiltersScreen extends UniversalScreen {
     protected void init() {
         backButton = Button.builder(CommonComponents.GUI_BACK, button -> this.onClose())
                 .bounds(this.width / 2 - Button.BIG_WIDTH / 2, this.height - Button.DEFAULT_HEIGHT - 6, Button.BIG_WIDTH, Button.DEFAULT_HEIGHT).build();
-        this.addSimpleWidget(backButton);
+        this.addRenderableWidget(backButton);
 
         SettingsList list = new SettingsList(this.minecraft, this.width, this.height - 64 - 2, 32, 25, this);
-        this.addSimpleWidget(list);
+        this.addRenderableWidget(list);
 
         advancementsButton = createCycleButton(configManager.getFiltersConfig().isAdvancementNotificationEnabled, ADVANCEMENTS_NOTIFICATION_TITLE);
         list.addElement(advancementsButton);

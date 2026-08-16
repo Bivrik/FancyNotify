@@ -66,15 +66,15 @@ public class SettingsScreen extends UniversalScreen {
     protected void init() {
         backButton = Button.builder(CommonComponents.GUI_BACK, button -> this.onClose())
                 .bounds(this.width / 2 - Button.DEFAULT_WIDTH - 5, this.height - Button.DEFAULT_HEIGHT - 6, 180, Button.DEFAULT_HEIGHT).build();
-        this.addSimpleWidget(backButton);
+        this.addRenderableWidget(backButton);
 
         createDummyButton = Button.builder(DUMMY_LABEL, button -> sendDummy())
                 .bounds(this.width / 2 + 30 + 5, this.height - Button.DEFAULT_HEIGHT - 6, Button.SMALL_WIDTH, Button.DEFAULT_HEIGHT)
                 .build();
-        this.addSimpleWidget(createDummyButton);
+        this.addRenderableWidget(createDummyButton);
 
         SettingsList list = new SettingsList(this.minecraft, this.width, this.height - 64 - 2, 32, 25, this);
-        this.addSimpleWidget(list);
+        this.addRenderableWidget(list);
 
         Setting<Float> notificationTransparency = configManager.getGeneralConfig().notificationsTransparency;
         transparencySlider = new Slider(0, 0, SettingsList.WidgetWidth.BIG.getWidth(), Button.DEFAULT_HEIGHT, TRANSPARENCY_LABEL, notificationTransparency.get(), 0.3f, 1.0f);
