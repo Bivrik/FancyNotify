@@ -185,11 +185,13 @@ public abstract class Notification implements NotificationStateMachine.Listener 
     protected abstract void draw(GuiGraphicsExtractor GuiGraphicsExtractor);
 
     protected void drawSprite(GuiGraphicsExtractor GuiGraphicsExtractor, Identifier sprite, int x, int y, int width, int height) {
-        GuiGraphicsExtractor.blitSprite(RenderPipelines.GUI, sprite, x, y, width, height, animator.alpha);
+        int color = getColorWithAlpha(0x00ffffff);
+        GuiGraphicsExtractor.blitSprite(RenderPipelines.GUI_TEXTURED, sprite, x, y, width, height, color);
     }
 
     protected void drawTexture(GuiGraphicsExtractor GuiGraphicsExtractor, Identifier texture, int x, int y, int width, int height, int textureWidth, int textureHeight, int uOffset, int vOffset, int uWidth, int vHeight) {
-        GuiGraphicsExtractor.blit(RenderPipelines.GUI, texture, x, y, width, height, uOffset, vOffset, uWidth, vHeight, textureWidth, textureHeight, (((int) (animator.alpha * 255)) << 24) | 0x00FFFFFF);
+        int color = getColorWithAlpha(0x00ffffff);
+        GuiGraphicsExtractor.blit(RenderPipelines.GUI_TEXTURED, texture, x, y, width, height, uOffset, vOffset, uWidth, vHeight, textureWidth, textureHeight, color);
     }
 
     protected void drawTexture(GuiGraphicsExtractor GuiGraphicsExtractor, Identifier texture, int x, int y, int width, int height, int textureWidth, int textureHeight, int uOffset, int vOffset) {
@@ -201,7 +203,8 @@ public abstract class Notification implements NotificationStateMachine.Listener 
     }
 
     protected void drawText(GuiGraphicsExtractor GuiGraphicsExtractor, FormattedCharSequence text, int x, int y, int color) {
-        GuiGraphicsExtractor.text(minecraft.font, text, x, y, color, false);
+        int colorWithAlpha = getColorWithAlpha(color);
+        GuiGraphicsExtractor.text(minecraft.font, text, x, y, colorWithAlpha, false);
     }
 
     protected void drawText(GuiGraphicsExtractor GuiGraphicsExtractor, Component text, int x, int y, int color) {
@@ -213,5 +216,10 @@ public abstract class Notification implements NotificationStateMachine.Listener 
             FormattedCharSequence line = wrappedMessage.get(i);
             drawText(GuiGraphicsExtractor, line, x, y + i * 9, color);
         }
+    }
+
+    private int getColorWithAlpha(int color) {
+        int intAlpha = Math.round(animator.alpha * 255);
+        return intAlpha << 24 | (color & 0x00ffffff);
     }
 }
