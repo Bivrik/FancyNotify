@@ -65,7 +65,7 @@ public class SystemNotification extends ExpandableNotification {
         CHUNK_LOAD_FAILURE(Identifiers.of("icons/chunk")),
         CHUNK_SAVE_FAILURE(Identifiers.of("icons/chunk")),
         UNSECURE_SERVER_WARNING(220),
-        FRIEND_SYSTEM_NOTIFICATION();
+        FRIEND_SYSTEM_NOTIFICATION(Identifiers.of("icons/friends"));
 
         private static final Map<SystemToast.SystemToastId, Ids> SYSTEM_TOAST_TO_ID = Map.ofEntries(
                 Map.entry(SystemToast.SystemToastId.NARRATOR_TOGGLE, NARRATOR),
