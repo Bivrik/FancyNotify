@@ -34,8 +34,6 @@ public class CreditsScreen extends UniversalScreen {
 
     @Override
     public void extractRenderState(@NotNull GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTick) {
-        extractBackground(graphics, mouseX, mouseY, partialTick);
-
         int offset = 12 + 9 + 12;
         int width = this.width;
         int height = this.height - offset * 2;

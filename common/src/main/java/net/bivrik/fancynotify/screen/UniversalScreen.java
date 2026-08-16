@@ -58,7 +58,6 @@ public class UniversalScreen extends Screen {
 
     @Override
     public void extractRenderState(@NotNull GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTick) {
-        this.extractBackground(graphics, mouseX, mouseY, partialTick);
         drawRenderables(graphics, mouseX, mouseY, partialTick);
         drawTitle(graphics);
     }
