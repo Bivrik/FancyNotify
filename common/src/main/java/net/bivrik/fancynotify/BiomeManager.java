@@ -11,33 +11,37 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.biome.Biome;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Map;
+import java.util.HashMap;
 
 public class BiomeManager {
     // maybe check biome specific first
     // then check for tags
     // and in the end to default icon if nothing is found
-    /*private static final Map<TagKey<Biome>, ItemStack> TAGS_ICONS = Map.ofEntries(
-            Map.entry(BiomeTags.IS_FOREST, new ItemStack(Items.OAK_SAPLING)),
-            Map.entry(BiomeTags.IS_BADLANDS, new ItemStack(Items.TERRACOTTA)),
-            Map.entry(BiomeTags.IS_BEACH, new ItemStack(Items.SAND)),
-            Map.entry(BiomeTags.IS_END, new ItemStack(Items.END_STONE)),
-            Map.entry(BiomeTags.IS_HILL, new ItemStack(Items.GRAVEL)),
-            Map.entry(BiomeTags.IS_JUNGLE, new ItemStack(Items.JUNGLE_SAPLING)),
-            Map.entry(BiomeTags.IS_MOUNTAIN, new ItemStack(Items.STONE)),
-            Map.entry(BiomeTags.IS_NETHER, new ItemStack(Items.NETHERRACK)),
-            Map.entry(BiomeTags.IS_OCEAN, new ItemStack(Items.KELP)),
-            Map.entry(BiomeTags.IS_RIVER, new ItemStack(Items.WATER_BUCKET)),
-            Map.entry(BiomeTags.IS_SAVANNA, new ItemStack(Items.ACACIA_SAPLING)),
-            Map.entry(BiomeTags.IS_TAIGA, new ItemStack(Items.SPRUCE_SAPLING)),
-            Map.entry(BiomeTags.ALLOWS_SURFACE_SLIME_SPAWNS, new ItemStack(Items.SLIME_BALL))
-    );
-    private static final ItemStack DEFAULT_ICON = new ItemStack(Items.GRASS_BLOCK);
+    private static final HashMap<TagKey<Biome>, Item> TAGS_ICONS = new HashMap<>();
+
+    static {
+        TAGS_ICONS.put(BiomeTags.IS_FOREST, Items.OAK_SAPLING);
+        TAGS_ICONS.put(BiomeTags.IS_BADLANDS, Items.TERRACOTTA);
+        TAGS_ICONS.put(BiomeTags.IS_BEACH, Items.SAND);
+        TAGS_ICONS.put(BiomeTags.IS_END, Items.END_STONE);
+        TAGS_ICONS.put(BiomeTags.IS_HILL, Items.GRAVEL);
+        TAGS_ICONS.put(BiomeTags.IS_JUNGLE, Items.JUNGLE_SAPLING);
+        TAGS_ICONS.put(BiomeTags.IS_MOUNTAIN, Items.STONE);
+        TAGS_ICONS.put(BiomeTags.IS_NETHER, Items.NETHERRACK);
+        TAGS_ICONS.put(BiomeTags.IS_OCEAN, Items.KELP);
+        TAGS_ICONS.put(BiomeTags.IS_RIVER, Items.WATER_BUCKET);
+        TAGS_ICONS.put(BiomeTags.IS_SAVANNA, Items.ACACIA_SAPLING);
+        TAGS_ICONS.put(BiomeTags.IS_TAIGA, Items.SPRUCE_SAPLING);
+        TAGS_ICONS.put(BiomeTags.ALLOWS_SURFACE_SLIME_SPAWNS, Items.SLIME_BALL);
+    }
+
+    private static final Item DEFAULT_ICON = Items.GRASS_BLOCK;
     private static final int DELAY_TICKS = 40;
 
     private final Minecraft minecraft;
@@ -70,14 +74,14 @@ public class BiomeManager {
             currentBiome = biomeHolder.value();
             Identifier biomeId = biomeHolder.unwrap().map(ResourceKey::identifier, null);
             Component biomeName = getBiomeComponent(biomeId, currentBiome);
-            ItemStack icon = DEFAULT_ICON;
+            Item icon = DEFAULT_ICON;
             for (var entry : TAGS_ICONS.entrySet()) {
                 if (biomeHolder.is(entry.getKey())) {
                     icon = entry.getValue();
                     break;
                 }
             }
-            notificationManager.add(new BiomeNotification(notificationManager, biomeName, icon));
+            notificationManager.add(new BiomeNotification(notificationManager, biomeName, icon.getDefaultInstance()));
         }
     }
 
@@ -102,5 +106,5 @@ public class BiomeManager {
         return Component.literal(output.toString());
     }
 
-*/
+
 }

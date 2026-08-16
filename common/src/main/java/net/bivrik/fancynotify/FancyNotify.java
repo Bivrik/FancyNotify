@@ -58,12 +58,12 @@ public final class FancyNotify {
         splashesManager = new SplashesManager(minecraft);
         notificationManager = new NotificationManager(minecraft, configManager, particleEngine);
         weatherManager = new WeatherManager(notificationManager);
-        //biomeManager = new BiomeManager(minecraft, notificationManager);
+        biomeManager = new BiomeManager(minecraft, notificationManager);
         musicManager = new MusicManager(minecraft.options, notificationManager);
     }
 
     public void onClientTick() {
-        //biomeManager.tick();
+        biomeManager.tick();
         particleEngine.tick();
     }
 
