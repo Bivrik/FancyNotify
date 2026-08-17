@@ -32,17 +32,17 @@ public class PlayerLoginNotification extends Notification {
     }
 
     @Override
-    protected void draw(GuiGraphicsExtractor GuiGraphicsExtractor) {
-        drawSprite(GuiGraphicsExtractor, BACKGROUND, 0, 0, getWidth(), getHeight());
-        drawText(GuiGraphicsExtractor, getTitle(), getTextOffset(), 7, COLOR);
-        drawMessage(GuiGraphicsExtractor, getTextOffset(), 18, -1);
+    protected void draw(GuiGraphicsExtractor graphics) {
+        drawSprite(graphics, BACKGROUND, 0, 0, getWidth(), getHeight());
+        drawText(graphics, getTitle(), getTextOffset(), 7, COLOR);
+        drawMessage(graphics, getTextOffset(), 18, -1);
 
         PlayerSkinRenderCache cache = this.minecraft.playerSkinRenderCache();
         PlayerSkinRenderCache.RenderInfo renderInfo = cache.getOrDefault(profile);
         Identifier playerTexture = renderInfo.playerSkin().body().texturePath();
-        drawTexture(GuiGraphicsExtractor, playerTexture, 8, 8, 16, 16, 64, 64, 8, 8, 8, 8);
+        drawTexture(graphics, playerTexture, 8, 8, 16, 16, 64, 64, 8, 8, 8, 8);
         if (hasHat) {
-            drawTexture(GuiGraphicsExtractor, playerTexture, 7, 7, 18, 18, 64, 64, 40, 8, 8, 8);
+            drawTexture(graphics, playerTexture, 7, 7, 18, 18, 64, 64, 40, 8, 8, 8);
         }
     }
 }

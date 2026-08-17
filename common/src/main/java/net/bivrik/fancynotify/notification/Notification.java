@@ -159,56 +159,56 @@ public abstract class Notification implements NotificationStateMachine.Listener 
 
     protected void onUpdate() {}
 
-    public final void render(GuiGraphicsExtractor GuiGraphicsExtractor) {
+    public final void render(GuiGraphicsExtractor graphics) {
         if (stateMachine.isInState(NotificationState.HIDDEN) || stateMachine.isInState(NotificationState.REMOVAL)) {
             return;
         }
 
         float halfWidth = getWidth() / 2.0f;
         float halfHeight = getHeight() / 2.0f;
-        Matrix3x2fStack stack = GuiGraphicsExtractor.pose();
+        Matrix3x2fStack stack = graphics.pose();
         stack.pushMatrix();
         stack.translate(halfWidth, halfHeight);
         stack.scale(animator.getScaleX(), animator.getScaleY());
         stack.rotate((float) Math.toRadians(animator.getRotation()));
         stack.translate(animator.getX() - halfWidth, animator.getY() - halfHeight);
-        draw(GuiGraphicsExtractor);
+        draw(graphics);
         stack.popMatrix();
     }
 
-    protected abstract void draw(GuiGraphicsExtractor GuiGraphicsExtractor);
+    protected abstract void draw(GuiGraphicsExtractor graphics);
 
-    protected void drawSprite(GuiGraphicsExtractor GuiGraphicsExtractor, Identifier sprite, int x, int y, int width, int height) {
+    protected void drawSprite(GuiGraphicsExtractor graphics, Identifier sprite, int x, int y, int width, int height) {
         int color = getColorWithAlpha(0x00ffffff);
-        GuiGraphicsExtractor.blitSprite(RenderPipelines.GUI_TEXTURED, sprite, x, y, width, height, color);
+        graphics.blitSprite(RenderPipelines.GUI_TEXTURED, sprite, x, y, width, height, color);
     }
 
-    protected void drawTexture(GuiGraphicsExtractor GuiGraphicsExtractor, Identifier texture, int x, int y, int width, int height, int textureWidth, int textureHeight, float uOffset, float vOffset, int uWidth, int vHeight) {
+    protected void drawTexture(GuiGraphicsExtractor graphics, Identifier texture, int x, int y, int width, int height, int textureWidth, int textureHeight, float uOffset, float vOffset, int uWidth, int vHeight) {
         int color = getColorWithAlpha(0x00ffffff);
-        GuiGraphicsExtractor.blit(RenderPipelines.GUI_TEXTURED, texture, x, y, uOffset, vOffset, width, height, uWidth, vHeight, textureWidth, textureHeight, color);
+        graphics.blit(RenderPipelines.GUI_TEXTURED, texture, x, y, uOffset, vOffset, width, height, uWidth, vHeight, textureWidth, textureHeight, color);
     }
 
-    protected void drawTexture(GuiGraphicsExtractor GuiGraphicsExtractor, Identifier texture, int x, int y, int width, int height, int textureWidth, int textureHeight, float uOffset, float vOffset) {
-        drawTexture(GuiGraphicsExtractor, texture, x, y, width, height, textureWidth, textureHeight, uOffset, vOffset, width, height);
+    protected void drawTexture(GuiGraphicsExtractor graphics, Identifier texture, int x, int y, int width, int height, int textureWidth, int textureHeight, float uOffset, float vOffset) {
+        drawTexture(graphics, texture, x, y, width, height, textureWidth, textureHeight, uOffset, vOffset, width, height);
     }
 
-    protected void drawTexture(GuiGraphicsExtractor GuiGraphicsExtractor, Identifier texture, int x, int y, int width, int height) {
-        drawTexture(GuiGraphicsExtractor, texture, x, y, width, height, width, height, 0, 0);
+    protected void drawTexture(GuiGraphicsExtractor graphics, Identifier texture, int x, int y, int width, int height) {
+        drawTexture(graphics, texture, x, y, width, height, width, height, 0, 0);
     }
 
-    protected void drawText(GuiGraphicsExtractor GuiGraphicsExtractor, FormattedCharSequence text, int x, int y, int color) {
+    protected void drawText(GuiGraphicsExtractor graphics, FormattedCharSequence text, int x, int y, int color) {
         int colorWithAlpha = getColorWithAlpha(color);
-        GuiGraphicsExtractor.text(minecraft.font, text, x, y, colorWithAlpha, false);
+        graphics.text(minecraft.font, text, x, y, colorWithAlpha, false);
     }
 
-    protected void drawText(GuiGraphicsExtractor GuiGraphicsExtractor, Component text, int x, int y, int color) {
-        drawText(GuiGraphicsExtractor, text.getVisualOrderText(), x, y, color);
+    protected void drawText(GuiGraphicsExtractor graphics, Component text, int x, int y, int color) {
+        drawText(graphics, text.getVisualOrderText(), x, y, color);
     }
 
-    protected void drawMessage(GuiGraphicsExtractor GuiGraphicsExtractor, int x, int y, int color) {
+    protected void drawMessage(GuiGraphicsExtractor graphics, int x, int y, int color) {
         for (int i = 0; i < wrappedMessage.size(); i++) {
             FormattedCharSequence line = wrappedMessage.get(i);
-            drawText(GuiGraphicsExtractor, line, x, y + i * 9, color);
+            drawText(graphics, line, x, y + i * 9, color);
         }
     }
 

@@ -43,21 +43,21 @@ public class RecipeNotification extends ExpandableNotification {
 
     private float countTemp = 0;
     @Override
-    public void draw(GuiGraphicsExtractor GuiGraphicsExtractor) {
+    public void draw(GuiGraphicsExtractor graphics) {
         countTemp += 1 / 2f;
-        drawSprite(GuiGraphicsExtractor, BACKGROUND, 0, 0, getWidth(), getHeight());
-        drawText(GuiGraphicsExtractor, getTitle(), getTextOffset(), 7, color);
-        drawMessage(GuiGraphicsExtractor, getTextOffset(), 18, Color.black.getRGB());
+        drawSprite(graphics, BACKGROUND, 0, 0, getWidth(), getHeight());
+        drawText(graphics, getTitle(), getTextOffset(), 7, color);
+        drawMessage(graphics, getTextOffset(), 18, Color.black.getRGB());
 
         int orderedIndex = (int) (countTemp / Math.max(1f, (double) getLifeTimeTicks() / recipes.size()) % recipes.size());
         var recipe = recipes.get(orderedIndex);
-        var stack = GuiGraphicsExtractor.pose();
+        var stack = graphics.pose();
         stack.pushMatrix();
         stack.scale(0.85f, 0.85f);
         stack.translate(0, 0);
         ContextMap context = SlotDisplayContext.fromLevel(Objects.requireNonNull(this.minecraft.level));
-        GuiGraphicsExtractor.fakeItem(recipe.craftingStation().resolveForFirstStack(context), 11, getCenterY() - 1);
+        graphics.fakeItem(recipe.craftingStation().resolveForFirstStack(context), 11, getCenterY() - 1);
         stack.popMatrix();
-        GuiGraphicsExtractor.fakeItem(recipe.result().resolveForFirstStack(context), 8, getCenterY() - 12);
+        graphics.fakeItem(recipe.result().resolveForFirstStack(context), 8, getCenterY() - 12);
     }
 }

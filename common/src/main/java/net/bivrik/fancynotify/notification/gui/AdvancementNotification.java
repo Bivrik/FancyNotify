@@ -98,10 +98,10 @@ public class AdvancementNotification extends Notification {
     }
 
     @Override
-    public void draw(GuiGraphicsExtractor GuiGraphicsExtractor) {
-        drawSprite(GuiGraphicsExtractor, background, 0, 0, getWidth(), getHeight());
-        drawText(GuiGraphicsExtractor, getTitle(), getTextOffset(), 7, textColor);
-        drawMessage(GuiGraphicsExtractor, getTextOffset(), 18, -1);
-        GuiGraphicsExtractor.fakeItem(icon, 8, getCenterY() - 8);
+    public void draw(GuiGraphicsExtractor graphics) {
+        drawSprite(graphics, background, 0, 0, getWidth(), getHeight());
+        drawText(graphics, getTitle(), getTextOffset(), 7, textColor);
+        drawMessage(graphics, getTextOffset(), 18, -1);
+        graphics.fakeItem(icon, 8, getCenterY() - 8);
     }
 }

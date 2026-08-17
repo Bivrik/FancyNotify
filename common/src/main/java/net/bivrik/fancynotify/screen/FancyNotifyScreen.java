@@ -105,17 +105,17 @@ public class FancyNotifyScreen extends UniversalScreen {
         drawSplash(graphics);
     }
 
-    private void drawSplash(@NotNull GuiGraphicsExtractor GuiGraphicsExtractor) {
+    private void drawSplash(@NotNull GuiGraphicsExtractor graphics) {
         float size = (float) (Math.abs(Math.cos((double) net.minecraft.util.Util.getMillis() / 250) * 0.1f) + 0.9f);
         float x = this.width / 2.0f;
         float y = 12 + 9 + 4.5f;
 
-        Matrix3x2fStack stack = GuiGraphicsExtractor.pose();
+        Matrix3x2fStack stack = graphics.pose();
         stack.pushMatrix();
         stack.translate(x, y);
         stack.scale(size, size);
         stack.translate(-x, -y);
-        GuiGraphicsExtractor.centeredText(this.font, splash, this.width / 2, 12 + 9, Color.yellow.getRGB());
+        graphics.centeredText(this.font, splash, this.width / 2, 12 + 9, Color.yellow.getRGB());
         stack.popMatrix();
     }
 }

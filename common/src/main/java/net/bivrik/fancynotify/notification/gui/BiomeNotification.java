@@ -37,13 +37,13 @@ public class BiomeNotification extends ExpandableNotification {
     }
 
     @Override
-    public void draw(GuiGraphicsExtractor GuiGraphicsExtractor) {
-        drawSprite(GuiGraphicsExtractor, BACKGROUND, 0, 0, getWidth(), getHeight());
-        drawText(GuiGraphicsExtractor, getTitle(), getTextOffset(), 8, COLOR);
-        Matrix3x2fStack stack = GuiGraphicsExtractor.pose();
+    public void draw(GuiGraphicsExtractor graphics) {
+        drawSprite(graphics, BACKGROUND, 0, 0, getWidth(), getHeight());
+        drawText(graphics, getTitle(), getTextOffset(), 8, COLOR);
+        Matrix3x2fStack stack = graphics.pose();
         stack.pushMatrix();
         stack.scale(0.85f, 0.85f);
-        GuiGraphicsExtractor.fakeItem(icon, 10, getCenterY() - 6);
+        graphics.fakeItem(icon, 10, getCenterY() - 6);
         stack.popMatrix();
     }
 }

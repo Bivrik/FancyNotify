@@ -87,17 +87,17 @@ public class Particle2DEngine {
     }
 
     // Better do batching in the future, but it's fine for now
-    public void render(GuiGraphicsExtractor guiGraphicsExtractor, float partialTick) {
+    public void render(GuiGraphicsExtractor graphics, float partialTick) {
         if (particles.isEmpty() || minecraft.gui.hud.isHidden()) {
             return;
         }
 
-        Matrix3x2fStack stack = guiGraphicsExtractor.pose();
+        Matrix3x2fStack stack = graphics.pose();
         stack.pushMatrix();
         stack.translate(0, 0);
         synchronized (particles) {
             for (Particle2D particle : particles) {
-                particle.render(guiGraphicsExtractor, partialTick);
+                particle.render(graphics, partialTick);
             }
         }
         stack.popMatrix();

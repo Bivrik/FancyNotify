@@ -45,12 +45,12 @@ public class SystemNotification extends ExpandableNotification {
     }
 
     @Override
-    public void draw(GuiGraphicsExtractor GuiGraphicsExtractor) {
-        drawSprite(GuiGraphicsExtractor, BACKGROUND, 0, 0, getWidth(), getHeight());
+    public void draw(GuiGraphicsExtractor graphics) {
+        drawSprite(graphics, BACKGROUND, 0, 0, getWidth(), getHeight());
         int alignment = Math.min(getWrappedMessage().size(), 1);
-        drawText(GuiGraphicsExtractor, getTitle(), getTextOffset(), 8 - alignment, Color.yellow.getRGB());
-        drawMessage(GuiGraphicsExtractor, getTextOffset(), 18, -1);
-        drawSprite(GuiGraphicsExtractor, id.getSprite(), 6, getCenterY() - 10, 20, 20);
+        drawText(graphics, getTitle(), getTextOffset(), 8 - alignment, Color.yellow.getRGB());
+        drawMessage(graphics, getTextOffset(), 18, -1);
+        drawSprite(graphics, id.getSprite(), 6, getCenterY() - 10, 20, 20);
     }
 
     public enum Ids {

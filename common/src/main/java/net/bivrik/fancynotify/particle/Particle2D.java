@@ -73,7 +73,7 @@ public class Particle2D {
     }
 
     // Batching but it's too much effort for now
-    public void render(GuiGraphicsExtractor GuiGraphicsExtractor, float partialTick) {
+    public void render(GuiGraphicsExtractor graphics, float partialTick) {
         if (!isAlive || timeTicks == 0) {
             return;
         }
@@ -86,12 +86,12 @@ public class Particle2D {
         float renderRotation = startRotation + (endRotation - startRotation) * progress;
         float renderScale = startScale + (endScale - startScale) * progress;
 
-        Matrix3x2fStack stack = GuiGraphicsExtractor.pose();
+        Matrix3x2fStack stack = graphics.pose();
         stack.pushMatrix();
         stack.translate(renderX, renderY);
         stack.scale(renderScale);
         stack.rotate((float) Math.toRadians(renderRotation));
-        GuiGraphicsExtractor.fill(-2, -2, 2, 2, color.getRGB());
+        graphics.fill(-2, -2, 2, 2, color.getRGB());
         stack.popMatrix();
     }
 }

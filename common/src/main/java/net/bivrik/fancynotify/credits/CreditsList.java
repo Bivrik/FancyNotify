@@ -117,7 +117,7 @@ public class CreditsList extends AbstractSelectionList<CreditsList.Entry> {
         }
 
         @Override
-        public void extractContent(@NotNull GuiGraphicsExtractor guiGraphicsExtractor, int mouseX, int mouseY, boolean isHovered, float partialTick) {}
+        public void extractContent(@NotNull GuiGraphicsExtractor graphics, int mouseX, int mouseY, boolean isHovered, float partialTick) {}
     }
 
     private static class CategoryEntry extends Entry {
@@ -132,8 +132,8 @@ public class CreditsList extends AbstractSelectionList<CreditsList.Entry> {
         }
 
         @Override
-        public void extractContent(@NotNull GuiGraphicsExtractor guiGraphicsExtractor, int mouseX, int mouseY, boolean isHovered, float partialTick) {
-            guiGraphicsExtractor.centeredText(font, displayName, xCenter, getY(), Color.yellow.getRGB());
+        public void extractContent(@NotNull GuiGraphicsExtractor graphics, int mouseX, int mouseY, boolean isHovered, float partialTick) {
+            graphics.centeredText(font, displayName, xCenter, getY(), Color.yellow.getRGB());
         }
     }
 
@@ -154,11 +154,11 @@ public class CreditsList extends AbstractSelectionList<CreditsList.Entry> {
         }
 
         @Override
-        public void extractContent(@NotNull GuiGraphicsExtractor guiGraphicsExtractor, int mouseX, int mouseY, boolean isHovered, float partialTick) {
-            guiGraphicsExtractor.text(this.font, this.content, getX(), getY(), Color.white.getRGB());
+        public void extractContent(@NotNull GuiGraphicsExtractor graphics, int mouseX, int mouseY, boolean isHovered, float partialTick) {
+            graphics.text(this.font, this.content, getX(), getY(), Color.white.getRGB());
 
             if (isValidAnnotation) {
-                guiGraphicsExtractor.text(this.font, annotation, getX() + font.width(this.content) + 8, getY(), Color.lightGray.getRGB());
+                graphics.text(this.font, annotation, getX() + font.width(this.content) + 8, getY(), Color.lightGray.getRGB());
             }
         }
     }

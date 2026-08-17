@@ -297,11 +297,11 @@ public class NotificationManager {
             }
         }
 
-        private void render(GuiGraphicsExtractor GuiGraphicsExtractor) {
-            Matrix3x2fStack stack = GuiGraphicsExtractor.pose();
+        private void render(GuiGraphicsExtractor graphics) {
+            Matrix3x2fStack stack = graphics.pose();
             stack.pushMatrix();
             stack.translate(x, y);
-            notification.render(GuiGraphicsExtractor);
+            notification.render(graphics);
             stack.popMatrix();
         }
     }

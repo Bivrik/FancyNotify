@@ -48,13 +48,13 @@ public class ScreenshotNotification extends ExpandableNotification {
     }
 
     @Override
-    public void draw(GuiGraphicsExtractor GuiGraphicsExtractor) {
-        drawSprite(GuiGraphicsExtractor, BACKGROUND, 0, 0, getWidth(), getHeight());
-        drawText(GuiGraphicsExtractor, getTitle(), getTextOffset(), 7, new Color(43, 181, 43).getRGB());
-        drawMessage(GuiGraphicsExtractor, getTextOffset(), 18, -1);
+    public void draw(GuiGraphicsExtractor graphics) {
+        drawSprite(graphics, BACKGROUND, 0, 0, getWidth(), getHeight());
+        drawText(graphics, getTitle(), getTextOffset(), 7, new Color(43, 181, 43).getRGB());
+        drawMessage(graphics, getTextOffset(), 18, -1);
         int width = 38;
         int height = 22;
-        drawTexture(GuiGraphicsExtractor, SCREENSHOT_PREVIEW, 5, getCenterY() - height / 2, width, height,
+        drawTexture(graphics, SCREENSHOT_PREVIEW, 5, getCenterY() - height / 2, width, height,
                 width * 4, height * 4, width * 1.5f, height * 1.5f);
     }
 }

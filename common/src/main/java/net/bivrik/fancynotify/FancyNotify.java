@@ -67,8 +67,8 @@ public final class FancyNotify {
         particleEngine.tick();
     }
 
-    public void onGuiRender(GuiGraphicsExtractor GuiGraphicsExtractor, float partialTick) {
-        particleEngine.render(GuiGraphicsExtractor, partialTick);
+    public void onGuiRender(GuiGraphicsExtractor graphics, float partialTick) {
+        particleEngine.render(graphics, partialTick);
     }
 
     public NotificationManager getNotificationManager() {
