@@ -27,8 +27,8 @@ public class ScreenshotNotification extends ExpandableNotification {
         super(manager, TITLE, Component.translatable(Constants.MOD_ID + ".gui.screenshot." + RANDOM.nextInt(3)));
 
         textureManager = this.minecraft.getTextureManager();
-        DynamicTexture screenshotPreview = new DynamicTexture(SCREENSHOT_PREVIEW::toString, screenshotImage);
-        textureManager.register(SCREENSHOT_PREVIEW, screenshotPreview);
+        textureManager.release(SCREENSHOT_PREVIEW);
+        textureManager.register(SCREENSHOT_PREVIEW, new DynamicTexture(SCREENSHOT_PREVIEW::toString, screenshotImage));
     }
 
     @Override
