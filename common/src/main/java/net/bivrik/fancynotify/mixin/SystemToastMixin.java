@@ -27,14 +27,14 @@ public class SystemToastMixin {
     }
 
     @Inject(at = @At("HEAD"), method = "addOrUpdate", cancellable = true)
-    private static void onAddedOrUpdated(ToastManager toastComponent, SystemToast.SystemToastId id, Component title, Component message, CallbackInfo info) {
+    private static void onAddedOrUpdated(ToastManager toastManager, SystemToast.SystemToastId id, Component title, Component message, CallbackInfo info) {
         info.cancel();
 
         fancyNotify$add(id, title, message);
     }
 
     @Inject(at = @At("HEAD"), method = "forceHide(Lnet/minecraft/client/gui/components/toasts/ToastManager;Lnet/minecraft/client/gui/components/toasts/SystemToast$SystemToastId;)V", cancellable = true)
-    private static void onForcedHide(ToastManager toastComponent, SystemToast.SystemToastId id, CallbackInfo info) {
+    private static void onForcedHide(ToastManager toastManager, SystemToast.SystemToastId id, CallbackInfo info) {
         info.cancel();
 
         NotificationManager manager = FancyNotify.getInstance().getNotificationManager();
