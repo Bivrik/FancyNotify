@@ -1,6 +1,5 @@
 package net.bivrik.fancynotify.notification;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.bivrik.fancynotify.animation.Easing;
 import net.bivrik.fancynotify.animation.Keyframe;
 import net.bivrik.fancynotify.config.ConfigManager;

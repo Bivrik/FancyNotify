@@ -5,8 +5,6 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Objects;
-
 public class UniversalScreen extends Screen {
     protected final Screen parent;
 

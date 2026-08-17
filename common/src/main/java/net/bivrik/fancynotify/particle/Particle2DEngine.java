@@ -1,10 +1,8 @@
 package net.bivrik.fancynotify.particle;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.bivrik.fancynotify.config.ConfigManager;
 import net.bivrik.fancynotify.config.GeneralConfig;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.Options;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import org.joml.Matrix3x2fStack;
 

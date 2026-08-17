@@ -1,9 +1,5 @@
 package net.bivrik.fancynotify.notification;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.ByteBufferBuilder;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
 import net.bivrik.fancynotify.FancyNotify;
 import net.bivrik.fancynotify.config.ConfigManager;
 import net.bivrik.fancynotify.config.FiltersConfig;
@@ -12,7 +8,6 @@ import net.bivrik.fancynotify.eventbus.SubscribeEvent;
 import net.bivrik.fancynotify.eventbus.event.NotificationWidthChangedEvent;
 import net.bivrik.fancynotify.particle.Particle2DEngine;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
