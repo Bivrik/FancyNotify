@@ -17,7 +17,7 @@ public class UniversalScreen extends Screen {
     }
 
     protected void setScreen(Screen screen) {
-        Objects.requireNonNull(this.minecraft).setScreenAndShow(screen);
+        this.minecraft.gui.setScreen(screen);
     }
 
     @Override
