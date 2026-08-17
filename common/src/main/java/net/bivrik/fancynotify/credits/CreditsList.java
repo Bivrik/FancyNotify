@@ -94,6 +94,15 @@ public class CreditsList extends AbstractSelectionList<CreditsList.Entry> {
     }
 
     @Override
+    protected void extractListBackground(@NotNull GuiGraphicsExtractor graphics) {}
+
+    @Override
+    protected void extractListSeparators(@NotNull GuiGraphicsExtractor graphics) {}
+
+    @Override
+    protected void extractScrollbar(@NotNull GuiGraphicsExtractor graphics, int mouseX, int mouseY) {}
+
+    @Override
     protected void updateWidgetNarration(@NotNull NarrationElementOutput narrationElementOutput) {}
 
     protected abstract static class Entry extends AbstractSelectionList.Entry<Entry> {
