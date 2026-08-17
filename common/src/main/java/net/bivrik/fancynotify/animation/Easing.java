@@ -31,6 +31,15 @@ public enum Easing {
         return start + delta * easedProgress;
     }
 
+    public int lerp(int start, int end, float progress) {
+        int delta = end - start;
+        float easedProgress = mathEasing.apply(Math.clamp(progress, 0.0f, 1.0f));
+        if (easedProgress + THRESHOLD >= 1.0f) {
+            return end;
+        }
+        return (int) (start + delta * easedProgress);
+    }
+
     @FunctionalInterface
     private interface MathEasing {
         float apply(float progress);

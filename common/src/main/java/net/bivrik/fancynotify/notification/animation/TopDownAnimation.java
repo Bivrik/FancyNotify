@@ -19,7 +19,7 @@ public class TopDownAnimation extends NotificationAnimator {
                 float startAlpha = 0;
 
                 float endY = 0;
-                float endAlpha = 1;
+                float endAlpha = 1.0f;
 
                 float showingProgress = Keyframe.getProgress(timeTicks, animationTimingTicks, animationDurationTicks);
                 if (Keyframe.isActive(showingProgress)) {
@@ -34,7 +34,7 @@ public class TopDownAnimation extends NotificationAnimator {
             }
             case HIDING -> {
                 float startY = 0;
-                float startAlpha = 1;
+                float startAlpha = 1.0f;
 
                 float endY = -(height + generalConfig.padding.get());
                 float endAlpha = 0;

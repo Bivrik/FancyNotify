@@ -9,7 +9,7 @@ public abstract class NotificationAnimator {
     protected float y = 0;
     protected float scaleX = 1;
     protected float scaleY = 1;
-    protected float rotation = 0;
+    protected int rotation = 0;
     protected float alpha = 1;
 
     public NotificationAnimator(GeneralConfig generalConfig) {
@@ -32,8 +32,8 @@ public abstract class NotificationAnimator {
         return scaleY;
     }
 
-    public final float getRotation() {
-        return rotation / 360.0f;
+    public final int getRotation() {
+        return rotation;
     }
 
     public final float getAlpha() {

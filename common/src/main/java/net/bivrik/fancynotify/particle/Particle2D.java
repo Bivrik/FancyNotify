@@ -85,14 +85,14 @@ public class Particle2D {
 
         float renderX = previousX + (currentX - previousX) * partialTick;
         float renderY = previousY + (currentY - previousY) * partialTick;
-        float renderRotation = (startRotation + (endRotation - startRotation) * progress) / 360.0f;
+        float renderRotation = startRotation + (endRotation - startRotation) * progress;
         float renderScale = startScale + (endScale - startScale) * progress;
 
         Matrix3x2fStack stack = GuiGraphicsExtractor.pose();
         stack.pushMatrix();
         stack.translate(renderX, renderY);
         stack.scale(renderScale);
-        stack.rotate(renderRotation);
+        stack.rotate((float) Math.toRadians(renderRotation));
         GuiGraphicsExtractor.fill(-2, -2, 2, 2, color.getRGB());
         stack.popMatrix();
     }

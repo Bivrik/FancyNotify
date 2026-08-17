@@ -175,9 +175,8 @@ public abstract class Notification implements NotificationStateMachine.Listener 
         stack.pushMatrix();
         stack.translate(halfWidth, halfHeight);
         stack.scale(animator.getScaleX(), animator.getScaleY());
-        stack.translate(-halfWidth, -halfHeight);
-        stack.rotateAbout(animator.getRotation(), halfWidth, halfHeight);
-        stack.translate(animator.getX(), animator.getY());
+        stack.rotate((float) Math.toRadians(animator.getRotation()));
+        stack.translate(animator.getX() - halfWidth, animator.getY() - halfHeight);
         draw(GuiGraphicsExtractor);
         stack.popMatrix();
     }

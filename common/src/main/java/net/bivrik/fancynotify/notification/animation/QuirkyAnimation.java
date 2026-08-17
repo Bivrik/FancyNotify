@@ -17,9 +17,9 @@ public class QuirkyAnimation extends NotificationAnimator {
             case SHOWING -> {
                 float showingProgress = Keyframe.getProgress(timeTicks, animationTimingTicks, animationDurationTicks);
                 if (Keyframe.isActive(showingProgress)) {
-                    scaleX = Easing.QUART_EASE_OUT.lerp(0, 1, showingProgress);
-                    scaleY = Easing.QUART_EASE_OUT.lerp(2, 1, showingProgress);
-                    rotation = Easing.QUART_EASE_OUT.lerp(-0.15f, 0, showingProgress);
+                    scaleX = Easing.QUART_EASE_OUT.lerp(0, 1.0f, showingProgress);
+                    scaleY = Easing.QUART_EASE_OUT.lerp(2.0f, 1.0f, showingProgress);
+                    rotation = Easing.QUART_EASE_OUT.lerp(-18, 0, showingProgress);
                 }
 
                 if (timeTicks >= animationTimingTicks + animationDurationTicks) {
@@ -31,15 +31,15 @@ public class QuirkyAnimation extends NotificationAnimator {
             case HIDING -> {
                 float hidingProgress = Keyframe.getProgress(timeTicks, animationTimingTicks, animationDurationTicks);
                 if (Keyframe.isActive(hidingProgress)) {
-                    scaleX = Easing.QUART_EASE_IN.lerp(1, 1.5f, hidingProgress);
-                    scaleY = Easing.QUART_EASE_IN.lerp(1, 0, hidingProgress);
-                    rotation = Easing.QUART_EASE_IN.lerp(0, 0.15f, hidingProgress);
+                    scaleX = Easing.QUART_EASE_IN.lerp(1.0f, 1.5f, hidingProgress);
+                    scaleY = Easing.QUART_EASE_IN.lerp(1.0f, 0, hidingProgress);
+                    rotation = Easing.QUART_EASE_IN.lerp(0, 18, hidingProgress);
                 }
 
                 if (timeTicks >= animationTimingTicks + animationDurationTicks) {
                     scaleX = 0;
                     scaleY = 0;
-                    rotation = 0.15f;
+                    rotation = 18;
                 }
             }
         }
