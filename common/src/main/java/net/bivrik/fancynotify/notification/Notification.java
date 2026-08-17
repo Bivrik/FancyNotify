@@ -188,9 +188,13 @@ public abstract class Notification implements NotificationStateMachine.Listener 
         GuiGraphicsExtractor.blitSprite(RenderPipelines.GUI_TEXTURED, sprite, x, y, width, height, color);
     }
 
-    protected void drawTexture(GuiGraphicsExtractor GuiGraphicsExtractor, Identifier texture, int x, int y, int width, int height, int textureWidth, int textureHeight, float uOffset, float vOffset) {
+    protected void drawTexture(GuiGraphicsExtractor GuiGraphicsExtractor, Identifier texture, int x, int y, int width, int height, int textureWidth, int textureHeight, float uOffset, float vOffset, int uWidth, int vHeight) {
         int color = getColorWithAlpha(0x00ffffff);
-        GuiGraphicsExtractor.blit(RenderPipelines.GUI_TEXTURED, texture, x, y, uOffset, vOffset, width, height, textureWidth, textureHeight, color);
+        GuiGraphicsExtractor.blit(RenderPipelines.GUI_TEXTURED, texture, x, y, uOffset, vOffset, width, height, uWidth, vHeight, textureWidth, textureHeight, color);
+    }
+
+    protected void drawTexture(GuiGraphicsExtractor GuiGraphicsExtractor, Identifier texture, int x, int y, int width, int height, int textureWidth, int textureHeight, float uOffset, float vOffset) {
+        drawTexture(GuiGraphicsExtractor, texture, x, y, width, height, textureWidth, textureHeight, uOffset, vOffset, width, height);
     }
 
     protected void drawTexture(GuiGraphicsExtractor GuiGraphicsExtractor, Identifier texture, int x, int y, int width, int height) {

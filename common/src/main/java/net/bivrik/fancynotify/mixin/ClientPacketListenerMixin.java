@@ -1,6 +1,5 @@
 package net.bivrik.fancynotify.mixin;
 
-import com.mojang.authlib.GameProfile;
 import net.bivrik.fancynotify.FancyNotify;
 import net.bivrik.fancynotify.notification.NotificationManager;
 import net.bivrik.fancynotify.notification.gui.PlayerLoginNotification;
@@ -9,9 +8,9 @@ import net.minecraft.client.gui.screens.social.PlayerSocialManager;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.client.multiplayer.PlayerInfo;
+import net.minecraft.client.renderer.PlayerSkinRenderCache;
 import net.minecraft.network.protocol.game.ClientboundGameEventPacket;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.player.PlayerModelPart;
+import net.minecraft.world.item.component.ResolvableProfile;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -21,9 +20,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ClientPacketListener.class)
 public abstract class ClientPacketListenerMixin {
-    @Shadow
-    private ClientLevel level;
-
     @Inject(at = @At("RETURN"), method = "handleGameEvent")
     private void onHandledGameEvent(ClientboundGameEventPacket packet, CallbackInfo info) {
         FancyNotify.getInstance().getWeatherManager().onClientBoundGameEvent(packet);
@@ -37,17 +33,13 @@ public abstract class ClientPacketListenerMixin {
                     target = "Lnet/minecraft/client/gui/screens/social/PlayerSocialManager;addPlayer(Lnet/minecraft/client/multiplayer/PlayerInfo;)V"
             )
     )
-    private void onAddedPlayer(PlayerSocialManager playerSocialManager, PlayerInfo playerInfo) {
-        playerSocialManager.addPlayer(playerInfo);
+    private void onAddedPlayer(PlayerSocialManager playerSocialManager, PlayerInfo info) {
+        playerSocialManager.addPlayer(info);
 
         if (FancyNotify.getInstance().getConfigManager().getFiltersConfig().isLoginPlayerNotificationEnabled.get()) {
-            GameProfile profile = playerInfo.getProfile();
-            Minecraft.getInstance().getSkinManager().get(profile).thenAcceptAsync(skin -> {
-                Player player = this.level.getPlayerByUUID(profile.id());
-                boolean hasHat = player != null && player.isModelPartShown(PlayerModelPart.HAT);
-                NotificationManager manager = FancyNotify.getInstance().getNotificationManager();
-                skin.ifPresent(playerSkin -> manager.add(new PlayerLoginNotification(manager, profile.name(), playerSkin.body().id(), hasHat)));
-            });
+            NotificationManager manager = FancyNotify.getInstance().getNotificationManager();
+            ResolvableProfile profile = ResolvableProfile.createUnresolved(info.getProfile().id());
+            manager.add(new PlayerLoginNotification(manager, info.getProfile().name(), profile, info.showHat()));
         }
     }
 }
