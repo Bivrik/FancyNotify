@@ -218,7 +218,7 @@ public abstract class Notification implements NotificationStateMachine.Listener 
     }
 
     private int getColorWithAlpha(int color) {
-        int intAlpha = Math.round(animator.alpha * 255);
+        int intAlpha = Math.round(animator.getAlpha() * 255);
         return intAlpha << 24 | (color & 0x00ffffff);
     }
 }
