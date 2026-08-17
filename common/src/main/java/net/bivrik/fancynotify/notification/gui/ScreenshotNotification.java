@@ -6,6 +6,7 @@ import net.bivrik.fancynotify.notification.ExpandableNotification;
 import net.bivrik.fancynotify.notification.NotificationManager;
 import net.bivrik.fancynotify.utility.Identifiers;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.network.chat.Component;
@@ -54,6 +55,7 @@ public class ScreenshotNotification extends ExpandableNotification {
         drawMessage(GuiGraphicsExtractor, getTextOffset(), 18, -1);
         int width = 38;
         int height = 22;
-        drawTexture(GuiGraphicsExtractor, SCREENSHOT_PREVIEW, 5, getCenterY() - height / 2, width, height, width * 4, height * 4, ((width * 4) - width) / 2, ((height * 4) - height) / 2);
+        drawTexture(GuiGraphicsExtractor, SCREENSHOT_PREVIEW, 5, getCenterY() - height / 2, width, height,
+                width * 4, height * 4, width * 1.5f, height * 1.5f);
     }
 }

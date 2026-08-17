@@ -27,7 +27,7 @@ public class ScreenshotMixin {
     )
     private static void onScreenshotTaken(GpuBuffer buffer, int height, int downscaleFactor, int width, GpuTexture sourceTexture, Consumer<NativeImage> callback, CallbackInfo info,
                           NativeImage image) {
-        NativeImage preview = new NativeImage(image.format(), width, height, false);
+        NativeImage preview = new NativeImage(image.format(), image.getWidth(), image.getHeight(), false);
         preview.copyFrom(image);
         NotificationManager manager = FancyNotify.getInstance().getNotificationManager();
         manager.add(new ScreenshotNotification(manager, preview));

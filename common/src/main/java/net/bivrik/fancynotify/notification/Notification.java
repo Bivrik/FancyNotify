@@ -188,17 +188,13 @@ public abstract class Notification implements NotificationStateMachine.Listener 
         GuiGraphicsExtractor.blitSprite(RenderPipelines.GUI_TEXTURED, sprite, x, y, width, height, color);
     }
 
-    protected void drawTexture(GuiGraphicsExtractor GuiGraphicsExtractor, Identifier texture, int x, int y, int width, int height, int textureWidth, int textureHeight, int uOffset, int vOffset, int uWidth, int vHeight) {
+    protected void drawTexture(GuiGraphicsExtractor GuiGraphicsExtractor, Identifier texture, int x, int y, int width, int height, int textureWidth, int textureHeight, float uOffset, float vOffset) {
         int color = getColorWithAlpha(0x00ffffff);
-        GuiGraphicsExtractor.blit(RenderPipelines.GUI_TEXTURED, texture, x, y, width, height, uOffset, vOffset, uWidth, vHeight, textureWidth, textureHeight, color);
+        GuiGraphicsExtractor.blit(RenderPipelines.GUI_TEXTURED, texture, x, y, uOffset, vOffset, width, height, textureWidth, textureHeight, color);
     }
 
-    protected void drawTexture(GuiGraphicsExtractor GuiGraphicsExtractor, Identifier texture, int x, int y, int width, int height, int textureWidth, int textureHeight, int uOffset, int vOffset) {
-        drawTexture(GuiGraphicsExtractor, texture, x, y, width, height, textureWidth, textureHeight, uOffset, vOffset, width, height);
-    }
-
-    protected void drawTexture(GuiGraphicsExtractor GuiGraphicsExtractor, Identifier texture, int x, int y, int width, int height, int textureWidth, int textureHeight) {
-        drawTexture(GuiGraphicsExtractor, texture, x, y, width, height, textureWidth, textureHeight, 0, 0, width, height);
+    protected void drawTexture(GuiGraphicsExtractor GuiGraphicsExtractor, Identifier texture, int x, int y, int width, int height) {
+        drawTexture(GuiGraphicsExtractor, texture, x, y, width, height, width, height, 0, 0);
     }
 
     protected void drawText(GuiGraphicsExtractor GuiGraphicsExtractor, FormattedCharSequence text, int x, int y, int color) {
