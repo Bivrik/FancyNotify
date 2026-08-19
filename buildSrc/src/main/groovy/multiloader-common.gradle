@@ -35,19 +35,19 @@ repositories {
 }
 
 jar {
+    destinationDirectory = rootProject.file('build/libs')
+    archiveVersion = ""
+
     manifest {
         attributes(['Specification-Title'   : mod_name,
                     'Specification-Vendor'  : mod_author,
-                    'Specification-Version' : project.jar.archiveVersion,
+                    'Specification-Version' : project.version,
                     'Implementation-Title'  : project.name,
-                    'Implementation-Version': project.jar.archiveVersion,
+                    'Implementation-Version': project.version,
                     'Implementation-Vendor' : mod_author,
                     'Built-On-Minecraft'    : minecraft_version
         ])
     }
-
-    destinationDirectory = rootProject.file('build/libs')
-    archiveVersion = ""
 }
 
 processResources {
