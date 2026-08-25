@@ -10,6 +10,9 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
 
+import java.util.Arrays;
+import java.util.stream.Collectors;
+
 public class MusicManager {
     private static final Component FALLBACK_MESSAGE = Component.translatable("fancynotify.gui.music.message");
 
@@ -26,45 +29,86 @@ public class MusicManager {
             return;
         }
 
-        // minecraft.music.game.clark -> fancynotify.music.game.clark -> C418 - Clark
-        // coolassmod.music.end.no_escape -> 1) End No Escape; 2) MTQ - No Escape
-        if (musicId.getNamespace().equals("minecraft")) { // handle vanilla ones
-            ResourceLocation nonVanillaMusicId = ResourceLocations.of(musicId.getPath());
-            String key = nonVanillaMusicId.toLanguageKey().replace("/", ".");
-            Component musicName = Component.translatable(key);
+        // minecraft:music/game/clark -> fancynotify:music/game/clark -> C418 - Clark
+        // coolassmod:music/end/no_escape -> 1) End No Escape; 2) MTQ - No Escape;
 
-            String[] musicInfo = musicName.getString().split(" - ");
-            if (musicInfo.length == 2) { // if I didn't forget to add translation
+        // handle vanilla ones
+        if (musicId.getNamespace().equals("minecraft")) {
+            ResourceLocation vanillaMusicId = ResourceLocations.of(musicId.getPath());
+            String key = getKey(vanillaMusicId);
+            Component musicTitle = Component.translatable(key);
+
+            String[] musicInfo = musicTitle.getString().split(" - ");
+            // if I didn't forget to add translation
+            if (musicInfo.length == 2) {
                 Component artist = Component.literal(musicInfo[0]);
                 Component title = Component.literal(musicInfo[1]);
                 notificationManager.add(new MusicNotification(notificationManager, artist, title));
-            } else { // if there is missing some translations just do whatever
-                notificationManager.add(new MusicNotification(notificationManager, musicName, FALLBACK_MESSAGE));
-                Log.warn("No translation provided for {} for music notification", musicId);
             }
-        } else { // modded if there is any added music
-            String key = musicId.getPath().replace("/", ".");
+            // if there is missing some translations just get visual appealing one
+            else {
+                Log.warn("No translation provided for {} for music notification", musicId);
+                Component title = Component.literal(getTitleFromId(musicId));
+                notificationManager.add(new MusicNotification(notificationManager, title, FALLBACK_MESSAGE));
+            }
+        }
+        // handle modded
+        else {
             Component title;
-            if (Language.getInstance().has(key)) { // get translation for it if there is one
+            String key = getKey(musicId);
+            // get translation for it if there is one
+            if (Language.getInstance().has(key)) {
                 title = Component.translatable(key);
-            } else { // else just get the visual appealing one
-                String[] parts = key.split("\\.");
-                StringBuilder builder = new StringBuilder();
-                for (int i = Math.max(parts.length - 2, 0); i < parts.length; i++) {
-                    String[] words = parts[i].split("_");
-                    for (int j = 0; j < words.length; j++) {
-                        builder.append(words[j].substring(0, 1).toUpperCase()).append(words[j].substring(1));
-                        if (j < words.length - 1) {
-                            builder.append(" ");
-                        }
-                    }
-                    if (i < parts.length - 1) {
-                        builder.append(" ");
-                    }
-                }
-                title = Component.literal(builder.toString());
+            }
+            // else just get the visual appealing one
+            else {
+                title = Component.literal(getTitleFromId(musicId));
             }
             notificationManager.add(new MusicNotification(notificationManager, title, FALLBACK_MESSAGE));
         }
+    }
+
+    private String getKey(ResourceLocation id) {
+        return id.toLanguageKey().replace('/', '.');
+    }
+
+    // Example: something:oops/omg/cool_string -> oops omg cool_string -> Omg Cool String
+    private String getTitleFromId(ResourceLocation id) {
+        String[] pathParts = id.getPath().split("/");
+
+        int wordsToInclude = 2;
+        int startInclusive = Math.max(pathParts.length - wordsToInclude, 0);
+
+        return Arrays.stream(pathParts, startInclusive, pathParts.length)
+                .filter(part -> !part.isEmpty())
+                .map(this::toTitleCase)
+                .collect(Collectors.joining(" "));
+    }
+
+    // Just over-engineered because I want to, lol.
+    // Example: cool_string test -> Cool String Test
+    private String toTitleCase(String s) {
+        if (s == null || s.isBlank()) {
+            return "";
+        }
+        StringBuilder result = new StringBuilder(s.length());
+        boolean shouldCapitalize = true;
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (c == '_' || Character.isWhitespace(c)) {
+                shouldCapitalize = true;
+            } else {
+                if (shouldCapitalize) {
+                    if (!result.isEmpty()) {
+                        result.append(' ');
+                    }
+                    result.append(Character.toUpperCase(c));
+                    shouldCapitalize = false;
+                } else {
+                    result.append(c);
+                }
+            }
+        }
+        return result.toString();
     }
 }
