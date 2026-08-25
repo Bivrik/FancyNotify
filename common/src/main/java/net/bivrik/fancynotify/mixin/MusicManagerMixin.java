@@ -24,7 +24,9 @@ public class MusicManagerMixin {
             Sound musicSound = this.currentMusic.getSound();
             if (musicSound != null & musicSound != SoundManager.EMPTY_SOUND) {
                 Identifier musicId = musicSound.getLocation();
-                FancyNotify.getInstance().getMusicManager().onStartedPlaying(musicId);
+                if (musicId != null) {
+                    FancyNotify.getInstance().getMusicManager().onStartedPlaying(musicId);
+                }
             }
         }
     }
