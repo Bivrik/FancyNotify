@@ -22,9 +22,11 @@ public class MusicManagerMixin {
     public void onStartedPlaying(Music selector, CallbackInfo info) {
         if (this.currentMusic != null) {
             Sound musicSound = this.currentMusic.getSound();
-            if (musicSound != SoundManager.EMPTY_SOUND) {
+            if (musicSound != null && musicSound != SoundManager.EMPTY_SOUND) {
                 ResourceLocation musicId = musicSound.getLocation();
-                FancyNotify.getInstance().getMusicManager().onStartedPlaying(musicId);
+                if (musicId != null) {
+                    FancyNotify.getInstance().getMusicManager().onStartedPlaying(musicId);
+                }
             }
         }
     }
