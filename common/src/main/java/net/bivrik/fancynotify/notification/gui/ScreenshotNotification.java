@@ -7,7 +7,6 @@ import net.bivrik.fancynotify.notification.NotificationManager;
 import net.bivrik.fancynotify.utility.Identifiers;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.texture.DynamicTexture;
-import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 
@@ -20,14 +19,12 @@ public class ScreenshotNotification extends ExpandableNotification {
     private static final Identifier BACKGROUND = Identifiers.of("notifications/screenshot");
     private static final Identifier SCREENSHOT_PREVIEW = Identifiers.of("screenshot_preview");
 
-    private final TextureManager textureManager;
+    private final DynamicTexture dynamicPreview;
 
     public ScreenshotNotification(NotificationManager manager, NativeImage screenshotImage) {
         super(manager, TITLE, Component.translatable(Constants.MOD_ID + ".gui.screenshot." + RANDOM.nextInt(3)));
 
-        textureManager = this.minecraft.getTextureManager();
-        textureManager.release(SCREENSHOT_PREVIEW);
-        textureManager.register(SCREENSHOT_PREVIEW, new DynamicTexture(SCREENSHOT_PREVIEW::toString, screenshotImage));
+        dynamicPreview = new DynamicTexture(SCREENSHOT_PREVIEW::toString, screenshotImage);
     }
 
     @Override
@@ -36,10 +33,29 @@ public class ScreenshotNotification extends ExpandableNotification {
     }
 
     @Override
+    public void onShowing() {
+        super.onShowing();
+
+        this.minecraft.getTextureManager().register(SCREENSHOT_PREVIEW, dynamicPreview);
+    }
+
+    @Override
+    protected void expand(ExpandableNotification expansion) {
+        if (expansion instanceof ScreenshotNotification notification) {
+            NativeImage newPreview = notification.dynamicPreview.getPixels();
+            dynamicPreview.getPixels().copyFrom(newPreview);
+            dynamicPreview.upload();
+        }
+    }
+
+    @Override
     public void onRemoval() {
         super.onRemoval();
 
-        textureManager.release(SCREENSHOT_PREVIEW);
+        this.minecraft.getTextureManager().release(SCREENSHOT_PREVIEW);
+        if (dynamicPreview != null) {
+            dynamicPreview.close();
+        }
     }
 
     @Override
