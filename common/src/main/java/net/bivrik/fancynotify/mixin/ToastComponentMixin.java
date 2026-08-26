@@ -1,15 +1,21 @@
 package net.bivrik.fancynotify.mixin;
 
 import net.bivrik.fancynotify.FancyNotify;
+import net.bivrik.fancynotify.accessor.IAdvancementHolderAccessor;
 import net.bivrik.fancynotify.core.Log;
 import net.bivrik.fancynotify.notification.NotificationManager;
+import net.bivrik.fancynotify.notification.gui.AdvancementNotification;
+import net.minecraft.advancements.DisplayInfo;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.toasts.AdvancementToast;
 import net.minecraft.client.gui.components.toasts.Toast;
 import net.minecraft.client.gui.components.toasts.ToastComponent;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import java.util.Optional;
 
 @Mixin(ToastComponent.class)
 public class ToastComponentMixin {
@@ -20,6 +26,12 @@ public class ToastComponentMixin {
     // the situation.
     @Inject(at = @At("HEAD"), method = "addToast", cancellable = true)
     private void onAddedToast(Toast toast, CallbackInfo info) {
+        if (toast instanceof AdvancementToast advancementToast) {
+            Optional<DisplayInfo> optionalDisplay = ((IAdvancementHolderAccessor) advancementToast).getAdvancementHolder().value().display();
+            NotificationManager manager = FancyNotify.getInstance().getNotificationManager();
+            optionalDisplay.ifPresent(displayInfo -> manager.add(new AdvancementNotification(manager, displayInfo.getTitle(), displayInfo.getType(), displayInfo.getIcon())));
+        }
+
         if (toast != null) {
             Log.info("Registered unsupported toast. Using vanilla toast system for {}", toast.getClass().getSimpleName());
         } else {
