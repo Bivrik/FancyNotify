@@ -21,7 +21,7 @@ import java.util.Map;
 
 // Should optimize even better in the future, but I don't think this will be that bad
 public class BiomeManager {
-    private static final Map<ResourceKey<Biome>, Item> SINGLE_BIOME_ICONS = new HashMap<>(10);
+    private static final Map<ResourceKey<Biome>, Item> SINGLE_BIOME_ICONS = new HashMap<>(12);
     private static final Map<TagKey<Biome>, Item> BIOMES_ICONS = new HashMap<>(16);
 
     private static final Item DEFAULT_ICON = Items.GRASS_BLOCK;
@@ -111,6 +111,8 @@ public class BiomeManager {
         SINGLE_BIOME_ICONS.put(Biomes.CRIMSON_FOREST, Items.CRIMSON_STEM);
         SINGLE_BIOME_ICONS.put(Biomes.SOUL_SAND_VALLEY, Items.SOUL_SAND);
         SINGLE_BIOME_ICONS.put(Biomes.BASALT_DELTAS, Items.BASALT);
+        SINGLE_BIOME_ICONS.put(Biomes.SULFUR_CAVES, Items.SULFUR);
+        SINGLE_BIOME_ICONS.put(Biomes.PALE_GARDEN, Items.PALE_OAK_LOG);
 
         BIOMES_ICONS.put(BiomeTags.BADLANDS, Items.TERRACOTTA);
         BIOMES_ICONS.put(BiomeTags.BIRCH_FOREST, Items.BIRCH_LOG);
