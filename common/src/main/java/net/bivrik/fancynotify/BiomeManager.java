@@ -8,37 +8,25 @@ import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.BiomeTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.Biomes;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.HashMap;
 import java.util.Map;
 
+// Should optimize even better in the future, but I don't think this will be that bad
 public class BiomeManager {
-    // maybe check biome specific first
-    // then check for tags
-    // and in the end to default icon if nothing is found
-    private static final Map<TagKey<Biome>, ItemStack> TAGS_ICONS = Map.ofEntries(
-            Map.entry(BiomeTags.IS_FOREST, new ItemStack(Items.OAK_SAPLING)),
-            Map.entry(BiomeTags.IS_BADLANDS, new ItemStack(Items.TERRACOTTA)),
-            Map.entry(BiomeTags.IS_BEACH, new ItemStack(Items.SAND)),
-            Map.entry(BiomeTags.IS_END, new ItemStack(Items.END_STONE)),
-            Map.entry(BiomeTags.IS_HILL, new ItemStack(Items.GRAVEL)),
-            Map.entry(BiomeTags.IS_JUNGLE, new ItemStack(Items.JUNGLE_SAPLING)),
-            Map.entry(BiomeTags.IS_MOUNTAIN, new ItemStack(Items.STONE)),
-            Map.entry(BiomeTags.IS_NETHER, new ItemStack(Items.NETHERRACK)),
-            Map.entry(BiomeTags.IS_OCEAN, new ItemStack(Items.KELP)),
-            Map.entry(BiomeTags.IS_RIVER, new ItemStack(Items.WATER_BUCKET)),
-            Map.entry(BiomeTags.IS_SAVANNA, new ItemStack(Items.ACACIA_SAPLING)),
-            Map.entry(BiomeTags.IS_TAIGA, new ItemStack(Items.SPRUCE_SAPLING)),
-            Map.entry(BiomeTags.ALLOWS_SURFACE_SLIME_SPAWNS, new ItemStack(Items.SLIME_BALL))
-    );
-    private static final ItemStack DEFAULT_ICON = new ItemStack(Items.GRASS_BLOCK);
-    private static final int DELAY_TICKS = 40;
+    private static final Map<ResourceKey<Biome>, Item> SINGLE_BIOME_ICONS = new HashMap<>(10);
+    private static final Map<TagKey<Biome>, Item> BIOMES_ICONS = new HashMap<>(16);
+
+    private static final Item DEFAULT_ICON = Items.GRASS_BLOCK;
+    private static final int DELAY_TICKS = 30;
 
     private final Minecraft minecraft;
     private final NotificationManager notificationManager;
@@ -53,7 +41,7 @@ public class BiomeManager {
 
     public void tick() {
         counterTicks++;
-        if (counterTicks >= DELAY_TICKS) {
+        if (counterTicks > DELAY_TICKS) {
             counterTicks = 0;
 
             ClientLevel level = minecraft.level;
@@ -66,18 +54,29 @@ public class BiomeManager {
             if (currentBiome == biomeHolder.value()) {
                 return;
             }
-
             currentBiome = biomeHolder.value();
-            ResourceLocation biomeId = biomeHolder.unwrap().map(ResourceKey::location, null);
-            Component biomeName = getBiomeComponent(biomeId, currentBiome);
-            ItemStack icon = DEFAULT_ICON;
-            for (var entry : TAGS_ICONS.entrySet()) {
-                if (biomeHolder.is(entry.getKey())) {
-                    icon = entry.getValue();
+
+            Item icon = DEFAULT_ICON;
+            for (TagKey<Biome> tagKey : biomeHolder.tags().toList()) {
+                Item tagBiomeIcon = BIOMES_ICONS.get(tagKey);
+                if (tagBiomeIcon != null) {
+                    icon = tagBiomeIcon;
                     break;
                 }
             }
-            notificationManager.add(new BiomeNotification(notificationManager, biomeName, icon));
+            if (icon == DEFAULT_ICON) {
+                ResourceKey<Biome> biomeKey = biomeHolder.unwrap().left().orElse(null);
+                if (biomeKey != null) {
+                    Item singleBiomeIcon = SINGLE_BIOME_ICONS.get(biomeKey);
+                    if (singleBiomeIcon != null) {
+                        icon = singleBiomeIcon;
+                    }
+                }
+            }
+
+            ResourceLocation biomeId = biomeHolder.unwrap().map(ResourceKey::location, null);
+            Component biomeName = getBiomeComponent(biomeId, currentBiome);
+            notificationManager.add(new BiomeNotification(notificationManager, biomeName, icon.getDefaultInstance()));
         }
     }
 
@@ -102,5 +101,33 @@ public class BiomeManager {
         return Component.literal(output.toString());
     }
 
+    static {
+        SINGLE_BIOME_ICONS.put(Biomes.CHERRY_GROVE, Items.CHERRY_LEAVES);
+        SINGLE_BIOME_ICONS.put(Biomes.MUSHROOM_FIELDS, Items.RED_MUSHROOM);
+        SINGLE_BIOME_ICONS.put(Biomes.DRIPSTONE_CAVES, Items.POINTED_DRIPSTONE);
+        SINGLE_BIOME_ICONS.put(Biomes.LUSH_CAVES, Items.SPORE_BLOSSOM);
+        SINGLE_BIOME_ICONS.put(Biomes.DEEP_DARK, Items.SCULK_VEIN);
+        SINGLE_BIOME_ICONS.put(Biomes.NETHER_WASTES, Items.NETHERRACK);
+        SINGLE_BIOME_ICONS.put(Biomes.WARPED_FOREST, Items.WARPED_STEM);
+        SINGLE_BIOME_ICONS.put(Biomes.CRIMSON_FOREST, Items.CRIMSON_STEM);
+        SINGLE_BIOME_ICONS.put(Biomes.SOUL_SAND_VALLEY, Items.SOUL_SAND);
+        SINGLE_BIOME_ICONS.put(Biomes.BASALT_DELTAS, Items.BASALT);
 
+        BIOMES_ICONS.put(BiomeTags.BADLANDS, Items.TERRACOTTA);
+        BIOMES_ICONS.put(BiomeTags.BIRCH_FOREST, Items.BIRCH_LOG);
+        BIOMES_ICONS.put(BiomeTags.COLD_ICE, Items.PACKED_ICE);
+        BIOMES_ICONS.put(BiomeTags.COLD_SNOW, Items.SNOW_BLOCK);
+        BIOMES_ICONS.put(BiomeTags.DARK_OAK_FOREST, Items.DARK_OAK_LOG);
+        BIOMES_ICONS.put(BiomeTags.END, Items.END_STONE);
+        BIOMES_ICONS.put(BiomeTags.JUNGLE_FOREST, Items.JUNGLE_LOG);
+        BIOMES_ICONS.put(BiomeTags.MOUNTAIN, Items.STONE);
+        BIOMES_ICONS.put(BiomeTags.OAK_FOREST, Items.OAK_LOG);
+        BIOMES_ICONS.put(BiomeTags.SAVANNA_FOREST, Items.ACACIA_LOG);
+        BIOMES_ICONS.put(BiomeTags.SURFACE, Items.MOSS_BLOCK);
+        BIOMES_ICONS.put(BiomeTags.SWAMP, Items.SLIME_BALL);
+        BIOMES_ICONS.put(BiomeTags.TAIGA_FOREST, Items.SPRUCE_LOG);
+        BIOMES_ICONS.put(BiomeTags.WARM_DRY, Items.SAND);
+        BIOMES_ICONS.put(BiomeTags.WARM_WATER, Items.KELP);
+        BIOMES_ICONS.put(BiomeTags.WATER, Items.WATER_BUCKET);
+    }
 }
