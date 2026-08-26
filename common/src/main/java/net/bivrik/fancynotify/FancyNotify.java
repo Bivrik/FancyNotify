@@ -11,6 +11,7 @@ import net.bivrik.fancynotify.particle.Particle2DEngine;
 import net.bivrik.fancynotify.platform.Services;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
+import org.jetbrains.annotations.Nullable;
 
 public final class FancyNotify {
     private FancyNotify() {}
@@ -71,7 +72,11 @@ public final class FancyNotify {
         particleEngine.render(graphics, partialTick);
     }
 
-    public NotificationManager getNotificationManager() {
+    /**
+     * Always check for null if called from mixin. No idea why it happens sometimes
+     * @return {@link NotificationManager}
+     */
+    public @Nullable NotificationManager getNotificationManager() {
         return notificationManager;
     }
 

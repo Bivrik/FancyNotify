@@ -46,10 +46,12 @@ public abstract class ClientPacketListenerMixin {
     private void onAddedPlayer(PlayerSocialManager playerSocialManager, PlayerInfo info) {
         playerSocialManager.addPlayer(info);
 
-        if (FancyNotify.getInstance().getConfigManager().getFiltersConfig().isLoginPlayerNotificationEnabled.get()) {
-            NotificationManager manager = FancyNotify.getInstance().getNotificationManager();
-            ResolvableProfile profile = ResolvableProfile.createUnresolved(info.getProfile().id());
-            manager.add(new PlayerLoginNotification(manager, info.getProfile().name(), profile, info.showHat()));
+        NotificationManager manager = FancyNotify.getInstance().getNotificationManager();
+        if (manager != null) {
+            if (FancyNotify.getInstance().getConfigManager().getFiltersConfig().isLoginPlayerNotificationEnabled.get()) {
+                ResolvableProfile profile = ResolvableProfile.createUnresolved(info.getProfile().id());
+                manager.add(new PlayerLoginNotification(manager, info.getProfile().name(), profile, info.showHat()));
+            }
         }
     }
 
@@ -61,6 +63,8 @@ public abstract class ClientPacketListenerMixin {
     )
     private void onHandledLogin(ToastManager instance, Toast toast) {
         NotificationManager manager = FancyNotify.getInstance().getNotificationManager();
-        manager.add(new SystemNotification(manager, SystemNotification.Ids.UNSECURE_SERVER_WARNING, UNSECURE_SERVER_TOAST_TITLE, UNSERURE_SERVER_TOAST));
+        if (manager != null) {
+            manager.add(new SystemNotification(manager, SystemNotification.Ids.UNSECURE_SERVER_WARNING, UNSECURE_SERVER_TOAST_TITLE, UNSERURE_SERVER_TOAST));
+        }
     }
 }

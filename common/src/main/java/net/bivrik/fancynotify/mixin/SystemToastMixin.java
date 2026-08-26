@@ -38,12 +38,16 @@ public class SystemToastMixin {
         info.cancel();
 
         NotificationManager manager = FancyNotify.getInstance().getNotificationManager();
-        manager.remove(SystemNotification.class, SystemNotification.Ids.fromSystemToastId(id));
+        if (manager != null) {
+            manager.remove(SystemNotification.class, SystemNotification.Ids.fromSystemToastId(id));
+        }
     }
 
     @Unique
     private static void fancyNotify$add(SystemToast.SystemToastId id, Component title, Component message) {
         NotificationManager manager = FancyNotify.getInstance().getNotificationManager();
-        manager.add(new SystemNotification(manager, SystemNotification.Ids.fromSystemToastId(id), title, message));
+        if (manager != null) {
+            manager.add(new SystemNotification(manager, SystemNotification.Ids.fromSystemToastId(id), title, message));
+        }
     }
 }

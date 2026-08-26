@@ -45,13 +45,18 @@ public class ToastManagerMixin {
     // Clears all the toasts and notifications when leaving world
     @Inject(at = @At("HEAD"), method = "clear")
     private void onCleared(CallbackInfo info) {
-        FancyNotify.getInstance().getNotificationManager().clear();
+        NotificationManager manager = FancyNotify.getInstance().getNotificationManager();
+        if (manager != null) {
+            manager.clear();
+        }
     }
 
     @Inject(at = @At("HEAD"), method = "extractRenderState")
     private void onRendered(GuiGraphicsExtractor graphics, CallbackInfo info) {
         NotificationManager manager = FancyNotify.getInstance().getNotificationManager();
-        manager.update();
-        manager.render(graphics);
+        if (manager != null) {
+            manager.update();
+            manager.render(graphics);
+        }
     }
 }

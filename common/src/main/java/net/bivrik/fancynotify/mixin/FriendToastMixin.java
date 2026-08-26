@@ -19,7 +19,9 @@ public class FriendToastMixin {
     private static void onAdded(ToastManager toastManager, Font font, ResolvableProfile skinProfile, Component message, CallbackInfo info) {
         info.cancel();
 
-        NotificationManager notificationManager = FancyNotify.getInstance().getNotificationManager();
-        notificationManager.add(new FriendNotification(notificationManager, message, skinProfile));
+        NotificationManager manager = FancyNotify.getInstance().getNotificationManager();
+        if (manager != null) {
+            manager.add(new FriendNotification(manager, message, skinProfile));
+        }
     }
 }
