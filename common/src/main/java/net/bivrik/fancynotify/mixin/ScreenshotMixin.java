@@ -27,8 +27,10 @@ public class ScreenshotMixin {
     )
     private static void onScreenshotTaken(File gameDirectory, String screenshotName, RenderTarget buffer, Consumer<Component> messageConsumer, CallbackInfo info, NativeImage nativeImage) {
         NotificationManager manager = FancyNotify.getInstance().getNotificationManager();
-        NativeImage imagePreview = new NativeImage(nativeImage.format(), nativeImage.getWidth(), nativeImage.getHeight(), false);
-        imagePreview.copyFrom(nativeImage);
-        manager.add(new ScreenshotNotification(manager, imagePreview));
+        if (manager != null) {
+            NativeImage imagePreview = new NativeImage(nativeImage.format(), nativeImage.getWidth(), nativeImage.getHeight(), false);
+            imagePreview.copyFrom(nativeImage);
+            manager.add(new ScreenshotNotification(manager, imagePreview));
+        }
     }
 }
