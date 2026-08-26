@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(EditWorldScreen.class)
 public class EditWorldScreenMixin {
-    @Redirect(method = "makeBackupAndShowToast", at = @At(
+    @Redirect(method = "makeBackupAndShowToast(Lnet/minecraft/world/level/storage/LevelStorageSource$LevelStorageAccess;)Z", at = @At(
             value = "INVOKE",
             target = "Lnet/minecraft/client/gui/components/toasts/ToastComponent;addToast(Lnet/minecraft/client/gui/components/toasts/Toast;)V"
     ))

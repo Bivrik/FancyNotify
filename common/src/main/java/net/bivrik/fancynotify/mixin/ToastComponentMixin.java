@@ -15,8 +15,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.Optional;
-
 @Mixin(value = ToastComponent.class, priority = 9000)
 public class ToastComponentMixin {
     // Entrypoint of most vanilla toasts, but since in vanilla there
@@ -32,10 +30,9 @@ public class ToastComponentMixin {
         }
 
         if (toast instanceof AdvancementToast advancementToast) {
-            Optional<DisplayInfo> optionalDisplay = ((IAdvancementHolderAccessor) advancementToast).getAdvancementHolder().value().display();
-            if (optionalDisplay.isPresent()) {
-                DisplayInfo displayInfo = optionalDisplay.get();
-                AdvancementNotification notification = new AdvancementNotification(manager, displayInfo.getTitle(), displayInfo.getType(), displayInfo.getIcon());
+            DisplayInfo displayInfo = ((IAdvancementHolderAccessor) advancementToast).getAdvancement().getDisplay();
+            if (displayInfo != null) {
+                AdvancementNotification notification = new AdvancementNotification(manager, displayInfo.getTitle(), displayInfo.getFrame(), displayInfo.getIcon());
                 manager.add(notification);
             }
             info.cancel();
