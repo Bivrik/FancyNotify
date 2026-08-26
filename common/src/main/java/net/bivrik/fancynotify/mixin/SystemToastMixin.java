@@ -45,6 +45,8 @@ public class SystemToastMixin {
     @Unique
     private static void fancyNotify$add(SystemToast.SystemToastIds id, Component title, Component message) {
         NotificationManager manager = FancyNotify.getInstance().getNotificationManager();
-        manager.add(new SystemNotification(manager, SystemNotification.Identifier.fromSystemToastId(id), title, message));
+        if (manager != null) {
+            manager.add(new SystemNotification(manager, SystemNotification.Identifier.fromSystemToastId(id), title, message));
+        }
     }
 }

@@ -18,6 +18,8 @@ public class RecipeToastMixin {
         info.cancel();
 
         NotificationManager manager = FancyNotify.getInstance().getNotificationManager();
-        manager.add(new RecipeNotification(manager, recipe));
+        if (manager != null) {
+            manager.add(new RecipeNotification(manager, recipe));
+        }
     }
 }

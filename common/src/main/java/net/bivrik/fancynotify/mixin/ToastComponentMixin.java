@@ -26,11 +26,15 @@ public class ToastComponentMixin {
     // is handled by vanilla system, therefore better compatibility!
     @Inject(at = @At("HEAD"), method = "addToast", cancellable = true)
     private void onAddedToast(Toast toast, CallbackInfo info) {
+        NotificationManager manager = FancyNotify.getInstance().getNotificationManager();
+        if (manager == null) {
+            return;
+        }
+
         if (toast instanceof AdvancementToast advancementToast) {
             info.cancel();
 
             Optional<DisplayInfo> optionalDisplay = ((IAdvancementHolderAccessor) advancementToast).getAdvancementHolder().value().display();
-            NotificationManager manager = FancyNotify.getInstance().getNotificationManager();
             optionalDisplay.ifPresent(displayInfo -> manager.add(new AdvancementNotification(manager, displayInfo.getTitle(), displayInfo.getType(), displayInfo.getIcon())));
         }
 
@@ -45,13 +49,18 @@ public class ToastComponentMixin {
     // Clears all the toasts and notifications when leaving world
     @Inject(at = @At("HEAD"), method = "clear")
     private void onCleared(CallbackInfo info) {
-        FancyNotify.getInstance().getNotificationManager().clear();
+        NotificationManager manager = FancyNotify.getInstance().getNotificationManager();
+        if (manager != null) {
+            manager.clear();
+        }
     }
 
     @Inject(at = @At("HEAD"), method = "render")
     private void onRendered(GuiGraphics guiGraphics, CallbackInfo info) {
         NotificationManager manager = FancyNotify.getInstance().getNotificationManager();
-        manager.update();
-        manager.render(guiGraphics);
+        if (manager != null) {
+            manager.update();
+            manager.render(guiGraphics);
+        }
     }
 }

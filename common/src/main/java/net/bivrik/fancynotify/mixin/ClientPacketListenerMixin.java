@@ -39,12 +39,16 @@ public abstract class ClientPacketListenerMixin {
     private void onAddedPlayer(PlayerSocialManager playerSocialManager, PlayerInfo playerInfo) {
         playerSocialManager.addPlayer(playerInfo);
 
+        NotificationManager manager = FancyNotify.getInstance().getNotificationManager();
+        if (manager == null) {
+            return;
+        }
+
         if (FancyNotify.getInstance().getConfigManager().getFiltersConfig().isLoginPlayerNotificationEnabled.get()) {
             GameProfile profile = playerInfo.getProfile();
 
             Player player = this.level.getPlayerByUUID(profile.getId());
             boolean hasHat = player != null && player.isModelPartShown(PlayerModelPart.HAT);
-            NotificationManager manager = FancyNotify.getInstance().getNotificationManager();
             manager.add(new PlayerLoginNotification(manager, profile.getName(), playerInfo::getSkinLocation, hasHat));
         }
     }
