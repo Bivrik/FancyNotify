@@ -32,6 +32,10 @@ public class TopDownAnimation extends NotificationAnimator {
                     alpha = endAlpha;
                 }
             }
+            case VISIBLE -> {
+                y = 0;
+                alpha = 1;
+            }
             case HIDING -> {
                 float startY = 0;
                 float startAlpha = 1;
