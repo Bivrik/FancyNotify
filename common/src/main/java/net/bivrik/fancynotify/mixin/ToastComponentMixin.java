@@ -17,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Optional;
 
-@Mixin(value = ToastComponent.class, priority = 8000)
+@Mixin(value = ToastComponent.class, priority = 9000)
 public class ToastComponentMixin {
     // Entrypoint of most vanilla toasts, but since in vanilla there
     // are no expendable toasts, there are a lot of static addOrUpdate()
@@ -36,12 +36,10 @@ public class ToastComponentMixin {
             if (optionalDisplay.isPresent()) {
                 DisplayInfo displayInfo = optionalDisplay.get();
                 AdvancementNotification notification = new AdvancementNotification(manager, displayInfo.getTitle(), displayInfo.getType(), displayInfo.getIcon());
-                if (notification.shouldDisplay()) {
-                    manager.add(notification);
-                    info.cancel();
-                    return;
-                }
+                manager.add(notification);
             }
+            info.cancel();
+            return;
         }
 
         if (toast != null) {
