@@ -27,6 +27,8 @@ public class ToastManagerMixin {
     @Inject(at = @At("HEAD"), method = "addToast", cancellable = true)
     private void onAddedToast(Toast toast, CallbackInfo info) {
         if (toast instanceof AdvancementToast advancementToast) {
+            info.cancel();
+
             Optional<DisplayInfo> optionalDisplay = ((IAdvancementHolderAccessor) advancementToast).getAdvancementHolder().value().display();
             NotificationManager manager = FancyNotify.getInstance().getNotificationManager();
             optionalDisplay.ifPresent(displayInfo -> manager.add(new AdvancementNotification(manager, displayInfo.getTitle(), displayInfo.getType(), displayInfo.getIcon().create())));
