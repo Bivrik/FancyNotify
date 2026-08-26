@@ -32,10 +32,17 @@ public class ToastComponentMixin {
         }
 
         if (toast instanceof AdvancementToast advancementToast) {
-            info.cancel();
-
             Optional<DisplayInfo> optionalDisplay = ((IAdvancementHolderAccessor) advancementToast).getAdvancementHolder().value().display();
-            optionalDisplay.ifPresent(displayInfo -> manager.add(new AdvancementNotification(manager, displayInfo.getTitle(), displayInfo.getType(), displayInfo.getIcon())));
+            if (optionalDisplay.isPresent()) {
+                DisplayInfo displayInfo = optionalDisplay.get();
+                AdvancementNotification notification = new AdvancementNotification(manager, displayInfo.getTitle(), displayInfo.getType(), displayInfo.getIcon());
+                if (notification.shouldDisplay()) {
+                    manager.add(notification);
+
+                    info.cancel();
+                    return;
+                }
+            }
         }
 
         if (toast != null) {
