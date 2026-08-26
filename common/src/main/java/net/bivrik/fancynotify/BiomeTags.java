@@ -1,6 +1,6 @@
 package net.bivrik.fancynotify;
 
-import net.bivrik.fancynotify.utility.ResourceLocations;
+import net.bivrik.fancynotify.utility.Identifiers;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.biome.Biome;
@@ -9,7 +9,7 @@ public final class BiomeTags {
     private BiomeTags() {}
 
     private static TagKey<Biome> create(String id) {
-        return TagKey.create(Registries.BIOME, ResourceLocations.of(id));
+        return TagKey.create(Registries.BIOME, Identifiers.of(id));
     }
 
     public static TagKey<Biome> BADLANDS = create("badlands");

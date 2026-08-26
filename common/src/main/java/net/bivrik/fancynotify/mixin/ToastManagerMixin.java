@@ -17,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Optional;
 
-@Mixin(ToastManager.class)
+@Mixin(value = ToastManager.class, priority = 9000)
 public class ToastManagerMixin {
     // Entrypoint of most vanilla toasts, but since in vanilla there
     // are no expendable toasts, there are a lot of static addOrUpdate()
@@ -26,12 +26,20 @@ public class ToastManagerMixin {
     // is handled by vanilla system, therefore better compatibility!
     @Inject(at = @At("HEAD"), method = "addToast", cancellable = true)
     private void onAddedToast(Toast toast, CallbackInfo info) {
-        if (toast instanceof AdvancementToast advancementToast) {
-            info.cancel();
+        NotificationManager manager = FancyNotify.getInstance().getNotificationManager();
+        if (manager == null) {
+            return;
+        }
 
+        if (toast instanceof AdvancementToast advancementToast) {
             Optional<DisplayInfo> optionalDisplay = ((IAdvancementHolderAccessor) advancementToast).getAdvancementHolder().value().display();
-            NotificationManager manager = FancyNotify.getInstance().getNotificationManager();
-            optionalDisplay.ifPresent(displayInfo -> manager.add(new AdvancementNotification(manager, displayInfo.getTitle(), displayInfo.getType(), displayInfo.getIcon().create())));
+            if (optionalDisplay.isPresent()) {
+                DisplayInfo displayInfo = optionalDisplay.get();
+                AdvancementNotification notification = new AdvancementNotification(manager, displayInfo.getTitle(), displayInfo.getType(), displayInfo.getIcon().create());
+                manager.add(notification);
+            }
+            info.cancel();
+            return;
         }
 
         if (toast != null) {

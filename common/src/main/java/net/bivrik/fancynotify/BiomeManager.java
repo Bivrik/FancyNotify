@@ -6,12 +6,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;
@@ -74,20 +73,20 @@ public class BiomeManager {
                 }
             }
 
-            ResourceLocation biomeId = biomeHolder.unwrap().map(ResourceKey::location, null);
+            Identifier biomeId = biomeHolder.unwrap().map(ResourceKey::identifier, null);
             Component biomeName = getBiomeComponent(biomeId, currentBiome);
             notificationManager.add(new BiomeNotification(notificationManager, biomeName, icon.getDefaultInstance()));
         }
     }
 
-    private Component getBiomeComponent(ResourceLocation id, Biome biome) {
+    private Component getBiomeComponent(Identifier id, Biome biome) {
         if (id == null) {
             return Component.translatable("fancynotify.gui.biome.unknown", Component.literal(biome.toString()));
         }
         return locationToTitle(id);
     }
 
-    private @NotNull Component locationToTitle(ResourceLocation location) {
+    private @NotNull Component locationToTitle(Identifier location) {
         String title = location.getPath();
         StringBuilder output = new StringBuilder(title.length());
         boolean isNextCharCapitalized = true;
