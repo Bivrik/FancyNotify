@@ -32,6 +32,10 @@ public class VanillaAnimation extends NotificationAnimator {
                     alpha = endAlpha;
                 }
             }
+            case VISIBLE -> {
+                x = 0;
+                alpha = 1;
+            }
             case HIDING -> {
                 float startX = 0;
                 float startAlpha = 1.0f;

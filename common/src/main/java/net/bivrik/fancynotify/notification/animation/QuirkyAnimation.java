@@ -28,6 +28,11 @@ public class QuirkyAnimation extends NotificationAnimator {
                     rotation = 0;
                 }
             }
+            case VISIBLE -> {
+                scaleX = 1;
+                scaleY = 1;
+                rotation = 0;
+            }
             case HIDING -> {
                 float hidingProgress = Keyframe.getProgress(timeTicks, animationTimingTicks, animationDurationTicks);
                 if (Keyframe.isActive(hidingProgress)) {
