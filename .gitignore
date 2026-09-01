@@ -1,4 +1,9 @@
-/build/
-/.gradle/
-/libs/
-/.idea/
+.idea/
+.vscode/
+.gradle/
+
+build/
+libs/
+
+run/
+runs/
