@@ -3,6 +3,7 @@ package net.bivrik.fancynotify.notification;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.bivrik.fancynotify.animation.Easing;
 import net.bivrik.fancynotify.animation.Keyframe;
+import net.bivrik.fancynotify.api.INotificationManager;
 import net.bivrik.fancynotify.config.ConfigManager;
 import net.bivrik.fancynotify.config.GeneralConfig;
 import net.bivrik.fancynotify.core.Log;
@@ -15,7 +16,7 @@ import java.util.Deque;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
-public class NotificationManager {
+public class NotificationManager implements INotificationManager {
     private final Minecraft minecraft;
     private final ConfigManager configManager;
     private final Particle2DEngine particleEngine;
@@ -42,6 +43,7 @@ public class NotificationManager {
         return particleEngine;
     }
 
+    @Override
     public void add(Notification newNotification) {
         if (!newNotification.shouldDisplay()) {
             return;
@@ -65,6 +67,7 @@ public class NotificationManager {
         allNotifications.add(newNotification);
     }
 
+    @Override
     public void clear() {
         notificationQueue.clear();
         currentNotifications.clear();
@@ -147,6 +150,7 @@ public class NotificationManager {
 
     private record Position(int x, int y) {}
 
+    @Override
     public void update() {
         if (!isCurrentEmpty()) {
             float deltaTicks = minecraft.getDeltaFrameTime();
@@ -182,6 +186,7 @@ public class NotificationManager {
         }
     }
 
+    @Override
     public <T extends Notification> void remove(Class<T> notificationClass, Object id) {
         for (Notification n : allNotifications) {
             if (id.equals(n.getId()) && notificationClass.isAssignableFrom(n.getClass())) {
@@ -196,7 +201,8 @@ public class NotificationManager {
         }
     }
 
-    public void render(GuiGraphics guiGraphics) {
+    @Override
+    public void render(GuiGraphics guiGraphics, float partialTick) {
         if (currentNotifications.isEmpty() || minecraft.options.hideGui) return;
 
         PoseStack stack = guiGraphics.pose();
