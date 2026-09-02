@@ -1,22 +1,23 @@
 package net.bivrik.fancynotify.notification;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.bivrik.fancynotify.animation.Easing;
 import net.bivrik.fancynotify.animation.Keyframe;
+import net.bivrik.fancynotify.api.INotificationManager;
 import net.bivrik.fancynotify.config.ConfigManager;
 import net.bivrik.fancynotify.config.GeneralConfig;
 import net.bivrik.fancynotify.core.Log;
 import net.bivrik.fancynotify.particle.Particle2DEngine;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
-import org.joml.Matrix3x2fStack;
+import net.minecraft.client.gui.GuiGraphics;
 
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
-public class NotificationManager {
+public class NotificationManager implements INotificationManager {
     private final Minecraft minecraft;
     private final ConfigManager configManager;
     private final Particle2DEngine particleEngine;
@@ -30,7 +31,7 @@ public class NotificationManager {
         this.minecraft = minecraft;
         this.configManager = configManager;
         this.particleEngine = particleEngine;
-        this.deltaTracker = minecraft.getDeltaTracker();
+        this.deltaTracker = minecraft.getTimer();
     }
 
     public Minecraft getMinecraft() {
@@ -45,6 +46,7 @@ public class NotificationManager {
         return particleEngine;
     }
 
+    @Override
     public void add(Notification newNotification) {
         if (!newNotification.shouldDisplay()) {
             return;
@@ -68,6 +70,7 @@ public class NotificationManager {
         allNotifications.add(newNotification);
     }
 
+    @Override
     public void clear() {
         notificationQueue.clear();
         currentNotifications.clear();
@@ -150,6 +153,7 @@ public class NotificationManager {
 
     private record Position(int x, int y) {}
 
+    @Override
     public void update() {
         if (!isCurrentEmpty()) {
             float deltaTicks = deltaTracker.getGameTimeDeltaTicks();
@@ -185,6 +189,7 @@ public class NotificationManager {
         }
     }
 
+    @Override
     public <T extends Notification> void remove(Class<T> notificationClass, Object id) {
         for (Notification n : allNotifications) {
             if (id.equals(n.getId()) && notificationClass.isAssignableFrom(n.getClass())) {
@@ -199,36 +204,37 @@ public class NotificationManager {
         }
     }
 
-    public void render(GuiGraphicsExtractor graphics) {
-        if (currentNotifications.isEmpty() || minecraft.gui.hud.isHidden()) return;
+    @Override
+    public void render(GuiGraphics guiGraphics, float partialTick) {
+        if (currentNotifications.isEmpty() || minecraft.options.hideGui) return;
 
-        Matrix3x2fStack stack = graphics.pose();
-        stack.pushMatrix();
+        PoseStack stack = guiGraphics.pose();
+        stack.pushPose();
         GeneralConfig config = configManager.getGeneralConfig();
         GeneralConfig.Anchor anchor = config.anchor.get();
         int padding = config.padding.get();
 
         if (config.debug.get()) {
-            stack.translate(graphics.guiWidth() / 2.0f, graphics.guiHeight() / 2.0f);
+            stack.translate(guiGraphics.guiWidth() / 2.0, guiGraphics.guiHeight() / 2.0, 800);
 
-            graphics.fill(-500, 0, 500, 1, -58254424);
-            graphics.fill(0, -500, 1, 500, -58254424);
+            guiGraphics.fill(-500, 0, 500, 1, -58254424);
+            guiGraphics.fill(0, -500, 1, 500, -58254424);
 
-            graphics.fill(-500, -1, 500, 0, -812254424);
-            graphics.fill(-1, -500, 0, 500, -812254424);
+            guiGraphics.fill(-500, -1, 500, 0, -812254424);
+            guiGraphics.fill(-1, -500, 0, 500, -812254424);
 
-            graphics.text(minecraft.font, "(-1, 1)", -37, 6, -1);
-            graphics.text(minecraft.font, "(1, -1)", 6, -13, -1);
-            graphics.text(minecraft.font, "(0, 0)", -13, -3, -1);
+            guiGraphics.drawString(minecraft.font, "(-1, 1)", -37, 6, -1);
+            guiGraphics.drawString(minecraft.font, "(1, -1)", 6, -13, -1);
+            guiGraphics.drawString(minecraft.font, "(0, 0)", -13, -3, -1);
         } else {
-            stack.translate(anchor.isLeft() ? padding : graphics.guiWidth() - padding, anchor.isTop() ? padding : graphics.guiHeight() - padding);
+            stack.translate(anchor.isLeft() ? padding : guiGraphics.guiWidth() - padding, anchor.isTop() ? padding : guiGraphics.guiHeight() - padding, 800);
         }
 
         for (var notificationHolder : currentNotifications) {
-            notificationHolder.render(graphics);
+            notificationHolder.render(guiGraphics);
         }
 
-        stack.popMatrix();
+        stack.popPose();
     }
 
     private static class NotificationHolder {
@@ -297,12 +303,12 @@ public class NotificationManager {
             }
         }
 
-        private void render(GuiGraphicsExtractor graphics) {
-            Matrix3x2fStack stack = graphics.pose();
-            stack.pushMatrix();
-            stack.translate(x, y);
-            notification.render(graphics);
-            stack.popMatrix();
+        private void render(GuiGraphics guiGraphics) {
+            PoseStack stack = guiGraphics.pose();
+            stack.pushPose();
+            stack.translate(x, y, 0);
+            notification.render(guiGraphics);
+            stack.popPose();
         }
     }
 }
