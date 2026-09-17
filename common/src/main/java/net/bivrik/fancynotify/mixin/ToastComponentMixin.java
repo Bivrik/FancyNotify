@@ -11,12 +11,16 @@ import net.minecraft.client.gui.components.toasts.AdvancementToast;
 import net.minecraft.client.gui.components.toasts.Toast;
 import net.minecraft.client.gui.components.toasts.ToastComponent;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(value = ToastComponent.class, priority = 9000)
 public class ToastComponentMixin {
+    @Unique
+    private static final String SIMPLE_TOAST = "net.puffish.skillsmod.client.gui.SimpleToast";
+
     // Entrypoint of most vanilla toasts, but since in vanilla there
     // are no expendable toasts, there are a lot of static addOrUpdate()
     // methods. Therefore, here we only catch simple toasts, like
@@ -24,6 +28,11 @@ public class ToastComponentMixin {
     // is handled by vanilla system, therefore better compatibility!
     @Inject(at = @At("HEAD"), method = "addToast", cancellable = true)
     private void onAddedToast(Toast toast, CallbackInfo info) {
+        if (toast == null) { // already handled
+            info.cancel();
+            return;
+        }
+
         NotificationManager manager = FancyNotify.getInstance().getNotificationManager();
         if (manager == null) {
             return;
@@ -39,12 +48,12 @@ public class ToastComponentMixin {
             return;
         }
 
-        if (toast != null) {
-            Log.info("Registered unsupported toast. Using vanilla toast system for {}", toast.getClass().getSimpleName());
-        } else {
+        if (toast.getClass().getName().equals(SIMPLE_TOAST)) {
             info.cancel();
-            Log.warn("Ugh... null toast?");
+            return;
         }
+
+        Log.info("Registered unsupported toast. Using vanilla toast system for {}", toast.getClass().getSimpleName());
     }
 
     // Clears all the toasts and notifications when leaving world
