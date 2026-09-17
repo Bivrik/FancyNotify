@@ -202,7 +202,7 @@ public class NotificationManager implements INotificationManager {
     }
 
     @Override
-    public void render(GuiGraphics guiGraphics, float partialTick) {
+    public void render(GuiGraphics guiGraphics) {
         if (currentNotifications.isEmpty() || minecraft.options.hideGui) return;
 
         PoseStack stack = guiGraphics.pose();
