@@ -1,5 +1,6 @@
 package net.bivrik.fancynotify.notification.gui;
 
+import net.bivrik.fancynotify.core.Log;
 import net.bivrik.fancynotify.notification.ExpandableNotification;
 import net.bivrik.fancynotify.notification.NotificationManager;
 import net.bivrik.fancynotify.utility.ResourceLocations;
@@ -32,7 +33,7 @@ public class SystemNotification extends ExpandableNotification {
 
     @Override
     protected int getLifeTimeTicks() {
-        return id.getLifeTimeTicks();
+        return id.lifeTimeTicks();
     }
 
     @Override
@@ -48,7 +49,7 @@ public class SystemNotification extends ExpandableNotification {
         int alignment = Math.min(getWrappedMessage().size(), 1);
         drawText(guiGraphics, getTitle(), getTextOffset(), 8 - alignment, Color.yellow.getRGB());
         drawMessage(guiGraphics, getTextOffset(), 18, -1);
-        drawTexture(guiGraphics, id.getSprite(), 6, getCenterY() - 10, 20, 20, 20, 20);
+        drawTexture(guiGraphics, id.sprite(), 6, getCenterY() - 10, 20, 20, 20, 20);
     }
 
     public enum Identifier {
@@ -60,7 +61,7 @@ public class SystemNotification extends ExpandableNotification {
         PERIODIC_NOTIFICATION,
         UNSECURE_SERVER_WARNING(220);
 
-        private static final Map<SystemToast.SystemToastIds, Identifier> SYSTEM_TOAST_TO_ID = Map.ofEntries(
+        private static final Map<SystemToast.SystemToastIds, Identifier> VANILLA_ID_TO_NEW_ID = Map.ofEntries(
                 Map.entry(SystemToast.SystemToastIds.NARRATOR_TOGGLE, NARRATOR),
                 Map.entry(SystemToast.SystemToastIds.WORLD_BACKUP, WORLD_BACKUP),
                 Map.entry(SystemToast.SystemToastIds.PACK_LOAD_FAILURE, PACK_LOAD_FAILURE),
@@ -90,16 +91,21 @@ public class SystemNotification extends ExpandableNotification {
             this(ResourceLocations.of("textures/gui/icons/important.png"), 120);
         }
 
-        public int getLifeTimeTicks() {
+        public int lifeTimeTicks() {
             return lifeTimeTicks;
         }
 
-        public ResourceLocation getSprite() {
+        public ResourceLocation sprite() {
             return sprite;
         }
 
-        public static Identifier fromSystemToastId(SystemToast.SystemToastIds id) {
-            return SYSTEM_TOAST_TO_ID.get(id);
+        public static Identifier fromSystemToastId(SystemToast.SystemToastId id) {
+            Identifier systemToastId = VANILLA_ID_TO_NEW_ID.get(id);
+            if (systemToastId == null) {
+                Log.error("Failed to parse {}, falling back to PERIODIC_NOTIFICATION instead", id);
+                return Identifier.PERIODIC_NOTIFICATION;
+            }
+            return systemToastId;
         }
     }
 }
