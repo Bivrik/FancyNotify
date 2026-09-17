@@ -1,5 +1,6 @@
 package net.bivrik.fancynotify.notification.gui;
 
+import net.bivrik.fancynotify.core.Log;
 import net.bivrik.fancynotify.notification.ExpandableNotification;
 import net.bivrik.fancynotify.notification.NotificationManager;
 import net.bivrik.fancynotify.utility.ResourceLocations;
@@ -9,6 +10,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
 import java.awt.*;
+import java.util.HashMap;
 import java.util.Map;
 
 public class SystemNotification extends ExpandableNotification {
@@ -66,19 +68,7 @@ public class SystemNotification extends ExpandableNotification {
         CHUNK_SAVE_FAILURE(ResourceLocations.of("icons/chunk")),
         UNSECURE_SERVER_WARNING(220);
 
-        private static final Map<SystemToast.SystemToastId, Identifier> SYSTEM_TOAST_TO_ID = Map.ofEntries(
-                Map.entry(SystemToast.SystemToastId.NARRATOR_TOGGLE, NARRATOR),
-                Map.entry(SystemToast.SystemToastId.WORLD_BACKUP, WORLD_BACKUP),
-                Map.entry(SystemToast.SystemToastId.PACK_LOAD_FAILURE, PACK_LOAD_FAILURE),
-                Map.entry(SystemToast.SystemToastId.WORLD_ACCESS_FAILURE, WORLD_ACCESS_FAILURE),
-                Map.entry(SystemToast.SystemToastId.PACK_COPY_FAILURE, PACK_COPY_FAILURE),
-                Map.entry(SystemToast.SystemToastId.FILE_DROP_FAILURE, FILE_DROP_FAILURE),
-                Map.entry(SystemToast.SystemToastId.PERIODIC_NOTIFICATION, PERIODIC_NOTIFICATION),
-                Map.entry(SystemToast.SystemToastId.LOW_DISK_SPACE, LOW_DISK_SPACE),
-                Map.entry(SystemToast.SystemToastId.CHUNK_LOAD_FAILURE, CHUNK_LOAD_FAILURE),
-                Map.entry(SystemToast.SystemToastId.CHUNK_SAVE_FAILURE, CHUNK_SAVE_FAILURE),
-                Map.entry(SystemToast.SystemToastId.UNSECURE_SERVER_WARNING, UNSECURE_SERVER_WARNING)
-        );
+        private static final Map<SystemToast.SystemToastId, Identifier> VANILLA_ID_TO_ID = new HashMap<>();
 
         private final ResourceLocation sprite;
         private final int lifeTimeTicks;
@@ -109,7 +99,26 @@ public class SystemNotification extends ExpandableNotification {
         }
 
         public static Identifier fromSystemToastId(SystemToast.SystemToastId id) {
-            return SYSTEM_TOAST_TO_ID.get(id);
+            Identifier systemToastId = VANILLA_ID_TO_ID.get(id);
+            if (systemToastId == null) {
+                Log.error("Failed to parse {}, falling back to PERIODIC_NOTIFICATION instead", id);
+                return Identifier.PERIODIC_NOTIFICATION;
+            }
+            return systemToastId;
+        }
+
+        static {
+            VANILLA_ID_TO_ID.put(SystemToast.SystemToastId.NARRATOR_TOGGLE, NARRATOR);
+            VANILLA_ID_TO_ID.put(SystemToast.SystemToastId.WORLD_BACKUP, WORLD_BACKUP);
+            VANILLA_ID_TO_ID.put(SystemToast.SystemToastId.PACK_LOAD_FAILURE, PACK_LOAD_FAILURE);
+            VANILLA_ID_TO_ID.put(SystemToast.SystemToastId.WORLD_ACCESS_FAILURE, WORLD_ACCESS_FAILURE);
+            VANILLA_ID_TO_ID.put(SystemToast.SystemToastId.PACK_COPY_FAILURE, PACK_COPY_FAILURE);
+            VANILLA_ID_TO_ID.put(SystemToast.SystemToastId.FILE_DROP_FAILURE, FILE_DROP_FAILURE);
+            VANILLA_ID_TO_ID.put(SystemToast.SystemToastId.PERIODIC_NOTIFICATION, PERIODIC_NOTIFICATION);
+            VANILLA_ID_TO_ID.put(SystemToast.SystemToastId.LOW_DISK_SPACE, LOW_DISK_SPACE);
+            VANILLA_ID_TO_ID.put(SystemToast.SystemToastId.CHUNK_LOAD_FAILURE, CHUNK_LOAD_FAILURE);
+            VANILLA_ID_TO_ID.put(SystemToast.SystemToastId.CHUNK_SAVE_FAILURE, CHUNK_SAVE_FAILURE);
+            VANILLA_ID_TO_ID.put(SystemToast.SystemToastId.UNSECURE_SERVER_WARNING, UNSECURE_SERVER_WARNING);
         }
     }
 }
