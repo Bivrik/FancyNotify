@@ -35,14 +35,14 @@ public class ToastComponentMixin {
 
         NotificationManager manager = FancyNotify.getInstance().getNotificationManager();
         if (manager == null) {
+            Log.info("Notification manager is null, handling {} by vanilla toast system", toast.getClass().getSimpleName());
             return;
         }
 
-        if (toast instanceof AdvancementToast advancementToast) {
-            DisplayInfo displayInfo = ((IAdvancementHolderAccessor) advancementToast).getAdvancement().getDisplay();
+        if (toast instanceof AdvancementToast) {
+            DisplayInfo displayInfo = ((IAdvancementHolderAccessor) toast).getAdvancement().getDisplay();
             if (displayInfo != null) {
-                AdvancementNotification notification = new AdvancementNotification(manager, displayInfo.getTitle(), displayInfo.getFrame(), displayInfo.getIcon());
-                manager.add(notification);
+                manager.add(new AdvancementNotification(manager, displayInfo.getTitle(), displayInfo.getFrame(), displayInfo.getIcon()));
             }
             info.cancel();
             return;
