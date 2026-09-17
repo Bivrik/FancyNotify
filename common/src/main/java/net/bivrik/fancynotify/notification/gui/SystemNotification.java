@@ -1,22 +1,24 @@
 package net.bivrik.fancynotify.notification.gui;
 
+import net.bivrik.fancynotify.core.Log;
 import net.bivrik.fancynotify.notification.ExpandableNotification;
 import net.bivrik.fancynotify.notification.NotificationManager;
-import net.bivrik.fancynotify.utility.Identifiers;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.bivrik.fancynotify.utility.ResourceLocations;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.toasts.SystemToast;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 
 import java.awt.*;
+import java.util.HashMap;
 import java.util.Map;
 
 public class SystemNotification extends ExpandableNotification {
-    private static final Identifier BACKGROUND = Identifiers.of("notifications/system");
+    private static final ResourceLocation BACKGROUND = ResourceLocations.of("notifications/system");
 
-    private final Ids id;
+    private final Identifier id;
 
-    public SystemNotification(NotificationManager manager, Ids id, Component title, Component description) {
+    public SystemNotification(NotificationManager manager, Identifier id, Component title, Component description) {
         super(manager, title, description);
 
         this.id = id;
@@ -28,7 +30,7 @@ public class SystemNotification extends ExpandableNotification {
     }
 
     @Override
-    public Ids getId() {
+    public Identifier getId() {
         return id;
     }
 
@@ -45,73 +47,78 @@ public class SystemNotification extends ExpandableNotification {
     }
 
     @Override
-    public void draw(GuiGraphicsExtractor graphics) {
-        drawSprite(graphics, BACKGROUND, 0, 0, getWidth(), getHeight());
+    public void draw(GuiGraphics guiGraphics) {
+        drawSprite(guiGraphics, BACKGROUND, 0, 0, getWidth(), getHeight());
         int alignment = Math.min(getWrappedMessage().size(), 1);
-        drawText(graphics, getTitle(), getTextOffset(), 8 - alignment, Color.yellow.getRGB());
-        drawMessage(graphics, getTextOffset(), 18, -1);
-        drawSprite(graphics, id.getSprite(), 6, getCenterY() - 10, 20, 20);
+        drawText(guiGraphics, getTitle(), getTextOffset(), 8 - alignment, Color.yellow.getRGB());
+        drawMessage(guiGraphics, getTextOffset(), 18, -1);
+        drawSprite(guiGraphics, id.getSprite(), 6, getCenterY() - 10, 20, 20);
     }
 
-    public enum Ids {
-        NARRATOR(Identifiers.of("icons/narrator"), 80),
-        WORLD_BACKUP(Identifiers.of("icons/storage")),
-        PACK_LOAD_FAILURE(Identifiers.of("icons/folder")),
-        WORLD_ACCESS_FAILURE(Identifiers.of("icons/storage")),
-        PACK_COPY_FAILURE(Identifiers.of("icons/folder")),
-        FILE_DROP_FAILURE(Identifiers.of("icons/storage")),
+    public enum Identifier {
+        NARRATOR(ResourceLocations.of("icons/narrator"), 80),
+        WORLD_BACKUP(ResourceLocations.of("icons/storage")),
+        PACK_LOAD_FAILURE(ResourceLocations.of("icons/folder")),
+        WORLD_ACCESS_FAILURE(ResourceLocations.of("icons/storage")),
+        PACK_COPY_FAILURE(ResourceLocations.of("icons/folder")),
+        FILE_DROP_FAILURE(ResourceLocations.of("icons/storage")),
         PERIODIC_NOTIFICATION,
-        LOW_DISK_SPACE(Identifiers.of("icons/storage"), 220),
-        CHUNK_LOAD_FAILURE(Identifiers.of("icons/chunk")),
-        CHUNK_SAVE_FAILURE(Identifiers.of("icons/chunk")),
-        UNSECURE_SERVER_WARNING(220),
-        FRIEND_SYSTEM_NOTIFICATION(Identifiers.of("icons/friends"));
+        LOW_DISK_SPACE(ResourceLocations.of("icons/storage"), 220),
+        CHUNK_LOAD_FAILURE(ResourceLocations.of("icons/chunk")),
+        CHUNK_SAVE_FAILURE(ResourceLocations.of("icons/chunk")),
+        UNSECURE_SERVER_WARNING(220);
 
-        private static final Map<SystemToast.SystemToastId, Ids> SYSTEM_TOAST_TO_ID = Map.ofEntries(
-                Map.entry(SystemToast.SystemToastId.NARRATOR_TOGGLE, NARRATOR),
-                Map.entry(SystemToast.SystemToastId.WORLD_BACKUP, WORLD_BACKUP),
-                Map.entry(SystemToast.SystemToastId.PACK_LOAD_FAILURE, PACK_LOAD_FAILURE),
-                Map.entry(SystemToast.SystemToastId.WORLD_ACCESS_FAILURE, WORLD_ACCESS_FAILURE),
-                Map.entry(SystemToast.SystemToastId.PACK_COPY_FAILURE, PACK_COPY_FAILURE),
-                Map.entry(SystemToast.SystemToastId.FILE_DROP_FAILURE, FILE_DROP_FAILURE),
-                Map.entry(SystemToast.SystemToastId.PERIODIC_NOTIFICATION, PERIODIC_NOTIFICATION),
-                Map.entry(SystemToast.SystemToastId.LOW_DISK_SPACE, LOW_DISK_SPACE),
-                Map.entry(SystemToast.SystemToastId.CHUNK_LOAD_FAILURE, CHUNK_LOAD_FAILURE),
-                Map.entry(SystemToast.SystemToastId.CHUNK_SAVE_FAILURE, CHUNK_SAVE_FAILURE),
-                Map.entry(SystemToast.SystemToastId.UNSECURE_SERVER_WARNING, UNSECURE_SERVER_WARNING),
-                Map.entry(SystemToast.SystemToastId.FRIEND_SYSTEM_NOTIFICATION, FRIEND_SYSTEM_NOTIFICATION)
-        );
+        private static final Map<SystemToast.SystemToastId, Identifier> VANILLA_ID_TO_ID = new HashMap<>();
 
-        private final Identifier sprite;
+        private final ResourceLocation sprite;
         private final int lifeTimeTicks;
 
-        Ids(Identifier sprite, int lifeTimeTicks) {
+        Identifier(ResourceLocation sprite, int lifeTimeTicks) {
             this.sprite = sprite;
             this.lifeTimeTicks = lifeTimeTicks;
         }
 
-        Ids(int lifeTimeTicks) {
-            this(Identifiers.of("icons/important"), lifeTimeTicks);
+        Identifier(int lifeTimeTicks) {
+            this(ResourceLocations.of("icons/important"), lifeTimeTicks);
         }
 
-        Ids(Identifier sprite) {
+        Identifier(ResourceLocation sprite) {
             this(sprite, 120);
         }
 
-        Ids() {
-            this(Identifiers.of("icons/important"), 120);
+        Identifier() {
+            this(ResourceLocations.of("icons/important"), 120);
         }
 
         public int getLifeTimeTicks() {
             return lifeTimeTicks;
         }
 
-        public Identifier getSprite() {
+        public ResourceLocation getSprite() {
             return sprite;
         }
 
-        public static Ids fromSystemToastId(SystemToast.SystemToastId id) {
-            return SYSTEM_TOAST_TO_ID.get(id);
+        public static Identifier fromSystemToastId(SystemToast.SystemToastId id) {
+            Identifier systemToastId = VANILLA_ID_TO_ID.get(id);
+            if (systemToastId == null) {
+                Log.error("Failed to parse {}, falling back to PERIODIC_NOTIFICATION instead", id);
+                return Identifier.PERIODIC_NOTIFICATION;
+            }
+            return systemToastId;
+        }
+
+        static {
+            VANILLA_ID_TO_ID.put(SystemToast.SystemToastId.NARRATOR_TOGGLE, NARRATOR);
+            VANILLA_ID_TO_ID.put(SystemToast.SystemToastId.WORLD_BACKUP, WORLD_BACKUP);
+            VANILLA_ID_TO_ID.put(SystemToast.SystemToastId.PACK_LOAD_FAILURE, PACK_LOAD_FAILURE);
+            VANILLA_ID_TO_ID.put(SystemToast.SystemToastId.WORLD_ACCESS_FAILURE, WORLD_ACCESS_FAILURE);
+            VANILLA_ID_TO_ID.put(SystemToast.SystemToastId.PACK_COPY_FAILURE, PACK_COPY_FAILURE);
+            VANILLA_ID_TO_ID.put(SystemToast.SystemToastId.FILE_DROP_FAILURE, FILE_DROP_FAILURE);
+            VANILLA_ID_TO_ID.put(SystemToast.SystemToastId.PERIODIC_NOTIFICATION, PERIODIC_NOTIFICATION);
+            VANILLA_ID_TO_ID.put(SystemToast.SystemToastId.LOW_DISK_SPACE, LOW_DISK_SPACE);
+            VANILLA_ID_TO_ID.put(SystemToast.SystemToastId.CHUNK_LOAD_FAILURE, CHUNK_LOAD_FAILURE);
+            VANILLA_ID_TO_ID.put(SystemToast.SystemToastId.CHUNK_SAVE_FAILURE, CHUNK_SAVE_FAILURE);
+            VANILLA_ID_TO_ID.put(SystemToast.SystemToastId.UNSECURE_SERVER_WARNING, UNSECURE_SERVER_WARNING);
         }
     }
 }
