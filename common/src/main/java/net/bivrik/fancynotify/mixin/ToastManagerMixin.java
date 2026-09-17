@@ -4,21 +4,25 @@ import net.bivrik.fancynotify.FancyNotify;
 import net.bivrik.fancynotify.accessor.IAdvancementHolderAccessor;
 import net.bivrik.fancynotify.core.Log;
 import net.bivrik.fancynotify.notification.NotificationManager;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.bivrik.fancynotify.notification.gui.AdvancementNotification;
 import net.minecraft.advancements.DisplayInfo;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.toasts.AdvancementToast;
 import net.minecraft.client.gui.components.toasts.Toast;
-import net.minecraft.client.gui.components.toasts.ToastManager;
+import net.minecraft.client.gui.components.toasts.ToastComponent;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Optional;
 
-@Mixin(value = ToastManager.class, priority = 9000)
-public class ToastManagerMixin {
+@Mixin(value = ToastComponent.class, priority = 9000)
+public class ToastComponentMixin {
+    @Unique
+    private static final String SIMPLE_TOAST = "net.puffish.skillsmod.client.gui.SimpleToast";
+
     // Entrypoint of most vanilla toasts, but since in vanilla there
     // are no expendable toasts, there are a lot of static addOrUpdate()
     // methods. Therefore, here we only catch simple toasts, like
@@ -26,6 +30,11 @@ public class ToastManagerMixin {
     // is handled by vanilla system, therefore better compatibility!
     @Inject(at = @At("HEAD"), method = "addToast", cancellable = true)
     private void onAddedToast(Toast toast, CallbackInfo info) {
+        if (toast == null) { // already handled
+            info.cancel();
+            return;
+        }
+
         NotificationManager manager = FancyNotify.getInstance().getNotificationManager();
         if (manager == null) {
             return;
@@ -35,19 +44,19 @@ public class ToastManagerMixin {
             Optional<DisplayInfo> optionalDisplay = ((IAdvancementHolderAccessor) advancementToast).getAdvancementHolder().value().display();
             if (optionalDisplay.isPresent()) {
                 DisplayInfo displayInfo = optionalDisplay.get();
-                AdvancementNotification notification = new AdvancementNotification(manager, displayInfo.getTitle(), displayInfo.getType(), displayInfo.getIcon().create());
+                AdvancementNotification notification = new AdvancementNotification(manager, displayInfo.getTitle(), displayInfo.getType(), displayInfo.getIcon());
                 manager.add(notification);
             }
             info.cancel();
             return;
         }
 
-        if (toast != null) {
-            Log.info("Registered unsupported toast. Using vanilla toast system for {}", toast.getClass().getSimpleName());
-        } else {
+        if (toast.getClass().getName().equals(SIMPLE_TOAST)) {
             info.cancel();
-            Log.warn("Ugh... null toast?");
+            return;
         }
+
+        Log.info("Registered unsupported toast. Using vanilla toast system for {}", toast.getClass().getSimpleName());
     }
 
     // Clears all the toasts and notifications when leaving world
@@ -59,12 +68,12 @@ public class ToastManagerMixin {
         }
     }
 
-    @Inject(at = @At("HEAD"), method = "extractRenderState")
-    private void onRendered(GuiGraphicsExtractor graphics, CallbackInfo info) {
+    @Inject(at = @At("HEAD"), method = "render")
+    private void onRendered(GuiGraphics guiGraphics, CallbackInfo info) {
         NotificationManager manager = FancyNotify.getInstance().getNotificationManager();
         if (manager != null) {
             manager.update();
-            manager.render(graphics);
+            manager.render(guiGraphics);
         }
     }
 }
