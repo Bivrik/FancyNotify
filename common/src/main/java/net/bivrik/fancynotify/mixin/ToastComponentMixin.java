@@ -5,6 +5,7 @@ import net.bivrik.fancynotify.accessor.IAdvancementHolderAccessor;
 import net.bivrik.fancynotify.core.Log;
 import net.bivrik.fancynotify.notification.NotificationManager;
 import net.bivrik.fancynotify.notification.gui.AdvancementNotification;
+import net.bivrik.fancynotify.platform.Services;
 import net.minecraft.advancements.DisplayInfo;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.toasts.AdvancementToast;
@@ -48,9 +49,28 @@ public class ToastComponentMixin {
             return;
         }
 
-        if (toast.getClass().getName().equals(SIMPLE_TOAST)) {
-            info.cancel();
-            return;
+        if (Services.PLATFORM.isModLoaded("spectrum")) {
+            if (Services.SPECTRUM_API.tryHandleMessageToast(toast, manager)) {
+                info.cancel();
+                return;
+            }
+
+            if (Services.SPECTRUM_API.tryHandleRevelationToast(toast, manager)) {
+                info.cancel();
+                return;
+            }
+
+            if (Services.SPECTRUM_API.tryHandleUnlockedRecipeToast(toast, manager)) {
+                info.cancel();
+                return;
+            }
+        }
+
+        if (Services.PLATFORM.isModLoaded("puffish_skills")) {
+            if (toast.getClass().getName().equals(SIMPLE_TOAST)) {
+                info.cancel();
+                return;
+            }
         }
 
         Log.info("Registered unsupported toast. Using vanilla toast system for {}", toast.getClass().getSimpleName());

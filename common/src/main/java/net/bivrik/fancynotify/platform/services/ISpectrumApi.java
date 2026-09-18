@@ -1,0 +1,13 @@
+package net.bivrik.fancynotify.platform.services;
+
+import net.bivrik.fancynotify.notification.NotificationManager;
+import net.minecraft.client.gui.components.toasts.Toast;
+
+public interface ISpectrumApi {
+
+    boolean tryHandleMessageToast(Toast toast, NotificationManager notificationManager);
+
+    boolean tryHandleRevelationToast(Toast toast, NotificationManager notificationManager);
+
+    boolean tryHandleUnlockedRecipeToast(Toast toast, NotificationManager notificationManager);
+}
