@@ -5,11 +5,15 @@ import net.bivrik.fancynotify.accessor.IAdvancementHolderAccessor;
 import net.bivrik.fancynotify.core.Log;
 import net.bivrik.fancynotify.notification.NotificationManager;
 import net.bivrik.fancynotify.notification.gui.AdvancementNotification;
+import net.bivrik.fancynotify.platform.Services;
+import net.minecraft.advancements.AdvancementType;
 import net.minecraft.advancements.DisplayInfo;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.toasts.AdvancementToast;
 import net.minecraft.client.gui.components.toasts.Toast;
 import net.minecraft.client.gui.components.toasts.ToastComponent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -41,16 +45,35 @@ public class ToastComponentMixin {
             return;
         }
 
-        if (toast instanceof AdvancementToast advancementToast) {
-            Optional<DisplayInfo> optionalDisplay = ((IAdvancementHolderAccessor) advancementToast).getAdvancementHolder().value().display();
+        if (toast instanceof AdvancementToast) {
+            Optional<DisplayInfo> optionalDisplay = ((IAdvancementHolderAccessor) toast).getAdvancementHolder().value().display();
             optionalDisplay.ifPresent(display -> manager.add(new AdvancementNotification(manager, display.getTitle(), display.getType(), display.getIcon())));
             info.cancel();
             return;
         }
 
-        if (toast.getClass().getName().equals(SIMPLE_TOAST)) {
-            info.cancel();
-            return;
+        if (Services.PLATFORM.isModLoaded("spectrum")) {
+            if (Services.SPECTRUM_API.tryHandleMessageToast(toast, manager)) {
+                info.cancel();
+                return;
+            }
+
+            if (Services.SPECTRUM_API.tryHandleRevelationToast(toast, manager)) {
+                info.cancel();
+                return;
+            }
+
+            if (Services.SPECTRUM_API.tryHandleUnlockedRecipeToast(toast, manager)) {
+                info.cancel();
+                return;
+            }
+        }
+
+        if (Services.PLATFORM.isModLoaded("puffish_skills")) {
+            if (toast.getClass().getName().equals(SIMPLE_TOAST)) {
+                info.cancel();
+                return;
+            }
         }
 
         Log.info("Registered unsupported toast. Using vanilla toast system for {}", toast.getClass().getSimpleName());

@@ -3,6 +3,10 @@ plugins {
     id 'net.neoforged.moddev'
 }
 
+dependencies {
+    implementation "maven.modrinth:spectrum:${project.neoforge_spectrum_version}"
+}
+
 neoForge {
     version = neoforge_version
     def at = project(':common').file('src/main/resources/META-INF/accesstransformer.cfg')

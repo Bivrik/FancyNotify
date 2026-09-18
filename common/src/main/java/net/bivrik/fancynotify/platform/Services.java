@@ -1,7 +1,9 @@
 package net.bivrik.fancynotify.platform;
 
 import net.bivrik.fancynotify.core.Log;
+import net.bivrik.fancynotify.platform.impl.SpectrumImpl;
 import net.bivrik.fancynotify.platform.services.IPlatformHelper;
+import net.bivrik.fancynotify.platform.services.ISpectrumApi;
 
 import java.util.Map;
 import java.util.ServiceLoader;
@@ -19,17 +21,16 @@ public final class Services {
     public static final IPlatformHelper PLATFORM = load(IPlatformHelper.class);
 
     // Optional services. Can have fallback implementation
-    // e.g. public static final IPlatformHelper SOME_SERVICE = load(ISomeServiceHelper.class);
+    public static final ISpectrumApi SPECTRUM_API = loadOptional(ISpectrumApi.class);
 
     // Fallbacks for optional services to avoid scenarios when one mod loader has a unique mod and others do not
     private static final Map<Class<?>, Supplier<?>> FALLBACKS = Map.of(
-            // e.g. ISomeServiceHelper.class, SomeServiceHelper::new
+            ISpectrumApi.class, SpectrumImpl::new
     );
 
     // Loads a service that has implementation in every mod loader
     private static <T> T load(final Class<T> clazz) {
-        final T loadedService = ServiceLoader.load(clazz, Services.class.getClassLoader())
-                .findFirst().orElseThrow(() -> new IllegalStateException("Failed to load service for: " + clazz.getName()));
+        final T loadedService = ServiceLoader.load(clazz, Services.class.getClassLoader()).findFirst().orElseThrow(() -> new IllegalStateException("Failed to load service for: " + clazz.getName()));
         LOGGER.info("Loaded '{}' for service: {}", loadedService.getClass().getName(), clazz.getSimpleName());
         return loadedService;
     }
