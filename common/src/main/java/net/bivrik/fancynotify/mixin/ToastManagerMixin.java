@@ -5,6 +5,7 @@ import net.bivrik.fancynotify.accessor.IAdvancementHolderAccessor;
 import net.bivrik.fancynotify.core.Log;
 import net.bivrik.fancynotify.notification.NotificationManager;
 import net.bivrik.fancynotify.notification.gui.AdvancementNotification;
+import net.bivrik.fancynotify.platform.Services;
 import net.minecraft.advancements.DisplayInfo;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.toasts.AdvancementToast;
@@ -41,16 +42,25 @@ public class ToastManagerMixin {
             return;
         }
 
-        if (toast instanceof AdvancementToast advancementToast) {
-            Optional<DisplayInfo> optionalDisplay = ((IAdvancementHolderAccessor) advancementToast).getAdvancementHolder().value().display();
+        if (toast instanceof AdvancementToast) {
+            Optional<DisplayInfo> optionalDisplay = ((IAdvancementHolderAccessor) toast).getAdvancementHolder().value().display();
             optionalDisplay.ifPresent(display -> manager.add(new AdvancementNotification(manager, display.getTitle(), display.getType(), display.getIcon().create())));
             info.cancel();
             return;
         }
 
-        if (toast.getClass().getName().equals(SIMPLE_TOAST)) {
-            info.cancel();
-            return;
+        if (Services.PLATFORM.isModLoaded("fieldguide")) {
+            if (Services.FIELD_GUIDE_API.tryHandleToast(toast, manager)) {
+                info.cancel();
+                return;
+            }
+        }
+
+        if (Services.PLATFORM.isModLoaded("puffish_skills")) {
+            if (toast.getClass().getName().equals(SIMPLE_TOAST)) {
+                info.cancel();
+                return;
+            }
         }
 
         Log.info("Registered unsupported toast. Using vanilla toast system for {}", toast.getClass().getSimpleName());
