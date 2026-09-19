@@ -12,5 +12,8 @@
   "server": [],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "mixins": [
+    "FieldGuideAccessor"
+  ]
 }

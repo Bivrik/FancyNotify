@@ -1,7 +1,9 @@
 package net.bivrik.fancynotify.platform;
 
 import net.bivrik.fancynotify.core.Log;
+import net.bivrik.fancynotify.platform.impl.FieldGuideImpl;
 import net.bivrik.fancynotify.platform.impl.SpectrumImpl;
+import net.bivrik.fancynotify.platform.services.IFieldGuideApi;
 import net.bivrik.fancynotify.platform.services.IPlatformHelper;
 import net.bivrik.fancynotify.platform.services.ISpectrumApi;
 
@@ -22,10 +24,12 @@ public final class Services {
 
     // Optional services. Can have fallback implementation
     public static final ISpectrumApi SPECTRUM_API = loadOptional(ISpectrumApi.class);
+    public static final IFieldGuideApi FIELD_GUIDE_API = loadOptional(IFieldGuideApi.class);
 
     // Fallbacks for optional services to avoid scenarios when one mod loader has a unique mod and others do not
     private static final Map<Class<?>, Supplier<?>> FALLBACKS = Map.of(
-            ISpectrumApi.class, SpectrumImpl::new
+            ISpectrumApi.class, SpectrumImpl::new,
+            IFieldGuideApi.class, FieldGuideImpl::new
     );
 
     // Loads a service that has implementation in every mod loader

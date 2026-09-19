@@ -4,7 +4,8 @@ plugins {
 }
 
 dependencies {
-    implementation "maven.modrinth:spectrum:${project.neoforge_spectrum_version}"
+    compileOnly "maven.modrinth:spectrum:${project.neoforge_spectrum_version}"
+    compileOnly "maven.modrinth:field-guide:${project.neoforge_field_guide_version}"
 }
 
 neoForge {
