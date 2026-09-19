@@ -66,6 +66,13 @@ public class ToastComponentMixin {
             }
         }
 
+        if (Services.PLATFORM.isModLoaded("fieldguide")) {
+            if (Services.FIELD_GUIDE_API.tryHandleToast(toast, manager)) {
+                info.cancel();
+                return;
+            }
+        }
+
         if (Services.PLATFORM.isModLoaded("puffish_skills")) {
             if (toast.getClass().getName().equals(SIMPLE_TOAST)) {
                 info.cancel();

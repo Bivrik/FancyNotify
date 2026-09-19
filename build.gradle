@@ -3,7 +3,7 @@ plugins {
     id 'org.spongepowered.gradle.vanilla' version '0.2.2' apply false
 
     // https://fabricmc.net/develop
-    id 'fabric-loom' version '1.11-SNAPSHOT' apply false
+    id 'fabric-loom' version '1.12-SNAPSHOT' apply false
 
     // https://projects.neoforged.net/neoforged/moddevgradle
     id 'net.neoforged.moddev.legacyforge' version '2.0.77' apply false
