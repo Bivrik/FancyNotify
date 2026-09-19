@@ -4,6 +4,7 @@ import net.bivrik.fancynotify.FancyNotify;
 import net.bivrik.fancynotify.config.ConfigManager;
 import net.bivrik.fancynotify.config.FiltersConfig;
 import net.bivrik.fancynotify.config.Setting;
+import net.bivrik.fancynotify.platform.Services;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.CycleButton;
 import net.minecraft.client.gui.components.Tooltip;
@@ -22,6 +23,7 @@ public class FiltersScreen extends UniversalScreen {
     private static final Component BIOME_NOTIFICATION_TITLE = Component.translatable("fancynotify.label.biomes");
     private static final Component PLAYER_LOGIN_NOTIFICATION_TITLE = Component.translatable("fancynotify.label.player_logins");
     private static final Component PLAYER_LOGIN_NOTIFICATION_TOOLTIP = Component.translatable("fancynotify.tooltip.player_logins");
+    private static final Component FIELD_GUIDE_NOTIFICATION_TITLE = Component.translatable("fancynotify.label.field_guide.notifications");
 
     private final ConfigManager configManager;
 
@@ -34,6 +36,7 @@ public class FiltersScreen extends UniversalScreen {
     private CycleButton<Boolean> weatherButton;
     private CycleButton<Boolean> biomeButton;
     private CycleButton<Boolean> playerLoginButton;
+    private CycleButton<Boolean> fieldGuideButton;
 
     protected FiltersScreen(Screen parent) {
         super(TITLE, parent);
@@ -66,6 +69,11 @@ public class FiltersScreen extends UniversalScreen {
         list.addElement(biomeButton);
         playerLoginButton = createCycleButtonWithTooltip(configManager.getFiltersConfig().isLoginPlayerNotificationEnabled, PLAYER_LOGIN_NOTIFICATION_TITLE, PLAYER_LOGIN_NOTIFICATION_TOOLTIP);
         list.addElement(playerLoginButton);
+
+        if (Services.PLATFORM.isModLoaded("fieldguide")) {
+            fieldGuideButton = createCycleButton(configManager.getFiltersConfig().isFieldGuideNotificationEnabled, FIELD_GUIDE_NOTIFICATION_TITLE);
+            list.addElement(fieldGuideButton);
+        }
 
         list.alignElements();
     }

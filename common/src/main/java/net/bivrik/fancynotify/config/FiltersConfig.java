@@ -15,6 +15,7 @@ public class FiltersConfig extends Config {
     public Setting<Boolean> isWeatherNotificationEnabled = new Setting<>(false);
     public Setting<Boolean> isBiomeNotificationEnabled = new Setting<>(false);
     public Setting<Boolean> isLoginPlayerNotificationEnabled = new Setting<>(false);
+    public Setting<Boolean> isFieldGuideNotificationEnabled = new Setting<>(true);
 
     @Override
     public String toString() {
@@ -27,6 +28,7 @@ public class FiltersConfig extends Config {
                 .append("isWeatherNotificationEnabled", isWeatherNotificationEnabled.get())
                 .append("isBiomeNotificationEnabled", isBiomeNotificationEnabled.get())
                 .append("isLoginPlayerNotificationEnabled", isLoginPlayerNotificationEnabled.get())
+                .append("isFieldGuideNotificationEnabled", isFieldGuideNotificationEnabled.get())
                 .toString();
     }
 }

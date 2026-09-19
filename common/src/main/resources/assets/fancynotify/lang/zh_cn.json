@@ -1,3 +1,4 @@
+// By Gao Xinyang
 {
   "fancynotify.title.credits": "鸣谢",
   "fancynotify.title.filters": "通知筛选",
@@ -15,6 +16,7 @@
   "fancynotify.label.weathers": "天气",
   "fancynotify.label.biomes": "生物群系",
   "fancynotify.label.player_logins": "玩家加入",
+  "fancynotify.label.field_guide.notifications": "来自 Field Guide", // machine translation
   "fancynotify.label.send_dummy": "发送测试通知",
   "fancynotify.label.notification.transparency": "通知透明度",
   "fancynotify.label.notification.width": "通知宽度",
