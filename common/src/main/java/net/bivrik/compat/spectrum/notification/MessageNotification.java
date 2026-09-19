@@ -30,6 +30,11 @@ public class MessageNotification extends Notification {
     }
 
     @Override
+    public boolean shouldDisplay() {
+        return this.filtersConfig.isSpectrumMessageNotificationEnabled.get();
+    }
+
+    @Override
     protected void onUpdate() {
         if (!isSoundPlayed && this.timeTicks >= 0) {
             isSoundPlayed = true;

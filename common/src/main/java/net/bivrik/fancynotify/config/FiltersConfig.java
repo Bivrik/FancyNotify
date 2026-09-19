@@ -15,6 +15,10 @@ public class FiltersConfig extends Config {
     public Setting<Boolean> isWeatherNotificationEnabled = new Setting<>(false);
     public Setting<Boolean> isBiomeNotificationEnabled = new Setting<>(false);
     public Setting<Boolean> isLoginPlayerNotificationEnabled = new Setting<>(false);
+    public Setting<Boolean> isFieldGuideNotificationEnabled = new Setting<>(true);
+    public Setting<Boolean> isSpectrumMessageNotificationEnabled = new Setting<>(true);
+    public Setting<Boolean> isSpectrumRevelationNotificationEnabled = new Setting<>(true);
+    public Setting<Boolean> isSpectrumUnlockedRecipeNotificationEnabled = new Setting<>(true);
 
     @Override
     public String toString() {
@@ -27,6 +31,10 @@ public class FiltersConfig extends Config {
                 .append("isWeatherNotificationEnabled", isWeatherNotificationEnabled.get())
                 .append("isBiomeNotificationEnabled", isBiomeNotificationEnabled.get())
                 .append("isLoginPlayerNotificationEnabled", isLoginPlayerNotificationEnabled.get())
+                .append("isFieldGuideNotificationEnabled", isFieldGuideNotificationEnabled.get())
+                .append("isSpectrumMessageNotificationEnabled", isSpectrumMessageNotificationEnabled.get())
+                .append("isSpectrumRevelationNotificationEnabled", isSpectrumRevelationNotificationEnabled.get())
+                .append("isSpectrumUnlockedRecipeNotificationEnabled", isSpectrumUnlockedRecipeNotificationEnabled.get())
                 .toString();
     }
 }

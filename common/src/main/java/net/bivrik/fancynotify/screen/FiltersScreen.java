@@ -4,6 +4,7 @@ import net.bivrik.fancynotify.FancyNotify;
 import net.bivrik.fancynotify.config.ConfigManager;
 import net.bivrik.fancynotify.config.FiltersConfig;
 import net.bivrik.fancynotify.config.Setting;
+import net.bivrik.fancynotify.platform.Services;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.CycleButton;
 import net.minecraft.client.gui.components.Tooltip;
@@ -22,6 +23,10 @@ public class FiltersScreen extends UniversalScreen {
     private static final Component BIOME_NOTIFICATION_TITLE = Component.translatable("fancynotify.label.biomes");
     private static final Component PLAYER_LOGIN_NOTIFICATION_TITLE = Component.translatable("fancynotify.label.player_logins");
     private static final Component PLAYER_LOGIN_NOTIFICATION_TOOLTIP = Component.translatable("fancynotify.tooltip.player_logins");
+    private static final Component FIELD_GUIDE_NOTIFICATION_TITLE = Component.translatable("fancynotify.label.field_guide.notifications");
+    private static final Component SPECTRUM_MESSAGE_NOTIFICATION_TITLE = Component.translatable("fancynotify.label.spectrum.messages");
+    private static final Component SPECTRUM_REVELATION_NOTIFICATION_TITLE = Component.translatable("fancynotify.label.spectrum.revelations");
+    private static final Component SPECTRUM_UNLOCKED_RECIPE_NOTIFICATION_TITLE = Component.translatable("fancynotify.label.spectrum.unlocked_recipes");
 
     private final ConfigManager configManager;
 
@@ -34,6 +39,10 @@ public class FiltersScreen extends UniversalScreen {
     private CycleButton<Boolean> weatherButton;
     private CycleButton<Boolean> biomeButton;
     private CycleButton<Boolean> playerLoginButton;
+    private CycleButton<Boolean> fieldGuideButton;
+    private CycleButton<Boolean> spectrumMessageButton;
+    private CycleButton<Boolean> spectrumRevelationButton;
+    private CycleButton<Boolean> spectrumUnlockedRecipeButton;
 
     protected FiltersScreen(Screen parent) {
         super(TITLE, parent);
@@ -66,6 +75,20 @@ public class FiltersScreen extends UniversalScreen {
         list.addElement(biomeButton);
         playerLoginButton = createCycleButtonWithTooltip(configManager.getFiltersConfig().isLoginPlayerNotificationEnabled, PLAYER_LOGIN_NOTIFICATION_TITLE, PLAYER_LOGIN_NOTIFICATION_TOOLTIP);
         list.addElement(playerLoginButton);
+
+        if (Services.PLATFORM.isModLoaded("fieldguide")) {
+            fieldGuideButton = createCycleButton(configManager.getFiltersConfig().isFieldGuideNotificationEnabled, FIELD_GUIDE_NOTIFICATION_TITLE);
+            list.addElement(fieldGuideButton);
+        }
+
+        if (Services.PLATFORM.isModLoaded("spectrum")) {
+            spectrumMessageButton = createCycleButton(configManager.getFiltersConfig().isSpectrumMessageNotificationEnabled, SPECTRUM_MESSAGE_NOTIFICATION_TITLE);
+            list.addElement(spectrumMessageButton);
+            spectrumRevelationButton = createCycleButton(configManager.getFiltersConfig().isSpectrumRevelationNotificationEnabled, SPECTRUM_REVELATION_NOTIFICATION_TITLE);
+            list.addElement(spectrumRevelationButton);
+            spectrumUnlockedRecipeButton = createCycleButton(configManager.getFiltersConfig().isSpectrumUnlockedRecipeNotificationEnabled, SPECTRUM_UNLOCKED_RECIPE_NOTIFICATION_TITLE);
+            list.addElement(spectrumUnlockedRecipeButton);
+        }
 
         list.alignElements();
     }
