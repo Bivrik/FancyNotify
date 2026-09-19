@@ -1,6 +1,5 @@
 package net.bivrik.fancynotify.notification;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.bivrik.fancynotify.animation.Easing;
 import net.bivrik.fancynotify.animation.Keyframe;
 import net.bivrik.fancynotify.api.INotificationManager;
@@ -10,7 +9,7 @@ import net.bivrik.fancynotify.core.Log;
 import net.bivrik.fancynotify.particle.Particle2DEngine;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 
 import java.util.ArrayList;
 import java.util.Deque;
@@ -31,7 +30,7 @@ public class NotificationManager implements INotificationManager {
         this.minecraft = minecraft;
         this.configManager = configManager;
         this.particleEngine = particleEngine;
-        this.deltaTracker = minecraft.getTimer();
+        this.deltaTracker = minecraft.getDeltaTracker();
     }
 
     public Minecraft getMinecraft() {
@@ -205,36 +204,36 @@ public class NotificationManager implements INotificationManager {
     }
 
     @Override
-    public void render(GuiGraphics guiGraphics) {
-        if (currentNotifications.isEmpty() || minecraft.options.hideGui) return;
+    public void render(GuiGraphicsExtractor graphics) {
+        if (currentNotifications.isEmpty() || minecraft.gui.hud.isHidden()) return;
 
-        PoseStack stack = guiGraphics.pose();
-        stack.pushPose();
+        var stack = graphics.pose();
+        stack.pushMatrix();
         GeneralConfig config = configManager.getGeneralConfig();
         GeneralConfig.Anchor anchor = config.anchor.get();
         int padding = config.padding.get();
 
         if (config.debug.get()) {
-            stack.translate(guiGraphics.guiWidth() / 2.0, guiGraphics.guiHeight() / 2.0, 800);
+            stack.translate(graphics.guiWidth() / 2.0f, graphics.guiHeight() / 2.0f);
 
-            guiGraphics.fill(-500, 0, 500, 1, -58254424);
-            guiGraphics.fill(0, -500, 1, 500, -58254424);
+            graphics.fill(-500, 0, 500, 1, -58254424);
+            graphics.fill(0, -500, 1, 500, -58254424);
 
-            guiGraphics.fill(-500, -1, 500, 0, -812254424);
-            guiGraphics.fill(-1, -500, 0, 500, -812254424);
+            graphics.fill(-500, -1, 500, 0, -812254424);
+            graphics.fill(-1, -500, 0, 500, -812254424);
 
-            guiGraphics.drawString(minecraft.font, "(-1, 1)", -37, 6, -1);
-            guiGraphics.drawString(minecraft.font, "(1, -1)", 6, -13, -1);
-            guiGraphics.drawString(minecraft.font, "(0, 0)", -13, -3, -1);
+            graphics.text(minecraft.font, "(-1, 1)", -37, 6, -1);
+            graphics.text(minecraft.font, "(1, -1)", 6, -13, -1);
+            graphics.text(minecraft.font, "(0, 0)", -13, -3, -1);
         } else {
-            stack.translate(anchor.isLeft() ? padding : guiGraphics.guiWidth() - padding, anchor.isTop() ? padding : guiGraphics.guiHeight() - padding, 800);
+            stack.translate(anchor.isLeft() ? padding : graphics.guiWidth() - padding, anchor.isTop() ? padding : graphics.guiHeight() - padding);
         }
 
         for (var notificationHolder : currentNotifications) {
-            notificationHolder.render(guiGraphics);
+            notificationHolder.render(graphics);
         }
 
-        stack.popPose();
+        stack.popMatrix();
     }
 
     private static class NotificationHolder {
@@ -303,12 +302,12 @@ public class NotificationManager implements INotificationManager {
             }
         }
 
-        private void render(GuiGraphics guiGraphics) {
-            PoseStack stack = guiGraphics.pose();
-            stack.pushPose();
-            stack.translate(x, y, 0);
+        private void render(GuiGraphicsExtractor guiGraphics) {
+            var stack = guiGraphics.pose();
+            stack.pushMatrix();
+            stack.translate(x, y);
             notification.render(guiGraphics);
-            stack.popPose();
+            stack.popMatrix();
         }
     }
 }

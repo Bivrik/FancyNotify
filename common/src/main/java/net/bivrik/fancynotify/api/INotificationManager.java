@@ -1,10 +1,10 @@
 package net.bivrik.fancynotify.api;
 
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 
 public interface INotificationManager extends IClientNotificationManager {
 
     void update();
 
-    void render(GuiGraphics graphics);
+    void render(GuiGraphicsExtractor graphics);
 }

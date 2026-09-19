@@ -6,10 +6,10 @@ import net.bivrik.fancynotify.core.Log;
 import net.bivrik.fancynotify.notification.NotificationManager;
 import net.bivrik.fancynotify.notification.gui.AdvancementNotification;
 import net.minecraft.advancements.DisplayInfo;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.toasts.AdvancementToast;
 import net.minecraft.client.gui.components.toasts.Toast;
-import net.minecraft.client.gui.components.toasts.ToastComponent;
+import net.minecraft.client.gui.components.toasts.ToastManager;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -18,8 +18,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Optional;
 
-@Mixin(value = ToastComponent.class, priority = 9000)
-public class ToastComponentMixin {
+@Mixin(value = ToastManager.class, priority = 9000)
+public class ToastManagerMixin {
     @Unique
     private static final String SIMPLE_TOAST = "net.puffish.skillsmod.client.gui.SimpleToast";
 
@@ -43,7 +43,7 @@ public class ToastComponentMixin {
 
         if (toast instanceof AdvancementToast advancementToast) {
             Optional<DisplayInfo> optionalDisplay = ((IAdvancementHolderAccessor) advancementToast).getAdvancementHolder().value().display();
-            optionalDisplay.ifPresent(display -> manager.add(new AdvancementNotification(manager, display.getTitle(), display.getType(), display.getIcon())));
+            optionalDisplay.ifPresent(display -> manager.add(new AdvancementNotification(manager, display.getTitle(), display.getType(), display.getIcon().create())));
             info.cancel();
             return;
         }
@@ -65,12 +65,12 @@ public class ToastComponentMixin {
         }
     }
 
-    @Inject(at = @At("HEAD"), method = "render")
-    private void onRendered(GuiGraphics guiGraphics, CallbackInfo info) {
+    @Inject(at = @At("HEAD"), method = "extractRenderState")
+    private void onRendered(GuiGraphicsExtractor graphics, CallbackInfo info) {
         NotificationManager manager = FancyNotify.getInstance().getNotificationManager();
         if (manager != null) {
             manager.update();
-            manager.render(guiGraphics);
+            manager.render(graphics);
         }
     }
 }
