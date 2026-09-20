@@ -1,7 +1,5 @@
 package net.bivrik.fancynotify.eventbus;
 
-import net.bivrik.fancynotify.core.Log;
-
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
@@ -23,7 +21,6 @@ public final class EventBus implements IEventBus {
                 Class<? extends Event> eventType = getEventType(method);
                 EventSubscriber subscriber = new EventSubscriber(listener, method, eventType);
                 eventSubscribers.computeIfAbsent(eventType, v -> new CopyOnWriteArrayList<>()).add(subscriber);
-                //Log.info("Registered method " + method.getName() + " (" + listener.getClass().getSimpleName() + ") for " + eventType.getSimpleName() + " (" + eventSubscribers.get(eventType).size() + ")");
             }
         }
         if (temp >= MAX) {
@@ -71,31 +68,9 @@ public final class EventBus implements IEventBus {
             return;
         }
 
-        //printDebugInfo();
-        //int before = subscribers.size();
-
         subscribers.removeIf(subscriber -> !subscriber.invoke(event));
         if (subscribers.isEmpty()) {
             eventSubscribers.remove(event.getClass());
         }
-
-        //Log.info("Sent " + event.getClass().getSimpleName() + " (from " + before + " to " + subscribers.size() + ")");
-    }
-
-    @Override
-    public void printDebugInfo() {
-        Log.info("==================");
-        Log.info("Event Subscribers");
-        Log.info("==================");
-        for (var entry : eventSubscribers.entrySet()) {
-            Log.info(entry.getKey().getSimpleName());
-            StringBuilder eventSubscribers = new StringBuilder("-");
-            for (var listener : entry.getValue()) {
-                var l = listener.getTarget();
-                eventSubscribers.append(" ").append(l == null ? "null" : l.toString());
-            }
-            Log.info(eventSubscribers.toString());
-        }
-        Log.info("==================");
     }
 }
