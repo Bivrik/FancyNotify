@@ -2,6 +2,7 @@ package net.bivrik.fancynotify.mixin;
 
 import net.bivrik.fancynotify.FancyNotify;
 import net.bivrik.fancynotify.accessor.IAdvancementHolderAccessor;
+import net.bivrik.fancynotify.core.Constants;
 import net.bivrik.fancynotify.core.Log;
 import net.bivrik.fancynotify.notification.NotificationManager;
 import net.bivrik.fancynotify.notification.gui.AdvancementNotification;
@@ -49,7 +50,7 @@ public class ToastComponentMixin {
             return;
         }
 
-        if (Services.PLATFORM.isModLoaded("spectrum")) {
+        if (Services.PLATFORM.isModLoaded(Constants.SPECTRUM_ID)) {
             if (Services.SPECTRUM.tryHandleMessageToast(toast, manager)) {
                 info.cancel();
                 return;
@@ -66,14 +67,14 @@ public class ToastComponentMixin {
             }
         }
 
-        if (Services.PLATFORM.isModLoaded("fieldguide")) {
+        if (Services.PLATFORM.isModLoaded(Constants.FIELD_GUIDE_ID)) {
             if (Services.FIELD_GUIDE.tryHandleToast(toast, manager)) {
                 info.cancel();
                 return;
             }
         }
 
-        if (Services.PLATFORM.isModLoaded("puffish_skills")) {
+        if (Services.PLATFORM.isModLoaded(Constants.PUFFERFISHS_SKILLS)) {
             if (toast.getClass().getName().equals(SIMPLE_TOAST)) {
                 info.cancel();
                 return;

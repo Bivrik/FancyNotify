@@ -14,4 +14,9 @@ public final class Constants {
     public static final String FABRIC_NAME = "Fabric";
     public static final String FORGE_NAME = "Forge";
     public static final String NEOFORGE_NAME = "NeoForge";
+
+    // Mod constants
+    public static final String SPECTRUM_ID = "spectrum";
+    public static final String FIELD_GUIDE_ID = "fieldguide";
+    public static final String PUFFERFISHS_SKILLS = "puffish_skills";
 }
