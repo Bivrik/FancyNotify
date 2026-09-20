@@ -15,11 +15,43 @@ plugins {
 
 allprojects {
     repositories {
+        gradlePluginPortal()
         mavenCentral()
 
-        maven {
-            name = 'ParchmentMC'
-            url = 'https://maven.parchmentmc.org/'
+        exclusiveContent {
+            forRepository {
+                maven {
+                    name = 'ParchmentMC'
+                    url = 'https://maven.parchmentmc.org'
+                }
+            }
+            filter {
+                includeGroupAndSubgroups 'org.parchmentmc.data'
+            }
+        }
+
+        exclusiveContent {
+            forRepository {
+                maven {
+                    name = 'Modrinth'
+                    url = 'https://api.modrinth.com/maven'
+                }
+            }
+            filter {
+                includeGroup 'maven.modrinth'
+            }
+        }
+
+        exclusiveContent {
+            forRepository {
+                maven {
+                    name = 'CurseMaven'
+                    url = 'https://cursemaven.com'
+                }
+            }
+            filter {
+                includeGroup 'curse.maven'
+            }
         }
     }
 }

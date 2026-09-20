@@ -4,35 +4,29 @@ plugins {
 }
 
 dependencies {
-    compileOnly "maven.modrinth:spectrum:${project.neoforge_spectrum_version}"
-    compileOnly "maven.modrinth:field-guide:${project.neoforge_field_guide_version}"
+    compileOnly "maven.modrinth:spectrum:${neoforge_spectrum_version}"
+    compileOnly "maven.modrinth:field-guide:${neoforge_field_guide_version}"
 }
 
 neoForge {
     version = neoforge_version
-    def at = project(':common').file('src/main/resources/META-INF/accesstransformer.cfg')
-    if (at.exists()) {
-        accessTransformers.add(at.absolutePath)
-    }
+
     parchment {
         minecraftVersion = parchment_minecraft
         mappingsVersion = parchment_version
     }
+
     runs {
-        configureEach {
-            systemProperty('neoforge.enabledGameTestNamespaces', mod_id)
-            ideName = "NeoForge ${it.name.capitalize()} (${project.path})"
-        }
         client {
             client()
-        }
-        data {
-            data()
+            gameDirectory = file('runs/client')
         }
         server {
             server()
+            gameDirectory = file('runs/server')
         }
     }
+
     mods {
         "${mod_id}" {
             sourceSet sourceSets.main
@@ -40,4 +34,4 @@ neoForge {
     }
 }
 
-sourceSets.main.resources { srcDir 'src/generated/resources' }
+sourceSets.main.resources.srcDir 'src/generated/resources'

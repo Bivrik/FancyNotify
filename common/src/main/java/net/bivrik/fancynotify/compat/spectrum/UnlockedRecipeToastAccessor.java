@@ -1,4 +1,4 @@
-package net.bivrik.compat.spectrum;
+package net.bivrik.fancynotify.compat.spectrum;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvent;

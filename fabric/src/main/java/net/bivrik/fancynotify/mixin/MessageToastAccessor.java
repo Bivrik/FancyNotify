@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
 @Mixin(MessageToast.class)
-public abstract class MessageToastAccessor implements net.bivrik.compat.spectrum.MessageToastAccessor {
+public abstract class MessageToastAccessor implements net.bivrik.fancynotify.compat.spectrum.MessageToastAccessor {
     @Accessor("titleText")
     public abstract Component getTitleText();
 

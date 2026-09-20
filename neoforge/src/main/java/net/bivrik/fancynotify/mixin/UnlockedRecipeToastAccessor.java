@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 import java.util.List;
 
 @Mixin(UnlockedRecipeToast.class)
-public abstract class UnlockedRecipeToastAccessor implements net.bivrik.compat.spectrum.UnlockedRecipeToastAccessor {
+public abstract class UnlockedRecipeToastAccessor implements net.bivrik.fancynotify.compat.spectrum.UnlockedRecipeToastAccessor {
     @Accessor("title")
     public abstract Component getTitle();
 

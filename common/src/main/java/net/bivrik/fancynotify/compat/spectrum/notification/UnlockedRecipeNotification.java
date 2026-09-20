@@ -1,4 +1,4 @@
-package net.bivrik.compat.spectrum.notification;
+package net.bivrik.fancynotify.compat.spectrum.notification;
 
 import net.bivrik.fancynotify.notification.Notification;
 import net.bivrik.fancynotify.notification.NotificationManager;
@@ -11,44 +11,46 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.ItemStack;
 
 import java.awt.*;
+import java.util.List;
 
-public class RevelationNotification extends Notification {
-    private static final ResourceLocation BACKGROUND = ResourceLocations.of("notifications/spectrum/message");
-    private static final Component TITLE = Component.translatable("spectrum.toast.revelation.title");
-    private static final Component MESSAGE = Component.translatable("spectrum.toast.revelation.text");
+public class UnlockedRecipeNotification extends Notification {
+    private static final ResourceLocation BACKGROUND = ResourceLocations.of("notifications/spectrum/recipe");
     private static final int TITLE_COLOR = new Color(115, 40, 244).getRGB();
     private static final int MESSAGE_COLOR = new Color(35, 35, 35).getRGB();
 
-    private final ItemStack icon;
+    private final List<ItemStack> icons;
     private final SoundEvent sound;
 
     private boolean isSoundPlayed;
 
-    public RevelationNotification(NotificationManager manager, ItemStack icon, SoundEvent sound) {
-        super(manager, TITLE, MESSAGE);
+    public UnlockedRecipeNotification(NotificationManager manager, Component title, Component message, List<ItemStack> icons, SoundEvent sound) {
+        super(manager, title, message);
 
-        this.icon = icon;
+        this.icons = icons;
         this.sound = sound;
     }
 
     @Override
     public boolean shouldDisplay() {
-        return this.filtersConfig.isSpectrumRevelationNotificationEnabled.get();
+        return this.filtersConfig.isSpectrumUnlockedRecipeNotificationEnabled.get();
     }
 
     @Override
     protected void onUpdate() {
         if (!isSoundPlayed && this.timeTicks >= 0) {
             isSoundPlayed = true;
-            this.minecraft.getSoundManager().play(SimpleSoundInstance.forUI(this.sound, 1.0f, 0.6f));
+            this.minecraft.getSoundManager().play(SimpleSoundInstance.forUI(this.sound, 1.0f, 1.0f));
         }
     }
 
+    private float countTemp = 0;
     @Override
     protected void draw(GuiGraphics guiGraphics) {
+        countTemp += 1 / 2f;
         drawSprite(guiGraphics, BACKGROUND, 0, 0, getWidth(), getHeight());
         drawText(guiGraphics, getTitle(), getTextOffset(), 7, TITLE_COLOR);
         drawMessage(guiGraphics, getTextOffset(), 18, MESSAGE_COLOR);
-        guiGraphics.renderFakeItem(icon, 8, getCenterY() - 8);
+        int orderedIndex = (int) (countTemp / Math.max(1f, (double) getLifeTimeTicks() / icons.size()) % icons.size());
+        guiGraphics.renderFakeItem(icons.get(orderedIndex), 8, getCenterY() - 8);
     }
 }

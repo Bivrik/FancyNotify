@@ -7,7 +7,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
 @Mixin(RevelationToast.class)
-public abstract class RevelationToastAccessor implements net.bivrik.compat.spectrum.RevelationToastAccessor {
+public abstract class RevelationToastAccessor implements net.bivrik.fancynotify.compat.spectrum.RevelationToastAccessor {
     @Accessor("itemStack")
     public abstract ItemStack getItemStack();
 

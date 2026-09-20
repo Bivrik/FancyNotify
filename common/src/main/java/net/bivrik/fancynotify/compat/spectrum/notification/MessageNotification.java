@@ -1,4 +1,4 @@
-package net.bivrik.compat.spectrum.notification;
+package net.bivrik.fancynotify.compat.spectrum.notification;
 
 import net.bivrik.fancynotify.notification.Notification;
 import net.bivrik.fancynotify.notification.NotificationManager;

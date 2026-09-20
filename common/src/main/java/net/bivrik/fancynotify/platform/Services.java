@@ -22,15 +22,15 @@ public final class Services {
     // Must-have services. Platforms have to be loaded
     public static final IPlatformHelper PLATFORM = load(IPlatformHelper.class);
 
-    // Optional services. Can have fallback implementation
-    public static final ISpectrumApi SPECTRUM_API = loadOptional(ISpectrumApi.class);
-    public static final IFieldGuideApi FIELD_GUIDE_API = loadOptional(IFieldGuideApi.class);
-
     // Fallbacks for optional services to avoid scenarios when one mod loader has a unique mod and others do not
     private static final Map<Class<?>, Supplier<?>> FALLBACKS = Map.of(
             ISpectrumApi.class, SpectrumImpl::new,
             IFieldGuideApi.class, FieldGuideImpl::new
     );
+
+    // Optional services. Can have fallback implementation
+    public static final ISpectrumApi SPECTRUM_API = loadOptional(ISpectrumApi.class);
+    public static final IFieldGuideApi FIELD_GUIDE_API = loadOptional(IFieldGuideApi.class);
 
     // Loads a service that has implementation in every mod loader
     private static <T> T load(final Class<T> clazz) {

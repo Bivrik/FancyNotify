@@ -1,4 +1,4 @@
-package net.bivrik.compat.fieldguide;
+package net.bivrik.fancynotify.compat.fieldguide;
 
 public interface FieldGuideToastAccessor {
     String getVariantId();

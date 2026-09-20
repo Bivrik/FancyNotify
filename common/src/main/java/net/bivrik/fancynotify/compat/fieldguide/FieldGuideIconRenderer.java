@@ -1,4 +1,4 @@
-package net.bivrik.compat.fieldguide;
+package net.bivrik.fancynotify.compat.fieldguide;
 
 import net.minecraft.client.gui.GuiGraphics;
 

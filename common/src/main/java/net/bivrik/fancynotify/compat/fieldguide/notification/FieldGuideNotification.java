@@ -1,6 +1,6 @@
-package net.bivrik.compat.fieldguide.notification;
+package net.bivrik.fancynotify.compat.fieldguide.notification;
 
-import net.bivrik.compat.fieldguide.FieldGuideIconRenderer;
+import net.bivrik.fancynotify.compat.fieldguide.FieldGuideIconRenderer;
 import net.bivrik.fancynotify.notification.Notification;
 import net.bivrik.fancynotify.notification.NotificationManager;
 import net.bivrik.fancynotify.utility.ResourceLocations;
