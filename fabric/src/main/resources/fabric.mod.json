@@ -16,7 +16,7 @@
     "issues": "${issue_tracker_url}"
   },
   "license": "${license}",
-  "icon": "icon.png",
+  "icon": "assets/${mod_id}/icon.png",
   "environment": "client",
   "entrypoints": {
     "main": [
