@@ -8,6 +8,7 @@ dependencies {
     implementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
     implementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
     implementation "maven.modrinth:modmenu:${project.fabric_modmenu_version}"
+    compileOnly "maven.modrinth:field-guide:${project.fabric_field_guide_version}"
 }
 
 loom {

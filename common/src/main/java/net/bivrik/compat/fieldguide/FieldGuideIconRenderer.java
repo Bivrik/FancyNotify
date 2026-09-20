@@ -1,7 +1,7 @@
 package net.bivrik.compat.fieldguide;
 
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 
 public interface FieldGuideIconRenderer {
-    void draw(GuiGraphics graphics, int x, int y);
+    void draw(GuiGraphicsExtractor graphics, int x, int y);
 }
