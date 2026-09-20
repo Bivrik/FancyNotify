@@ -1,13 +1,12 @@
 package net.bivrik.fancynotify.platform;
 
 import net.bivrik.fancynotify.core.Constants;
-import net.bivrik.fancynotify.platform.services.IPlatformHelper;
 import net.fabricmc.loader.api.FabricLoader;
 
 public class FabricPlatformHelper implements IPlatformHelper {
     @Override
     public String getName() {
-        return Constants.FABRIC;
+        return Constants.FABRIC_NAME;
     }
 
     @Override

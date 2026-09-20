@@ -6,14 +6,11 @@ import net.bivrik.fancynotify.core.Log;
 import net.bivrik.fancynotify.notification.NotificationManager;
 import net.bivrik.fancynotify.notification.gui.AdvancementNotification;
 import net.bivrik.fancynotify.platform.Services;
-import net.minecraft.advancements.AdvancementType;
 import net.minecraft.advancements.DisplayInfo;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.toasts.AdvancementToast;
 import net.minecraft.client.gui.components.toasts.Toast;
 import net.minecraft.client.gui.components.toasts.ToastComponent;
-import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -53,24 +50,24 @@ public class ToastComponentMixin {
         }
 
         if (Services.PLATFORM.isModLoaded("spectrum")) {
-            if (Services.SPECTRUM_API.tryHandleMessageToast(toast, manager)) {
+            if (Services.SPECTRUM.tryHandleMessageToast(toast, manager)) {
                 info.cancel();
                 return;
             }
 
-            if (Services.SPECTRUM_API.tryHandleRevelationToast(toast, manager)) {
+            if (Services.SPECTRUM.tryHandleRevelationToast(toast, manager)) {
                 info.cancel();
                 return;
             }
 
-            if (Services.SPECTRUM_API.tryHandleUnlockedRecipeToast(toast, manager)) {
+            if (Services.SPECTRUM.tryHandleUnlockedRecipeToast(toast, manager)) {
                 info.cancel();
                 return;
             }
         }
 
         if (Services.PLATFORM.isModLoaded("fieldguide")) {
-            if (Services.FIELD_GUIDE_API.tryHandleToast(toast, manager)) {
+            if (Services.FIELD_GUIDE.tryHandleToast(toast, manager)) {
                 info.cancel();
                 return;
             }

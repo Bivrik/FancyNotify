@@ -1,4 +1,4 @@
-package net.bivrik.fancynotify.platform.services;
+package net.bivrik.fancynotify.platform.api;
 
 import net.bivrik.fancynotify.notification.NotificationManager;
 import net.minecraft.client.gui.components.toasts.Toast;

@@ -10,7 +10,7 @@ import net.bivrik.fancynotify.compat.spectrum.notification.MessageNotification;
 import net.bivrik.fancynotify.compat.spectrum.notification.RevelationNotification;
 import net.bivrik.fancynotify.compat.spectrum.notification.UnlockedRecipeNotification;
 import net.bivrik.fancynotify.notification.NotificationManager;
-import net.bivrik.fancynotify.platform.services.ISpectrumApi;
+import net.bivrik.fancynotify.platform.api.ISpectrumApi;
 import net.minecraft.client.gui.components.toasts.Toast;
 
 public class SpectrumImpl implements ISpectrumApi {

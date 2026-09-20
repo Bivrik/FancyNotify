@@ -1,57 +1,50 @@
 package net.bivrik.fancynotify.platform;
 
 import net.bivrik.fancynotify.core.Log;
-import net.bivrik.fancynotify.platform.impl.FieldGuideImpl;
-import net.bivrik.fancynotify.platform.impl.SpectrumImpl;
-import net.bivrik.fancynotify.platform.services.IFieldGuideApi;
-import net.bivrik.fancynotify.platform.services.IPlatformHelper;
-import net.bivrik.fancynotify.platform.services.ISpectrumApi;
+import net.bivrik.fancynotify.platform.api.IFieldGuideApi;
+import net.bivrik.fancynotify.platform.api.ISpectrumApi;
+import net.bivrik.fancynotify.platform.fallback.FieldGuideFallback;
+import net.bivrik.fancynotify.platform.fallback.SpectrumFallback;
 
-import java.util.Map;
+import java.util.Optional;
 import java.util.ServiceLoader;
 import java.util.function.Supplier;
 
 /**
- * Utility class for services. They are used to access specific mod loader data.
+ * Utility class for services. They are used to communicate between loader specific implementations and common module
  */
 public final class Services {
     private Services() {}
 
+    private static final ClassLoader CLASS_LOADER = Services.class.getClassLoader();
     private static final org.slf4j.Logger LOGGER = Log.getSpecificLogger(Services.class);
 
-    // Must-have services. Platforms have to be loaded
+    // Must-have services. Platform has to be loaded
     public static final IPlatformHelper PLATFORM = load(IPlatformHelper.class);
 
-    // Fallbacks for optional services to avoid scenarios when one mod loader has a unique mod and others do not
-    private static final Map<Class<?>, Supplier<?>> FALLBACKS = Map.of(
-            ISpectrumApi.class, SpectrumImpl::new,
-            IFieldGuideApi.class, FieldGuideImpl::new
-    );
-
     // Optional services. Can have fallback implementation
-    public static final ISpectrumApi SPECTRUM_API = loadOptional(ISpectrumApi.class);
-    public static final IFieldGuideApi FIELD_GUIDE_API = loadOptional(IFieldGuideApi.class);
+    public static final ISpectrumApi SPECTRUM = loadOptional(ISpectrumApi.class, SpectrumFallback::new);
+    public static final IFieldGuideApi FIELD_GUIDE = loadOptional(IFieldGuideApi.class, FieldGuideFallback::new);
 
     // Loads a service that has implementation in every mod loader
     private static <T> T load(final Class<T> clazz) {
-        final T loadedService = ServiceLoader.load(clazz, Services.class.getClassLoader()).findFirst().orElseThrow(() -> new IllegalStateException("Failed to load service for: " + clazz.getName()));
-        LOGGER.info("Loaded '{}' for service: {}", loadedService.getClass().getName(), clazz.getSimpleName());
-        return loadedService;
+        final T service = ServiceLoader.load(clazz, CLASS_LOADER).findFirst().orElseThrow(() -> new IllegalStateException("Failed to load service " + clazz.getName()));
+        LOGGER.info("Successfully loaded service {}", service.getClass().getSimpleName());
+        return service;
     }
 
     // Loads a service that might be missing in one mod loader, but present in another one
-    private static <T> T loadOptional(final Class<T> clazz) {
-        try {
-            return load(clazz);
-        } catch (IllegalStateException e) {
-            final Supplier<?> fallback = FALLBACKS.get(clazz);
-            if (fallback == null) {
-                throw new IllegalStateException("No implementation or fallback found for optional service: " + clazz.getName());
-            }
-            @SuppressWarnings("unchecked")
-            final T loadedFallbackService = (T) fallback.get();
-            LOGGER.info("Loaded fallback '{}' for service: {}", loadedFallbackService.getClass().getName(), clazz.getSimpleName());
-            return loadedFallbackService;
+    private static <T> T loadOptional(final Class<T> clazz, final Supplier<? extends T> fallback) {
+        final Optional<T> optionalService = ServiceLoader.load(clazz, CLASS_LOADER).findFirst();
+        if (optionalService.isPresent()) {
+            final T service = optionalService.get();
+            LOGGER.info("Successfully loaded optional service {}", service.getClass().getSimpleName());
+            return service;
         }
+        final T fallbackService = fallback.get();
+        LOGGER.info("Loaded fallback for optional service {}", fallbackService.getClass().getSimpleName());
+        return fallbackService;
     }
+
+    public static void bootstrap() {}
 }

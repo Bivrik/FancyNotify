@@ -40,6 +40,7 @@ public final class FancyNotify {
             Log.warn(Constants.MOD_NAME + " is already initialized!");
             return;
         }
+        Services.bootstrap();
         isInitialized = true;
         Log.info(Constants.MOD_NAME + " initialized on {} ({})", Services.PLATFORM.getName(), Services.PLATFORM.getEnvironmentName());
 

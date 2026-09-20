@@ -16,7 +16,7 @@ import net.bivrik.fancynotify.compat.fieldguide.FieldGuideToastAccessor;
 import net.bivrik.fancynotify.compat.fieldguide.notification.FieldGuideNotification;
 import net.bivrik.fancynotify.notification.NotificationManager;
 import net.bivrik.fancynotify.platform.Services;
-import net.bivrik.fancynotify.platform.services.IFieldGuideApi;
+import net.bivrik.fancynotify.platform.api.IFieldGuideApi;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.toasts.Toast;
 import net.minecraft.client.multiplayer.ClientLevel;

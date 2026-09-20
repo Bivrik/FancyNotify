@@ -11,7 +11,7 @@ public final class Constants {
     public static final String MOD_ID = "fancynotify";
 
     // Loaders constants
-    public static final String FABRIC = "Fabric";
-    public static final String FORGE = "Forge";
-    public static final String NEOFORGE = "NeoForge";
+    public static final String FABRIC_NAME = "Fabric";
+    public static final String FORGE_NAME = "Forge";
+    public static final String NEOFORGE_NAME = "NeoForge";
 }
