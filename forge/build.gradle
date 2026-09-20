@@ -34,6 +34,7 @@ minecraft {
 
     runs {
         client {
+            taskName 'Client'
             workingDirectory file('runs/client')
             mods {
                 modClientRun {
@@ -43,6 +44,7 @@ minecraft {
         }
 
         server {
+            taskName 'Server'
             workingDirectory file('runs/server')
             mods {
                 modServerRun {
