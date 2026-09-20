@@ -7,13 +7,11 @@
   "client": [
     "MessageToastAccessor",
     "RevelationToastAccessor",
-    "UnlockedRecipeToastAccessor"
+    "UnlockedRecipeToastAccessor",
+    "FieldGuideAccessor"
   ],
   "server": [],
   "injectors": {
     "defaultRequire": 1
-  },
-  "mixins": [
-    "FieldGuideAccessor"
-  ]
+  }
 }
