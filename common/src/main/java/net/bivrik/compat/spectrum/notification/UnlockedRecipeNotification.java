@@ -14,7 +14,7 @@ import java.awt.*;
 import java.util.List;
 
 public class UnlockedRecipeNotification extends Notification {
-    private static final ResourceLocation BACKGROUND = ResourceLocations.of("notifications/spectrum/recipe");
+    private static final ResourceLocation BACKGROUND = ResourceLocations.of("textures/gui/compatibilities.png");
     private static final int TITLE_COLOR = new Color(115, 40, 244).getRGB();
     private static final int MESSAGE_COLOR = new Color(35, 35, 35).getRGB();
 
@@ -47,7 +47,7 @@ public class UnlockedRecipeNotification extends Notification {
     @Override
     protected void draw(GuiGraphics guiGraphics) {
         countTemp += 1 / 2f;
-        drawSprite(guiGraphics, BACKGROUND, 0, 0, getWidth(), getHeight());
+        drawBackground(guiGraphics, BACKGROUND, 0, 32);
         drawText(guiGraphics, getTitle(), getTextOffset(), 7, TITLE_COLOR);
         drawMessage(guiGraphics, getTextOffset(), 18, MESSAGE_COLOR);
         int orderedIndex = (int) (countTemp / Math.max(1f, (double) getLifeTimeTicks() / icons.size()) % icons.size());

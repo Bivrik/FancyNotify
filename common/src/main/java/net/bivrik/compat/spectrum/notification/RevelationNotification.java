@@ -13,7 +13,7 @@ import net.minecraft.world.item.ItemStack;
 import java.awt.*;
 
 public class RevelationNotification extends Notification {
-    private static final ResourceLocation BACKGROUND = ResourceLocations.of("notifications/spectrum/message");
+    private static final ResourceLocation BACKGROUND = ResourceLocations.of("textures/gui/compatibilities.png");
     private static final Component TITLE = Component.translatable("spectrum.toast.revelation.title");
     private static final Component MESSAGE = Component.translatable("spectrum.toast.revelation.text");
     private static final int TITLE_COLOR = new Color(115, 40, 244).getRGB();
@@ -46,7 +46,7 @@ public class RevelationNotification extends Notification {
 
     @Override
     protected void draw(GuiGraphics guiGraphics) {
-        drawSprite(guiGraphics, BACKGROUND, 0, 0, getWidth(), getHeight());
+        drawBackground(guiGraphics, BACKGROUND, 0, 0);
         drawText(guiGraphics, getTitle(), getTextOffset(), 7, TITLE_COLOR);
         drawMessage(guiGraphics, getTextOffset(), 18, MESSAGE_COLOR);
         guiGraphics.renderFakeItem(icon, 8, getCenterY() - 8);

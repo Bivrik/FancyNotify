@@ -185,17 +185,20 @@ public abstract class Notification implements NotificationStateMachine.Listener 
 
     protected abstract void draw(GuiGraphics guiGraphics);
 
-    protected void drawBackground(GuiGraphics guiGraphics, int uOffset, int vOffset) {
+    protected void drawBackground(GuiGraphics guiGraphics, ResourceLocation background, int uOffset, int vOffset) {
         if (animator.getAlpha() == 1) {
-            guiGraphics.blitNineSliced(BACKGROUND, 0, 0, getWidth(), getHeight(), 4, 128, 32, uOffset, vOffset);
+            guiGraphics.blitNineSliced(background, 0, 0, getWidth(), getHeight(), 4, 128, 32, uOffset, vOffset);
             return;
         }
 
         RenderSystem.enableBlend();
         guiGraphics.setColor(1, 1, 1, animator.getAlpha());
-        guiGraphics.blitNineSliced(BACKGROUND, 0, 0, getWidth(), getHeight(), 4, 128, 32, uOffset, vOffset);
+        guiGraphics.blitNineSliced(background, 0, 0, getWidth(), getHeight(), 4, 128, 32, uOffset, vOffset);
         guiGraphics.setColor(1, 1, 1, 1);
         RenderSystem.disableBlend();
+    }
+    protected void drawBackground(GuiGraphics guiGraphics, int uOffset, int vOffset) {
+        drawBackground(guiGraphics, BACKGROUND, uOffset, vOffset);
     }
 
     protected void drawTexture(GuiGraphics guiGraphics, ResourceLocation texture, int x, int y, int width, int height, int textureWidth, int textureHeight, int uOffset, int vOffset, int uWidth, int vHeight) {

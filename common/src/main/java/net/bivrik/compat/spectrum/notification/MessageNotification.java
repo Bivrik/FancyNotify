@@ -13,7 +13,7 @@ import net.minecraft.world.item.ItemStack;
 import java.awt.*;
 
 public class MessageNotification extends Notification {
-    private static final ResourceLocation BACKGROUND = ResourceLocations.of("notifications/spectrum/message");
+    private static final ResourceLocation BACKGROUND = ResourceLocations.of("textures/gui/compatibilities.png");
     private static final int TITLE_COLOR = new Color(115, 40, 244).getRGB();
     private static final int MESSAGE_COLOR = new Color(35, 35, 35).getRGB();
 
@@ -44,7 +44,7 @@ public class MessageNotification extends Notification {
 
     @Override
     protected void draw(GuiGraphics guiGraphics) {
-        drawSprite(guiGraphics, BACKGROUND, 0, 0, getWidth(), getHeight());
+        drawBackground(guiGraphics, BACKGROUND, 0, 0);
         drawText(guiGraphics, getTitle(), getTextOffset(), 7, TITLE_COLOR);
         drawMessage(guiGraphics, getTextOffset(), 18, MESSAGE_COLOR);
         guiGraphics.renderFakeItem(icon, 8, getCenterY() - 8);

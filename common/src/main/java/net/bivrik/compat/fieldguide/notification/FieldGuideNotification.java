@@ -9,7 +9,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
 public class FieldGuideNotification extends Notification {
-    private static final ResourceLocation BACKGROUND = ResourceLocations.of("notifications/fieldguide/discovery");
+    private static final ResourceLocation BACKGROUND = ResourceLocations.of("textures/gui/compatibilities.png");
     private static final Component MESSAGE = Component.translatable("fieldguide.toast.discovered");
     private static final int MESSAGE_COLOR = 11504732;
 
@@ -30,7 +30,7 @@ public class FieldGuideNotification extends Notification {
 
     @Override
     protected void draw(GuiGraphics guiGraphics) {
-        drawSprite(guiGraphics, BACKGROUND, 0, 0, getWidth(), getHeight());
+        drawBackground(guiGraphics, BACKGROUND, 0, 64);
         drawText(guiGraphics, getTitle(), getTextOffset(), 7, titleColor);
         drawMessage(guiGraphics, getTextOffset(), 16, MESSAGE_COLOR);
         iconRenderer.draw(guiGraphics, 16, 17);

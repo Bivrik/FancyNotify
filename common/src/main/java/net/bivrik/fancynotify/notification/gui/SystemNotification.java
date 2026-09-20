@@ -99,7 +99,7 @@ public class SystemNotification extends ExpandableNotification {
             return sprite;
         }
 
-        public static Identifier fromSystemToastId(SystemToast.SystemToastId id) {
+        public static Identifier fromSystemToastId(SystemToast.SystemToastIds id) {
             Identifier systemToastId = VANILLA_ID_TO_NEW_ID.get(id);
             if (systemToastId == null) {
                 Log.error("Failed to parse {}, falling back to PERIODIC_NOTIFICATION instead", id);
