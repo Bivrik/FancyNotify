@@ -44,7 +44,7 @@ processResources {
             'mod_id'                       : mod_id,
             'license'                      : license,
             'credits'                      : credits,
-            'description'                  : description,
+            'description'                  : mod_description,
             'issue_tracker_url'            : issue_tracker_url,
             'homepage_url'                 : homepage_url,
             'sources_url'                  : sources_url,
