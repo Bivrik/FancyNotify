@@ -1,6 +1,9 @@
-package net.bivrik.fancynotify.config;
+package net.bivrik.fancynotify.config.data;
 
 import net.bivrik.fancynotify.FancyNotify;
+import net.bivrik.fancynotify.config.ConfigManager;
+import net.bivrik.fancynotify.config.IListenerRegistrar;
+import net.bivrik.fancynotify.config.Setting;
 import net.bivrik.fancynotify.eventbus.event.NotificationWidthChangedEvent;
 import net.bivrik.fancynotify.notification.NotificationAnimator;
 import net.bivrik.fancynotify.notification.animation.QuirkyAnimation;

@@ -1,4 +1,4 @@
-package net.bivrik.fancynotify.screen;
+package net.bivrik.fancynotify.gui.screen;
 
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Renderable;

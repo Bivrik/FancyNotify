@@ -1,4 +1,4 @@
-package net.bivrik.fancynotify;
+package net.bivrik.fancynotify.biome;
 
 import net.bivrik.fancynotify.utility.ResourceLocations;
 import net.minecraft.core.registries.Registries;

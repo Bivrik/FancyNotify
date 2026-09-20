@@ -1,4 +1,4 @@
-package net.bivrik.fancynotify.credits;
+package net.bivrik.fancynotify;
 
 import com.google.gson.Gson;
 import net.bivrik.fancynotify.core.Log;

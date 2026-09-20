@@ -1,9 +1,10 @@
-package net.bivrik.fancynotify.screen;
+package net.bivrik.fancynotify.gui.screen;
 
 import net.bivrik.fancynotify.FancyNotify;
 import net.bivrik.fancynotify.config.ConfigManager;
-import net.bivrik.fancynotify.config.FiltersConfig;
 import net.bivrik.fancynotify.config.Setting;
+import net.bivrik.fancynotify.config.data.FiltersConfig;
+import net.bivrik.fancynotify.gui.SettingsList;
 import net.bivrik.fancynotify.platform.Services;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.CycleButton;

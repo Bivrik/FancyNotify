@@ -1,4 +1,4 @@
-package net.bivrik.fancynotify.notification.gui;
+package net.bivrik.fancynotify.gui.notification;
 
 import com.mojang.blaze3d.platform.NativeImage;
 import net.bivrik.fancynotify.core.Constants;

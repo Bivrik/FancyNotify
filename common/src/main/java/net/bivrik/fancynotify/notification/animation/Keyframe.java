@@ -1,4 +1,4 @@
-package net.bivrik.fancynotify.animation;
+package net.bivrik.fancynotify.notification.animation;
 
 public class Keyframe {
     public static float getProgress(float timeTicks, float startPositionTicks, float durationTicks) {

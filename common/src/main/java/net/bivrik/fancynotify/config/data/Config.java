@@ -1,4 +1,4 @@
-package net.bivrik.fancynotify.config;
+package net.bivrik.fancynotify.config.data;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 

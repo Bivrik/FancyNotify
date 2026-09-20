@@ -1,10 +1,10 @@
-package net.bivrik.fancynotify.screen;
+package net.bivrik.fancynotify.gui.screen;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.bivrik.fancynotify.CreditsManager;
 import net.bivrik.fancynotify.FancyNotify;
-import net.bivrik.fancynotify.credits.CreditsList;
-import net.bivrik.fancynotify.credits.CreditsManager;
+import net.bivrik.fancynotify.gui.CreditsList;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;

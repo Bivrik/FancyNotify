@@ -1,4 +1,4 @@
-package net.bivrik.fancynotify;
+package net.bivrik.fancynotify.weather;
 
 import net.bivrik.fancynotify.core.Constants;
 import net.bivrik.fancynotify.utility.ResourceLocations;

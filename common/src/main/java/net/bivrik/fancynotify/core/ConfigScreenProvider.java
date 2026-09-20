@@ -1,6 +1,6 @@
 package net.bivrik.fancynotify.core;
 
-import net.bivrik.fancynotify.screen.FancyNotifyScreen;
+import net.bivrik.fancynotify.gui.screen.FancyNotifyScreen;
 import net.minecraft.client.gui.screens.Screen;
 
 /**

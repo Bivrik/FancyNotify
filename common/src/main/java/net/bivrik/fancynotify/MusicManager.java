@@ -1,8 +1,8 @@
 package net.bivrik.fancynotify;
 
 import net.bivrik.fancynotify.core.Log;
+import net.bivrik.fancynotify.gui.notification.MusicNotification;
 import net.bivrik.fancynotify.notification.NotificationManager;
-import net.bivrik.fancynotify.notification.gui.MusicNotification;
 import net.bivrik.fancynotify.utility.ResourceLocations;
 import net.minecraft.client.Options;
 import net.minecraft.locale.Language;

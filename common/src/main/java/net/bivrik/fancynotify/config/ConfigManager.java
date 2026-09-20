@@ -1,5 +1,8 @@
 package net.bivrik.fancynotify.config;
 
+import net.bivrik.fancynotify.config.data.Config;
+import net.bivrik.fancynotify.config.data.FiltersConfig;
+import net.bivrik.fancynotify.config.data.GeneralConfig;
 import net.bivrik.fancynotify.core.Constants;
 import net.bivrik.fancynotify.core.Log;
 import net.bivrik.fancynotify.utility.JsonHelper;

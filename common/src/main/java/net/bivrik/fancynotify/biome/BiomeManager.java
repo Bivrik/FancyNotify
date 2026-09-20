@@ -1,7 +1,7 @@
-package net.bivrik.fancynotify;
+package net.bivrik.fancynotify.biome;
 
+import net.bivrik.fancynotify.gui.notification.BiomeNotification;
 import net.bivrik.fancynotify.notification.NotificationManager;
-import net.bivrik.fancynotify.notification.gui.BiomeNotification;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.Holder;
@@ -11,7 +11,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;

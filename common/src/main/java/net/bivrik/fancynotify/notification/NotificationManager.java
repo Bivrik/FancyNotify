@@ -1,12 +1,12 @@
 package net.bivrik.fancynotify.notification;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.bivrik.fancynotify.animation.Easing;
-import net.bivrik.fancynotify.animation.Keyframe;
 import net.bivrik.fancynotify.api.INotificationManager;
 import net.bivrik.fancynotify.config.ConfigManager;
-import net.bivrik.fancynotify.config.GeneralConfig;
+import net.bivrik.fancynotify.config.data.GeneralConfig;
 import net.bivrik.fancynotify.core.Log;
+import net.bivrik.fancynotify.notification.animation.Easing;
+import net.bivrik.fancynotify.notification.animation.Keyframe;
 import net.bivrik.fancynotify.particle.Particle2DEngine;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;

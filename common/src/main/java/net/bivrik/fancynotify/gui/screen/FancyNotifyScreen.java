@@ -1,4 +1,4 @@
-package net.bivrik.fancynotify.screen;
+package net.bivrik.fancynotify.gui.screen;
 
 import net.bivrik.fancynotify.FancyNotify;
 import net.bivrik.fancynotify.core.Constants;

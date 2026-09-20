@@ -1,5 +1,6 @@
-package net.bivrik.fancynotify.credits;
+package net.bivrik.fancynotify.gui;
 
+import net.bivrik.fancynotify.CreditsManager;
 import net.bivrik.fancynotify.core.Constants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;

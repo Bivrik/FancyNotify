@@ -1,4 +1,7 @@
-package net.bivrik.fancynotify.config;
+package net.bivrik.fancynotify.config.data;
+
+import net.bivrik.fancynotify.config.ConfigManager;
+import net.bivrik.fancynotify.config.Setting;
 
 public class FiltersConfig extends Config {
     private static final String FILTERS_CONFIG_PATH = ConfigManager.CONFIG_FOLDER_PATH + "filters.json";

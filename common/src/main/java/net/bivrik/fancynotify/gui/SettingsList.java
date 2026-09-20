@@ -1,4 +1,4 @@
-package net.bivrik.fancynotify.screen;
+package net.bivrik.fancynotify.gui;
 
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.Minecraft;

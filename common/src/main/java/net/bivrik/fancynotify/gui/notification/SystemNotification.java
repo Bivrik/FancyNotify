@@ -1,4 +1,4 @@
-package net.bivrik.fancynotify.notification.gui;
+package net.bivrik.fancynotify.gui.notification;
 
 import net.bivrik.fancynotify.core.Log;
 import net.bivrik.fancynotify.notification.ExpandableNotification;

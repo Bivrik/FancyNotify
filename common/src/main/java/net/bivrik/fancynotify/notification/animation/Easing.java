@@ -1,4 +1,4 @@
-package net.bivrik.fancynotify.animation;
+package net.bivrik.fancynotify.notification.animation;
 
 public enum Easing {
     LINEAR(t -> t),

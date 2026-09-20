@@ -1,4 +1,4 @@
-package net.bivrik.fancynotify.notification.gui;
+package net.bivrik.fancynotify.gui.notification;
 
 import net.bivrik.fancynotify.notification.Notification;
 import net.bivrik.fancynotify.notification.NotificationManager;

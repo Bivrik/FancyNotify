@@ -1,13 +1,14 @@
-package net.bivrik.fancynotify.screen;
+package net.bivrik.fancynotify.gui.screen;
 
 import net.bivrik.fancynotify.FancyNotify;
 import net.bivrik.fancynotify.config.ConfigManager;
-import net.bivrik.fancynotify.config.GeneralConfig;
 import net.bivrik.fancynotify.config.Setting;
+import net.bivrik.fancynotify.config.data.GeneralConfig;
 import net.bivrik.fancynotify.gui.IntegerEditBox;
+import net.bivrik.fancynotify.gui.SettingsList;
 import net.bivrik.fancynotify.gui.Slider;
+import net.bivrik.fancynotify.gui.notification.SystemNotification;
 import net.bivrik.fancynotify.notification.NotificationManager;
-import net.bivrik.fancynotify.notification.gui.SystemNotification;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.CycleButton;
 import net.minecraft.client.gui.components.Tooltip;

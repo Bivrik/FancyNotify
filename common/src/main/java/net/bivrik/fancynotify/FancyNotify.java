@@ -1,14 +1,15 @@
 package net.bivrik.fancynotify;
 
+import net.bivrik.fancynotify.biome.BiomeManager;
 import net.bivrik.fancynotify.config.ConfigManager;
 import net.bivrik.fancynotify.core.Constants;
 import net.bivrik.fancynotify.core.Log;
-import net.bivrik.fancynotify.credits.CreditsManager;
 import net.bivrik.fancynotify.eventbus.EventBus;
 import net.bivrik.fancynotify.eventbus.IEventBus;
 import net.bivrik.fancynotify.notification.NotificationManager;
 import net.bivrik.fancynotify.particle.Particle2DEngine;
 import net.bivrik.fancynotify.platform.Services;
+import net.bivrik.fancynotify.weather.WeatherManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import org.jetbrains.annotations.Nullable;
