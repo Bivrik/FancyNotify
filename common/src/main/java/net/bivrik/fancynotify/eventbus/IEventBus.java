@@ -6,6 +6,4 @@ public interface IEventBus {
     void unregister(final Object listener);
 
     <T extends Event> void send(final T event);
-
-    default void printDebugInfo() {}
 }
