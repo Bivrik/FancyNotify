@@ -1,4 +1,4 @@
-package net.bivrik.fancynotify.impl;
+package net.bivrik.fancynotify.platform.impl;
 
 import de.dafuqs.spectrum.progression.toast.MessageToast;
 import de.dafuqs.spectrum.progression.toast.RevelationToast;

@@ -1,4 +1,4 @@
-package net.bivrik.fancynotify.mixin;
+package net.bivrik.fancynotify.mixin.accessor;
 
 import de.dafuqs.spectrum.progression.toast.MessageToast;
 import net.minecraft.network.chat.Component;

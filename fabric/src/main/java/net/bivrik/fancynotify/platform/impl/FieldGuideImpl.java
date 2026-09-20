@@ -1,4 +1,4 @@
-package net.bivrik.fancynotify.impl;
+package net.bivrik.fancynotify.platform.impl;
 
 import com.evandev.fieldguide.Constants;
 import com.evandev.fieldguide.api.GuideEntry;

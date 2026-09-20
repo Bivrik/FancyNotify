@@ -1,4 +1,4 @@
-package net.bivrik.fancynotify.mixin;
+package net.bivrik.fancynotify.mixin.accessor;
 
 import de.dafuqs.spectrum.progression.toast.RevelationToast;
 import net.minecraft.sounds.SoundEvent;

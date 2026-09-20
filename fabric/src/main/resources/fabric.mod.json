@@ -23,7 +23,7 @@
       "net.bivrik.${mod_id}.FabricPlatform"
     ],
     "modmenu": [
-      "net.bivrik.${mod_id}.gui.ModMenuImplementation"
+      "net.bivrik.${mod_id}.compat.modmenu.ModMenuImpl"
     ]
   },
   "mixins": [

@@ -1,4 +1,4 @@
-package net.bivrik.fancynotify.mixin;
+package net.bivrik.fancynotify.mixin.accessor;
 
 import com.evandev.fieldguide.client.gui.toasts.FieldGuideToast;
 import net.bivrik.fancynotify.compat.fieldguide.FieldGuideToastAccessor;
