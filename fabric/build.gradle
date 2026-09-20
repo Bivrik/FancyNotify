@@ -14,7 +14,7 @@ dependencies {
     modImplementation "maven.modrinth:modmenu:${project.fabric_modmenu_version}"
 
     modCompileOnly "maven.modrinth:spectrum:${project.fabric_spectrum_version}"
-    modCompileOnly files('libs/fieldguide-fabric-1.21.1-1.15.2-patched.jar')
+    modCompileOnly files('libs/fieldguide-fabric-1.20.1-1.16.0-patched.jar')
 }
 
 remapJar {
