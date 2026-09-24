@@ -11,10 +11,10 @@ import com.evandev.fieldguide.compat.cobblemon.ClientFieldGuideCobblemonCompat;
 import com.evandev.fieldguide.config.ClientConfig;
 import com.evandev.fieldguide.entry.EntryResolver;
 import com.evandev.fieldguide.variant.FieldGuideVariantManager;
+import net.bivrik.fancynotify.api.NotificationManager;
 import net.bivrik.fancynotify.compat.fieldguide.FieldGuideIconRenderer;
 import net.bivrik.fancynotify.compat.fieldguide.FieldGuideToastAccessor;
 import net.bivrik.fancynotify.compat.fieldguide.notification.FieldGuideNotification;
-import net.bivrik.fancynotify.notification.NotificationManager;
 import net.bivrik.fancynotify.platform.Services;
 import net.bivrik.fancynotify.platform.api.IFieldGuideApi;
 import net.minecraft.client.Minecraft;
@@ -89,7 +89,7 @@ public class FieldGuideImpl implements IFieldGuideApi {
             iconRenderer = (graphics, x, y) -> graphics.blit(Constants.TOAST_ICON, 8, 8, 0, 0, 16, 16, 16, 16);
         }
 
-        notificationManager.add(new FieldGuideNotification(notificationManager, title, titleColor, iconRenderer));
+        notificationManager.add(new FieldGuideNotification(title, titleColor, iconRenderer));
         return true;
     }
 }

@@ -1,6 +1,6 @@
 package net.bivrik.fancynotify.platform.fallback;
 
-import net.bivrik.fancynotify.notification.NotificationManager;
+import net.bivrik.fancynotify.api.NotificationManager;
 import net.bivrik.fancynotify.platform.api.IFieldGuideApi;
 import net.minecraft.client.gui.components.toasts.Toast;
 

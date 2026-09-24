@@ -1,14 +1,13 @@
 package net.bivrik.fancynotify.compat.fieldguide.notification;
 
+import net.bivrik.fancynotify.api.NotificationGraphics;
 import net.bivrik.fancynotify.compat.fieldguide.FieldGuideIconRenderer;
-import net.bivrik.fancynotify.notification.Notification;
-import net.bivrik.fancynotify.notification.NotificationManager;
+import net.bivrik.fancynotify.gui.notification.FancyNotification;
 import net.bivrik.fancynotify.utility.ResourceLocations;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
-public class FieldGuideNotification extends Notification {
+public class FieldGuideNotification extends FancyNotification {
     private static final ResourceLocation BACKGROUND = ResourceLocations.of("notifications/fieldguide/discovery");
     private static final Component MESSAGE = Component.translatable("fieldguide.toast.discovered");
     private static final int MESSAGE_COLOR = 11504732;
@@ -16,8 +15,8 @@ public class FieldGuideNotification extends Notification {
     private final int titleColor;
     private final FieldGuideIconRenderer iconRenderer;
 
-    public FieldGuideNotification(NotificationManager manager, Component title, int titleColor, FieldGuideIconRenderer iconRenderer) {
-        super(manager, title, MESSAGE);
+    public FieldGuideNotification(Component title, int titleColor, FieldGuideIconRenderer iconRenderer) {
+        super(title, MESSAGE);
 
         this.titleColor = titleColor;
         this.iconRenderer = iconRenderer;
@@ -25,14 +24,14 @@ public class FieldGuideNotification extends Notification {
 
     @Override
     public boolean shouldDisplay() {
-        return this.filtersConfig.isFieldGuideNotificationEnabled.get();
+        return this.filters.isFieldGuideNotificationEnabled.get();
     }
 
     @Override
-    protected void draw(GuiGraphics guiGraphics) {
-        drawSprite(guiGraphics, BACKGROUND, 0, 0, getWidth(), getHeight());
-        drawText(guiGraphics, getTitle(), getTextOffset(), 7, titleColor);
-        drawMessage(guiGraphics, getTextOffset(), 16, MESSAGE_COLOR);
-        iconRenderer.draw(guiGraphics, 16, 17);
+    public void draw(NotificationGraphics graphics, float partialTick) {
+        graphics.sprite(BACKGROUND, 0, 0, getWidth(), getHeight());
+        graphics.text(getTitle(), getTextOffset(), 7, titleColor);
+        graphics.multiline(getWrappedMessage(), getTextOffset(), 16, MESSAGE_COLOR);
+        iconRenderer.draw(graphics.unwrap(), 16, 17);
     }
 }

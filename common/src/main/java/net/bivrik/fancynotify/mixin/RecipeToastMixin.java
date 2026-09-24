@@ -1,8 +1,8 @@
 package net.bivrik.fancynotify.mixin;
 
 import net.bivrik.fancynotify.FancyNotify;
+import net.bivrik.fancynotify.api.NotificationManager;
 import net.bivrik.fancynotify.gui.notification.RecipeNotification;
-import net.bivrik.fancynotify.notification.NotificationManager;
 import net.minecraft.client.gui.components.toasts.RecipeToast;
 import net.minecraft.client.gui.components.toasts.ToastComponent;
 import net.minecraft.world.item.crafting.RecipeHolder;
@@ -17,9 +17,6 @@ public class RecipeToastMixin {
     private static void onAddedOrUpdated(ToastComponent toastComponent, RecipeHolder<?> recipe, CallbackInfo info) {
         info.cancel();
 
-        NotificationManager manager = FancyNotify.getInstance().getNotificationManager();
-        if (manager != null) {
-            manager.add(new RecipeNotification(manager, recipe));
-        }
+        FancyNotify.getInstance().getNotificationManager().add(new RecipeNotification(recipe));
     }
 }

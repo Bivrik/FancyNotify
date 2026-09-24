@@ -1,9 +1,11 @@
 package net.bivrik.fancynotify.compat.spectrum.notification;
 
-import net.bivrik.fancynotify.notification.Notification;
-import net.bivrik.fancynotify.notification.NotificationManager;
+import net.bivrik.fancynotify.FancyNotify;
+import net.bivrik.fancynotify.api.Notification;
+import net.bivrik.fancynotify.api.NotificationContext;
+import net.bivrik.fancynotify.api.NotificationGraphics;
+import net.bivrik.fancynotify.gui.notification.FancyNotification;
 import net.bivrik.fancynotify.utility.ResourceLocations;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -12,7 +14,7 @@ import net.minecraft.world.item.ItemStack;
 
 import java.awt.*;
 
-public class RevelationNotification extends Notification {
+public class RevelationNotification extends FancyNotification {
     private static final ResourceLocation BACKGROUND = ResourceLocations.of("notifications/spectrum/message");
     private static final Component TITLE = Component.translatable("spectrum.toast.revelation.title");
     private static final Component MESSAGE = Component.translatable("spectrum.toast.revelation.text");
@@ -24,8 +26,8 @@ public class RevelationNotification extends Notification {
 
     private boolean isSoundPlayed;
 
-    public RevelationNotification(NotificationManager manager, ItemStack icon, SoundEvent sound) {
-        super(manager, TITLE, MESSAGE);
+    public RevelationNotification(ItemStack icon, SoundEvent sound) {
+        super(TITLE, MESSAGE);
 
         this.icon = icon;
         this.sound = sound;
@@ -33,22 +35,22 @@ public class RevelationNotification extends Notification {
 
     @Override
     public boolean shouldDisplay() {
-        return this.filtersConfig.isSpectrumRevelationNotificationEnabled.get();
+        return this.filters.isSpectrumRevelationNotificationEnabled.get();
     }
 
     @Override
-    protected void onUpdate() {
-        if (!isSoundPlayed && this.timeTicks >= 0) {
+    public void update(NotificationContext context) {
+        if (!isSoundPlayed && context.getTimeTicks() > 0) {
             isSoundPlayed = true;
-            this.minecraft.getSoundManager().play(SimpleSoundInstance.forUI(this.sound, 1.0f, 0.6f));
+            this.minecraft.getSoundManager().play(SimpleSoundInstance.forUI(sound, 1.0f, 0.6f));
         }
     }
 
     @Override
-    protected void draw(GuiGraphics guiGraphics) {
-        drawSprite(guiGraphics, BACKGROUND, 0, 0, getWidth(), getHeight());
-        drawText(guiGraphics, getTitle(), getTextOffset(), 7, TITLE_COLOR);
-        drawMessage(guiGraphics, getTextOffset(), 18, MESSAGE_COLOR);
-        guiGraphics.renderFakeItem(icon, 8, getCenterY() - 8);
+    public void draw(NotificationGraphics graphics, float partialTick) {
+        graphics.sprite(BACKGROUND, 0, 0, getWidth(), getHeight());
+        graphics.text(getTitle(), getTextOffset(), 7, TITLE_COLOR);
+        graphics.multiline(getWrappedMessage(), getTextOffset(), 18, MESSAGE_COLOR);
+        graphics.unwrap().renderFakeItem(icon, 8, getCenterY() - 8);
     }
 }

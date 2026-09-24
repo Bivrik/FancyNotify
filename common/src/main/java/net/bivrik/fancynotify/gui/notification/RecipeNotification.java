@@ -1,7 +1,8 @@
 package net.bivrik.fancynotify.gui.notification;
 
-import net.bivrik.fancynotify.notification.ExpandableNotification;
-import net.bivrik.fancynotify.notification.NotificationManager;
+import net.bivrik.fancynotify.FancyNotify;
+import net.bivrik.fancynotify.api.Notification;
+import net.bivrik.fancynotify.api.NotificationGraphics;
 import net.bivrik.fancynotify.utility.ResourceLocations;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
@@ -13,42 +14,45 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class RecipeNotification extends ExpandableNotification {
+public class RecipeNotification extends FancyExpandableNotification {
     private static final ResourceLocation BACKGROUND = ResourceLocations.of("notifications/recipe");
     private static final Component TITLE = Component.translatable("recipe.toast.title");
     private static final Component MESSAGE = Component.translatable("recipe.toast.description");
+    private static final int TITLE_COLOR = new Color(119, 0, 119).getRGB();
+    private static final int MESSAGE_COLOR = Color.black.getRGB();
 
     private final List<RecipeHolder<?>> recipes = new ArrayList<>();
-    private final int color = new Color(119, 0, 119).getRGB();
 
-    public RecipeNotification(NotificationManager manager, RecipeHolder<?> recipe) {
-        super(manager, TITLE, MESSAGE);
+    public RecipeNotification(RecipeHolder<?> recipes) {
+        super(TITLE, MESSAGE);
 
-        recipes.add(recipe);
+        this.recipes.add(recipes);
     }
 
     @Override
     public boolean shouldDisplay() {
-        return this.filtersConfig.isRecipeNotificationEnabled.get();
+        return this.filters.isRecipeNotificationEnabled.get();
     }
 
     @Override
-    protected void expand(ExpandableNotification notification) {
-        if (notification instanceof RecipeNotification recipeNotification) {
-            recipes.add(recipeNotification.recipes.getFirst());
-        }
+    public void expand(Notification expansion) {
+        RecipeNotification other = (RecipeNotification) expansion;
+
+        recipes.addAll(other.recipes);
     }
 
     private float countTemp = 0;
     @Override
-    public void draw(GuiGraphics guiGraphics) {
+    public void draw(NotificationGraphics graphics, float partialTick) {
         countTemp += 1 / 2f;
-        drawSprite(guiGraphics, BACKGROUND, 0, 0, getWidth(), getHeight());
-        drawText(guiGraphics, getTitle(), getTextOffset(), 7, color);
-        drawMessage(guiGraphics, getTextOffset(), 18, Color.black.getRGB());
+        graphics.sprite(BACKGROUND, 0, 0, getWidth(), getHeight());
+        graphics.text(getTitle(), getTextOffset(), 7, TITLE_COLOR);
+        graphics.multiline(getWrappedMessage(), getTextOffset(), 18, MESSAGE_COLOR);
 
         int orderedIndex = (int) (countTemp / Math.max(1f, (double) getLifeTimeTicks() / recipes.size()) % recipes.size());
         var recipe = recipes.get(orderedIndex).value();
+
+        GuiGraphics guiGraphics = graphics.unwrap();
         var stack = guiGraphics.pose();
         stack.pushPose();
         stack.scale(0.85f, 0.85f, 1.0f);

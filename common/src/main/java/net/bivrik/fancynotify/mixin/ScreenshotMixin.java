@@ -3,8 +3,8 @@ package net.bivrik.fancynotify.mixin;
 import com.mojang.blaze3d.pipeline.RenderTarget;
 import com.mojang.blaze3d.platform.NativeImage;
 import net.bivrik.fancynotify.FancyNotify;
+import net.bivrik.fancynotify.api.NotificationManager;
 import net.bivrik.fancynotify.gui.notification.ScreenshotNotification;
-import net.bivrik.fancynotify.notification.NotificationManager;
 import net.minecraft.client.Screenshot;
 import net.minecraft.network.chat.Component;
 import org.spongepowered.asm.mixin.Mixin;
@@ -26,11 +26,8 @@ public class ScreenshotMixin {
             locals = LocalCapture.CAPTURE_FAILSOFT
     )
     private static void onScreenshotTaken(File gameDirectory, String screenshotName, RenderTarget buffer, Consumer<Component> messageConsumer, CallbackInfo info, NativeImage nativeImage) {
-        NotificationManager manager = FancyNotify.getInstance().getNotificationManager();
-        if (manager != null) {
-            NativeImage imagePreview = new NativeImage(nativeImage.format(), nativeImage.getWidth(), nativeImage.getHeight(), false);
-            imagePreview.copyFrom(nativeImage);
-            manager.add(new ScreenshotNotification(manager, imagePreview));
-        }
+        NativeImage imagePreview = new NativeImage(nativeImage.format(), nativeImage.getWidth(), nativeImage.getHeight(), false);
+        imagePreview.copyFrom(nativeImage);
+        FancyNotify.getInstance().getNotificationManager().add(new ScreenshotNotification(imagePreview));
     }
 }

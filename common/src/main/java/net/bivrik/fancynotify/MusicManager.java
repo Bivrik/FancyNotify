@@ -1,8 +1,8 @@
 package net.bivrik.fancynotify;
 
+import net.bivrik.fancynotify.api.NotificationManager;
 import net.bivrik.fancynotify.core.Log;
 import net.bivrik.fancynotify.gui.notification.MusicNotification;
-import net.bivrik.fancynotify.notification.NotificationManager;
 import net.bivrik.fancynotify.utility.ResourceLocations;
 import net.minecraft.client.Options;
 import net.minecraft.locale.Language;
@@ -33,7 +33,7 @@ public class MusicManager {
         // coolassmod:music/end/no_escape -> 1) End No Escape; 2) MTQ - No Escape;
 
         // handle vanilla ones
-        if (musicId.getNamespace().equals("minecraft")) {
+        if ("minecraft".equals(musicId.getNamespace())) {
             ResourceLocation vanillaMusicId = ResourceLocations.of(musicId.getPath());
             String key = getKey(vanillaMusicId);
             Component musicTitle = Component.translatable(key);
@@ -43,13 +43,13 @@ public class MusicManager {
             if (musicInfo.length == 2) {
                 Component artist = Component.literal(musicInfo[0]);
                 Component title = Component.literal(musicInfo[1]);
-                notificationManager.add(new MusicNotification(notificationManager, artist, title));
+                notificationManager.add(new MusicNotification(artist, title));
             }
             // if there is missing some translations just get visual appealing one
             else {
                 Log.warn("No translation provided for {} for music notification", musicId);
                 Component title = Component.literal(getTitleFromId(musicId));
-                notificationManager.add(new MusicNotification(notificationManager, title, FALLBACK_MESSAGE));
+                notificationManager.add(new MusicNotification(title, FALLBACK_MESSAGE));
             }
         }
         // handle modded
@@ -64,7 +64,7 @@ public class MusicManager {
             else {
                 title = Component.literal(getTitleFromId(musicId));
             }
-            notificationManager.add(new MusicNotification(notificationManager, title, FALLBACK_MESSAGE));
+            notificationManager.add(new MusicNotification(title, FALLBACK_MESSAGE));
         }
     }
 

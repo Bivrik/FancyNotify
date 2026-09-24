@@ -2,10 +2,12 @@ package net.bivrik.fancynotify.mixin;
 
 import net.bivrik.fancynotify.FancyNotify;
 import net.bivrik.fancynotify.accessor.IAdvancementHolderAccessor;
+import net.bivrik.fancynotify.api.NotificationManager;
 import net.bivrik.fancynotify.core.Constants;
 import net.bivrik.fancynotify.core.Log;
 import net.bivrik.fancynotify.gui.notification.AdvancementNotification;
-import net.bivrik.fancynotify.notification.NotificationManager;
+import net.bivrik.fancynotify.notification.NotificationEngine;
+import net.bivrik.fancynotify.notification.NotificationEngineImpl;
 import net.bivrik.fancynotify.platform.Services;
 import net.minecraft.advancements.DisplayInfo;
 import net.minecraft.client.gui.GuiGraphics;
@@ -45,7 +47,7 @@ public class ToastComponentMixin {
 
         if (toast instanceof AdvancementToast) {
             Optional<DisplayInfo> optionalDisplay = ((IAdvancementHolderAccessor) toast).getAdvancementHolder().value().display();
-            optionalDisplay.ifPresent(display -> manager.add(new AdvancementNotification(manager, display.getTitle(), display.getType(), display.getIcon())));
+            optionalDisplay.ifPresent(display -> manager.add(new AdvancementNotification(display.getTitle(), display.getType(), display.getIcon())));
             info.cancel();
             return;
         }
@@ -87,18 +89,18 @@ public class ToastComponentMixin {
     // Clears all the toasts and notifications when leaving world
     @Inject(at = @At("HEAD"), method = "clear")
     private void onCleared(CallbackInfo info) {
-        NotificationManager manager = FancyNotify.getInstance().getNotificationManager();
-        if (manager != null) {
-            manager.clear();
+        NotificationEngine engine = FancyNotify.getInstance().getNotificationEngine();
+        if (engine != null) {
+            engine.clear();
         }
     }
 
     @Inject(at = @At("HEAD"), method = "render")
     private void onRendered(GuiGraphics guiGraphics, CallbackInfo info) {
-        NotificationManager manager = FancyNotify.getInstance().getNotificationManager();
-        if (manager != null) {
-            manager.update();
-            manager.render(guiGraphics);
+        NotificationEngine engine = FancyNotify.getInstance().getNotificationEngine();
+        if (engine != null) {
+            engine.update();
+            engine.render(guiGraphics, 1);
         }
     }
 }

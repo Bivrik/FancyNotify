@@ -1,26 +1,32 @@
 package net.bivrik.fancynotify;
 
+import net.bivrik.fancynotify.api.FancyNotifyApi;
+import net.bivrik.fancynotify.api.NotificationManager;
 import net.bivrik.fancynotify.biome.BiomeManager;
 import net.bivrik.fancynotify.config.ConfigManager;
 import net.bivrik.fancynotify.core.Constants;
 import net.bivrik.fancynotify.core.Log;
 import net.bivrik.fancynotify.eventbus.EventBus;
 import net.bivrik.fancynotify.eventbus.IEventBus;
-import net.bivrik.fancynotify.notification.NotificationManager;
+import net.bivrik.fancynotify.notification.NotificationEngine;
+import net.bivrik.fancynotify.notification.NotificationEngineImpl;
 import net.bivrik.fancynotify.particle.Particle2DEngine;
 import net.bivrik.fancynotify.platform.Services;
 import net.bivrik.fancynotify.weather.WeatherManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.toasts.ToastComponent;
 import org.jetbrains.annotations.Nullable;
 
 public final class FancyNotify {
     private FancyNotify() {}
 
-    public static final IEventBus EVENT_BUS = new EventBus();
     private static final FancyNotify INSTANCE = new FancyNotify();
 
+    public static final IEventBus EVENT_BUS = new EventBus();
+
     private ConfigManager configManager;
+    private NotificationEngine notificationEngine;
     private NotificationManager notificationManager;
     private SplashesManager splashesManager;
     private BiomeManager biomeManager;
@@ -59,7 +65,9 @@ public final class FancyNotify {
 
         particleEngine = new Particle2DEngine(minecraft.options, configManager);
         splashesManager = new SplashesManager(minecraft);
-        notificationManager = new NotificationManager(minecraft, configManager, particleEngine);
+        notificationEngine = new NotificationEngineImpl(minecraft, configManager);
+        notificationManager = notificationEngine;
+        FancyNotifyApi.setNotificationManager(notificationManager);
         weatherManager = new WeatherManager(notificationManager);
         biomeManager = new BiomeManager(minecraft, notificationManager);
         musicManager = new MusicManager(minecraft.options, notificationManager);
@@ -75,10 +83,14 @@ public final class FancyNotify {
     }
 
     /**
-     * Always check for null if called from mixin. No idea why it happens sometimes
-     * @return {@link NotificationManager}
+     * Always check for null if called from mixin. No idea why it happens sometimes, but some mods are calling {@link ToastComponent#render(GuiGraphics)} too early somehow
+     * @return {@link NotificationEngine}
      */
-    public @Nullable NotificationManager getNotificationManager() {
+    public @Nullable NotificationEngine getNotificationEngine() {
+        return notificationEngine;
+    }
+
+    public NotificationManager getNotificationManager() {
         return notificationManager;
     }
 

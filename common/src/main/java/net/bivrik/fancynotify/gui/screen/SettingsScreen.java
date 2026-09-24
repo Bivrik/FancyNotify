@@ -1,6 +1,7 @@
 package net.bivrik.fancynotify.gui.screen;
 
 import net.bivrik.fancynotify.FancyNotify;
+import net.bivrik.fancynotify.api.NotificationManager;
 import net.bivrik.fancynotify.config.ConfigManager;
 import net.bivrik.fancynotify.config.Setting;
 import net.bivrik.fancynotify.config.data.GeneralConfig;
@@ -8,7 +9,6 @@ import net.bivrik.fancynotify.gui.IntegerEditBox;
 import net.bivrik.fancynotify.gui.SettingsList;
 import net.bivrik.fancynotify.gui.Slider;
 import net.bivrik.fancynotify.gui.notification.SystemNotification;
-import net.bivrik.fancynotify.notification.NotificationManager;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.CycleButton;
 import net.minecraft.client.gui.components.Tooltip;
@@ -17,7 +17,8 @@ import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 
 import java.util.List;
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.function.Supplier;
 
 public class SettingsScreen extends UniversalScreen {
     private static final Component TITLE = Component.translatable("fancynotify.title.settings");
@@ -58,9 +59,8 @@ public class SettingsScreen extends UniversalScreen {
     protected SettingsScreen(Screen parent) {
         super(TITLE, parent);
 
-        FancyNotify fancyNotify = FancyNotify.getInstance();
-        this.configManager = fancyNotify.getConfigManager();
-        this.notificationManager = fancyNotify.getNotificationManager();
+        this.configManager = FancyNotify.getInstance().getConfigManager();
+        this.notificationManager = FancyNotify.getInstance().getNotificationManager();
     }
 
     @Override
@@ -146,18 +146,18 @@ public class SettingsScreen extends UniversalScreen {
         list.alignElements();
     }
 
-    private void sendDummy() {
-        List<SystemNotification> notifications = List.of(
-                new SystemNotification(notificationManager, SystemNotification.Identifier.PERIODIC_NOTIFICATION, Component.literal("Bivrik is lazy"), Component.literal("WHO WROTE THAT?!")),
-                new SystemNotification(notificationManager, SystemNotification.Identifier.CHUNK_SAVE_FAILURE, Component.literal("Some title"), Component.literal("Some error message")),
-                new SystemNotification(notificationManager, SystemNotification.Identifier.LOW_DISK_SPACE, Component.literal("Low disk space"), Component.literal("Oh no! Your disk is full of stuff! You cannot save or smth idk")),
-                new SystemNotification(notificationManager, SystemNotification.Identifier.UNSECURE_SERVER_WARNING, Component.literal("Unsecure server connection"), Component.literal("Oh no, you cannot connect to this unsecure and totally legit server")),
-                new SystemNotification(notificationManager, SystemNotification.Identifier.PACK_LOAD_FAILURE, Component.literal("Resource pack failure"), Component.literal("Failed to load non-existent resource pack")),
-                new SystemNotification(notificationManager, SystemNotification.Identifier.WORLD_ACCESS_FAILURE, Component.literal("No worlds"), Component.literal("\"NO WORLDS?\""))
-        );
+    private static final List<Supplier<SystemNotification>> DUMMY_NOTIFICATIONS = List.of(
+            () -> new SystemNotification(SystemNotification.Identifier.PERIODIC_NOTIFICATION, Component.literal("Bivrik is lazy"), Component.literal("WHO WROTE THAT?!")),
+            () -> new SystemNotification(SystemNotification.Identifier.CHUNK_SAVE_FAILURE, Component.literal("Some title"), Component.literal("Some error message")),
+            () -> new SystemNotification(SystemNotification.Identifier.LOW_DISK_SPACE, Component.literal("Low disk space"), Component.literal("Oh no! Your disk is full of stuff! You cannot save or smth idk")),
+            () -> new SystemNotification(SystemNotification.Identifier.UNSECURE_SERVER_WARNING, Component.literal("Unsecure server connection"), Component.literal("Oh no, you cannot connect to this unsecure and totally legit server")),
+            () -> new SystemNotification(SystemNotification.Identifier.PACK_LOAD_FAILURE, Component.literal("Resource pack failure"), Component.literal("Failed to load non-existent resource pack")),
+            () -> new SystemNotification(SystemNotification.Identifier.WORLD_ACCESS_FAILURE, Component.literal("No worlds"), Component.literal("\"NO WORLDS?\""))
+    );
 
-        Random random = new Random();
-        notificationManager.add(notifications.get(random.nextInt(notifications.size())));
+    private void sendDummy() {
+        Supplier<SystemNotification> supplier = DUMMY_NOTIFICATIONS.get(ThreadLocalRandom.current().nextInt(DUMMY_NOTIFICATIONS.size()));
+        notificationManager.add(supplier.get());
     }
 
     @Override

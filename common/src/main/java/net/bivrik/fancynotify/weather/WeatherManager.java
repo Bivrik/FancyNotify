@@ -1,7 +1,7 @@
 package net.bivrik.fancynotify.weather;
 
+import net.bivrik.fancynotify.api.NotificationManager;
 import net.bivrik.fancynotify.gui.notification.WeatherNotification;
-import net.bivrik.fancynotify.notification.NotificationManager;
 import net.minecraft.network.protocol.game.ClientboundGameEventPacket;
 
 public class WeatherManager {
@@ -33,7 +33,7 @@ public class WeatherManager {
         WeatherType weather = getWeatherType();
         if (weather != currentWeather) {
             currentWeather = weather;
-            notificationManager.add(new WeatherNotification(notificationManager, currentWeather));
+            notificationManager.add(new WeatherNotification(currentWeather));
         }
     }
 

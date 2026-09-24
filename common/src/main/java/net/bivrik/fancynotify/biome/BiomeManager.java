@@ -1,7 +1,7 @@
 package net.bivrik.fancynotify.biome;
 
+import net.bivrik.fancynotify.api.NotificationManager;
 import net.bivrik.fancynotify.gui.notification.BiomeNotification;
-import net.bivrik.fancynotify.notification.NotificationManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.Holder;
@@ -75,7 +75,7 @@ public class BiomeManager {
 
             ResourceLocation biomeId = biomeHolder.unwrap().map(ResourceKey::location, null);
             Component biomeName = getBiomeComponent(biomeId, currentBiome);
-            notificationManager.add(new BiomeNotification(notificationManager, biomeName, icon.getDefaultInstance()));
+            notificationManager.add(new BiomeNotification(biomeName, icon.getDefaultInstance()));
         }
     }
 

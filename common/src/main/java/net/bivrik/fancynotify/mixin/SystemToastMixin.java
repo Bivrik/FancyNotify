@@ -1,8 +1,8 @@
 package net.bivrik.fancynotify.mixin;
 
 import net.bivrik.fancynotify.FancyNotify;
+import net.bivrik.fancynotify.api.NotificationManager;
 import net.bivrik.fancynotify.gui.notification.SystemNotification;
-import net.bivrik.fancynotify.notification.NotificationManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.toasts.SystemToast;
 import net.minecraft.client.gui.components.toasts.ToastComponent;
@@ -46,17 +46,13 @@ public class SystemToastMixin {
     private static void onForcedHide(ToastComponent toastComponent, SystemToast.SystemToastId id, CallbackInfo info) {
         info.cancel();
 
-        NotificationManager manager = FancyNotify.getInstance().getNotificationManager();
-        if (manager != null) {
-            manager.remove(SystemNotification.class, SystemNotification.Identifier.fromSystemToastId(id));
-        }
+            FancyNotify.getInstance().getNotificationManager()
+                    .remove(SystemNotification.class, SystemNotification.Identifier.fromSystemToastId(id));
     }
 
     @Unique
     private static void fancyNotify$add(SystemToast.SystemToastId id, Component title, Component message) {
-        NotificationManager manager = FancyNotify.getInstance().getNotificationManager();
-        if (manager != null) {
-            manager.add(new SystemNotification(manager, SystemNotification.Identifier.fromSystemToastId(id), title, message));
-        }
+        FancyNotify.getInstance().getNotificationManager()
+                .add(new SystemNotification(SystemNotification.Identifier.fromSystemToastId(id), title, message));
     }
 }

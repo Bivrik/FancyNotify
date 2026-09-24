@@ -1,11 +1,11 @@
 package net.bivrik.fancynotify.gui.notification;
 
-import net.bivrik.fancynotify.notification.Notification;
-import net.bivrik.fancynotify.notification.NotificationManager;
+import net.bivrik.fancynotify.FancyNotify;
+import net.bivrik.fancynotify.api.NotificationContext;
+import net.bivrik.fancynotify.api.NotificationGraphics;
 import net.bivrik.fancynotify.particle.Particle2DSetup;
 import net.bivrik.fancynotify.utility.ResourceLocations;
 import net.minecraft.advancements.AdvancementType;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -14,7 +14,7 @@ import net.minecraft.world.item.ItemStack;
 
 import java.awt.*;
 
-public class AdvancementNotification extends Notification {
+public class AdvancementNotification extends FancyNotification {
     private static final ResourceLocation TASK_BACKGROUND = ResourceLocations.of("notifications/task");
     private static final ResourceLocation GOAL_BACKGROUND = ResourceLocations.of("notifications/goal");
     private static final ResourceLocation CHALLENGE_BACKGROUND = ResourceLocations.of("notifications/challenge");
@@ -29,8 +29,8 @@ public class AdvancementNotification extends Notification {
 
     private boolean isCelebrated;
 
-    public AdvancementNotification(NotificationManager manager, Component title, AdvancementType type, ItemStack icon) {
-        super(manager, type.getDisplayName(), title);
+    public AdvancementNotification(Component title, AdvancementType type, ItemStack icon) {
+        super(type.getDisplayName(), title);
 
         this.type = type;
         this.icon = icon;
@@ -52,7 +52,7 @@ public class AdvancementNotification extends Notification {
 
     @Override
     public boolean shouldDisplay() {
-        return this.filtersConfig.isAdvancementNotificationEnabled.get();
+        return this.filters.isAdvancementNotificationEnabled.get();
     }
 
     @Override
@@ -61,12 +61,11 @@ public class AdvancementNotification extends Notification {
     }
 
     @Override
-    public void onUpdate() {
-        int animationDurationTicks = this.generalConfig.animationDuration.get();
-        if (!isCelebrated && this.timeTicks >= animationDurationTicks * 0.3f) {
+    public void update(NotificationContext context) {
+        if (!isCelebrated && context.getTimeTicks() >= context.getAnimationDurationTicks() * 0.3f) {
             isCelebrated = true;
 
-            Particle2DSetup.Builder setupBuilder = new Particle2DSetup.Builder(30, this.globalX + getWidth() / 2.0f, this.globalY + getHeight() / 2.0f)
+            Particle2DSetup.Builder setupBuilder = new Particle2DSetup.Builder(30, context.getGlobalX() + getCenterX(), context.getGlobalY() + getCenterY())
                     .spreadX(5)
                     .startRotation(-90).spreadStartRotation(90)
                     .endRotation(90).spreadEndRotation(90);
@@ -82,7 +81,7 @@ public class AdvancementNotification extends Notification {
                             .speed(1.5f).spreadSpeed(1.5f)
                             .movementFriction(0.02f)
                             .color(GOAL_COLOR).build();
-                    this.particleEngine.spawn(setup, 12);
+                    FancyNotify.getInstance().getParticleEngine().spawn(setup, 12);
                 }
                 case CHALLENGE -> {
                     this.minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_TOAST_CHALLENGE_COMPLETE, 1, 1));
@@ -91,17 +90,17 @@ public class AdvancementNotification extends Notification {
                             .speed(0).spreadSpeed(16)
                             .movementFriction(0.16f)
                             .color(CHALLENGE_COLOR).build();
-                    this.particleEngine.spawn(setup, 24);
+                    FancyNotify.getInstance().getParticleEngine().spawn(setup, 24);
                 }
             }
         }
     }
 
     @Override
-    public void draw(GuiGraphics guiGraphics) {
-        drawSprite(guiGraphics, background, 0, 0, getWidth(), getHeight());
-        drawText(guiGraphics, getTitle(), getTextOffset(), 7, textColor);
-        drawMessage(guiGraphics, getTextOffset(), 18, -1);
-        guiGraphics.renderFakeItem(icon, 8, getCenterY() - 8);
+    public void draw(NotificationGraphics graphics, float partialTick) {
+        graphics.sprite(background, 0, 0, getWidth(), getHeight());
+        graphics.text(getTitle(), getTextOffset(), 7, textColor);
+        graphics.multiline(getWrappedMessage(), getTextOffset(), 18, -1);
+        graphics.unwrap().renderFakeItem(icon, 8, getCenterY() - 8);
     }
 }

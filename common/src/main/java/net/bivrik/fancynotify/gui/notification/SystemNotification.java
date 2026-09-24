@@ -1,31 +1,33 @@
 package net.bivrik.fancynotify.gui.notification;
 
+import net.bivrik.fancynotify.FancyNotify;
+import net.bivrik.fancynotify.api.Notification;
+import net.bivrik.fancynotify.api.NotificationGraphics;
 import net.bivrik.fancynotify.core.Log;
-import net.bivrik.fancynotify.notification.ExpandableNotification;
-import net.bivrik.fancynotify.notification.NotificationManager;
 import net.bivrik.fancynotify.utility.ResourceLocations;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.toasts.SystemToast;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.FormattedCharSequence;
 
 import java.awt.*;
+import java.util.List;
 import java.util.Map;
 
-public class SystemNotification extends ExpandableNotification {
+public class SystemNotification extends FancyExpandableNotification {
     private static final ResourceLocation BACKGROUND = ResourceLocations.of("notifications/system");
 
     private final Identifier id;
 
-    public SystemNotification(NotificationManager manager, Identifier id, Component title, Component description) {
-        super(manager, title, description);
+    public SystemNotification(Identifier id, Component title, Component description) {
+        super(title, description);
 
         this.id = id;
     }
 
     @Override
     public boolean shouldDisplay() {
-        return this.filtersConfig.isSystemNotificationEnabled.get();
+        return this.filters.isSystemNotificationEnabled.get();
     }
 
     @Override
@@ -34,24 +36,25 @@ public class SystemNotification extends ExpandableNotification {
     }
 
     @Override
-    protected int getLifeTimeTicks() {
+    public int getLifeTimeTicks() {
         return id.lifeTimeTicks();
     }
 
     @Override
-    protected void expand(ExpandableNotification notification) {
-        if (notification instanceof SystemNotification systemNotification) {
-            setDisplay(systemNotification.getTitle(), systemNotification.getMessage());
-        }
+    public void expand(Notification expansion) {
+        SystemNotification other = (SystemNotification) expansion;
+        
+        setDisplay(other.getTitle(), other.getMessage());
     }
 
     @Override
-    public void draw(GuiGraphics guiGraphics) {
-        drawSprite(guiGraphics, BACKGROUND, 0, 0, getWidth(), getHeight());
-        int alignment = Math.min(getWrappedMessage().size(), 1);
-        drawText(guiGraphics, getTitle(), getTextOffset(), 8 - alignment, Color.yellow.getRGB());
-        drawMessage(guiGraphics, getTextOffset(), 18, -1);
-        drawSprite(guiGraphics, id.sprite(), 6, getCenterY() - 10, 20, 20);
+    public void draw(NotificationGraphics graphics, float partialTick) {
+        graphics.sprite(BACKGROUND, 0, 0, getWidth(), getHeight());
+        List<FormattedCharSequence> messageLines = getWrappedMessage();
+        int alignment = Math.min(messageLines.size(), 1);
+        graphics.text(getTitle(), getTextOffset(), 8 - alignment, Color.yellow.getRGB());
+        graphics.multiline(messageLines, getTextOffset(), 18, -1);
+        graphics.sprite(id.sprite(), 6, getCenterY() - 10, 20, 20);
     }
 
     public enum Identifier {

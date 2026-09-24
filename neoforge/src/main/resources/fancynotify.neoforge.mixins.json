@@ -5,10 +5,10 @@
   "refmap": "${mod_id}.refmap.json",
   "compatibilityLevel": "JAVA_17",
   "client": [
+    "accessor.FieldGuideAccessor",
     "accessor.MessageToastAccessor",
     "accessor.RevelationToastAccessor",
-    "accessor.UnlockedRecipeToastAccessor",
-    "accessor.FieldGuideAccessor"
+    "accessor.UnlockedRecipeToastAccessor"
   ],
   "server": [],
   "injectors": {
