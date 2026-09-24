@@ -17,7 +17,7 @@ public interface NotificationGraphics {
     void texture(ResourceLocation texture, int x, int y, int width, int height, int textureWidth, int textureHeight, int uOffset, int vOffset, int uWidth, int vHeight);
 
     default void texture(ResourceLocation texture, int x, int y, int width, int height, int textureWidth, int textureHeight, int uOffset, int vOffset) {
-        texture(texture, x, y, width, height, textureWidth, textureHeight, uOffset, vOffset, textureWidth, textureHeight);
+        texture(texture, x, y, width, height, textureWidth, textureHeight, uOffset, vOffset, width, height);
     }
 
     default void texture(ResourceLocation texture, int x, int y, int width, int height, int textureWidth, int textureHeight) {
