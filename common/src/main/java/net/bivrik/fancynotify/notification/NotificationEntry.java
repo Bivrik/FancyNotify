@@ -14,17 +14,17 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.sounds.SoundEvents;
 
-public class NotificationHost implements NotificationStateMachine.Listener {
+public class NotificationEntry implements NotificationStateMachine.Listener {
     private final NotificationStateMachine stateMachine;
     private final NotificationAnimator animator;
 
     protected final Minecraft minecraft;
     protected final GeneralConfig config;
-    protected final Notification content;
+    private final Notification content;
     protected float timeTicks = 0;
     protected float offsetTicks = 0;
 
-    public NotificationHost(Notification content, Minecraft minecraft, ConfigManager configManager) {
+    public NotificationEntry(Notification content, Minecraft minecraft, ConfigManager configManager) {
         this.minecraft = minecraft;
         this.config = configManager.getGeneralConfig();
 
@@ -38,6 +38,10 @@ public class NotificationHost implements NotificationStateMachine.Listener {
     @SubscribeEvent
     public void onNotificationWidthChanged(NotificationWidthChangedEvent event) {
         content.setPreferableWidth(event.getWidth());
+    }
+
+    public final Notification getContent() {
+        return content;
     }
 
     public final int getWidth() {

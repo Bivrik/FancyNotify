@@ -8,15 +8,14 @@ import net.bivrik.fancynotify.config.data.GeneralConfig;
 import net.bivrik.fancynotify.core.Log;
 import net.bivrik.fancynotify.notification.animation.Easing;
 import net.bivrik.fancynotify.notification.animation.Keyframe;
-import net.bivrik.fancynotify.particle.Particle2DEngine;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
-import java.util.concurrent.ConcurrentLinkedDeque;
 
 public class NotificationEngineImpl implements NotificationEngine {
     private final Minecraft minecraft;
@@ -24,9 +23,9 @@ public class NotificationEngineImpl implements NotificationEngine {
     private final GeneralConfig config;
     private final DeltaTracker deltaTracker;
 
-    private final List<NotificationHost> allNotificationHosts = new ArrayList<>();
-    private final Deque<NotificationHost> notificationHostQueue = new ConcurrentLinkedDeque<>();
-    private final List<NotificationHolder> currentNotificationHosts = new ArrayList<>();
+    private final List<NotificationEntry> allEntries = new ArrayList<>();
+    private final Deque<NotificationEntry> entryQueue = new ArrayDeque<>();
+    private final List<NotificationEntryHolder> showingHolders = new ArrayList<>();
 
     public NotificationEngineImpl(Minecraft minecraft, ConfigManager configManager) {
         this.minecraft = minecraft;
@@ -36,57 +35,61 @@ public class NotificationEngineImpl implements NotificationEngine {
     }
 
     @Override
-    public void add(Notification context) {
-        if (!context.shouldDisplay()) {
+    public void add(Notification notification) {
+        if (!notification.shouldDisplay()) {
             return;
         }
+        String notificationClassName = notification.getClass().getSimpleName();
 
-        for (NotificationHost host : allNotificationHosts) {
-            if (host.tryMerge(context)) {
-                Log.info("Expanded " + context.getClass().getSimpleName());
+        for (NotificationEntry entry : allEntries) {
+            if (entry.tryMerge(notification)) {
+                Log.info("Expanded {}", notificationClassName);
                 return;
             }
         }
 
-        NotificationHost host = context instanceof ExpandableNotification expandable
-                ? new ExpandableNotificationHost(expandable, minecraft, configManager)
-                : new NotificationHost(context, minecraft, configManager);
+        NotificationEntry entry = notification instanceof ExpandableNotification expandable
+                ? new ExpandableNotificationEntry(expandable, minecraft, configManager)
+                : new NotificationEntry(notification, minecraft, configManager);
 
-        if (hasCurrentSlots()) {
-            Position position = computePosition(host);
-            currentNotificationHosts.add(new NotificationHolder(host, position.x(), position.y()));
-            Log.info("Showing new " + context.getClass().getSimpleName());
+        allEntries.add(entry);
+
+        if (isShowingListFull()) {
+            entryQueue.add(entry);
+            Log.info("Added new {} to queue", notificationClassName);
         } else {
-            notificationHostQueue.add(host);
-            Log.info("Added new " + context.getClass().getSimpleName() + " to queue");
+            showingHolders.add(computeEntryHolder(entry));
+            Log.info("Showing new {}", notificationClassName);
         }
-        allNotificationHosts.add(host);
     }
 
     @Override
     public void clear() {
-        notificationHostQueue.clear();
-        currentNotificationHosts.clear();
-        allNotificationHosts.clear();
+        allEntries.clear();
+        entryQueue.clear();
+        showingHolders.clear();
     }
 
-    private boolean hasCurrentSlots() {
-        return currentNotificationHosts.size() < config.maxAmount.get();
+    private boolean isShowingListFull() {
+        return showingHolders.size() >= config.maxAmount.get();
     }
 
     @Override
     public boolean isEmpty() {
-        return currentNotificationHosts.isEmpty();
+        return allEntries.isEmpty();
     }
 
     private void arrangeNotifications() {
         GeneralConfig.Anchor anchor = config.anchor.get();
         boolean isVertical = config.orientation.get() == GeneralConfig.Orientation.VERTICAL;
+        int padding = config.padding.get();
+
         int x = 0;
         int y = 0;
-        for (var h : currentNotificationHosts) {
-            int width = h.getWidth();
-            int height = h.getHeight();
+
+        for (var holder : showingHolders) {
+            int width = holder.getWidth();
+            int height = holder.getHeight();
 
             int xOffset = anchor.isLeft() ? (isVertical ? 0 : -width) : (isVertical ? -width : 0);
             int yOffset = anchor.isTop() ? (isVertical ? -height : 0) : (isVertical ? 0 : -height);
@@ -94,10 +97,9 @@ public class NotificationEngineImpl implements NotificationEngine {
             x += isVertical ? 0 : (anchor.isLeft() ? width : -width);
             y += isVertical ? (anchor.isTop() ? height : -height) : 0;
 
-            h.setX(x + xOffset);
-            h.setY(y + yOffset);
+            holder.setX(x + xOffset);
+            holder.setY(y + yOffset);
 
-            int padding = config.padding.get();
             if (isVertical) {
                 y += anchor.isTop() ? padding : -padding;
             } else {
@@ -107,16 +109,17 @@ public class NotificationEngineImpl implements NotificationEngine {
     }
 
     // Why is it so much conditions I need to change this BRO :sob:
-    private Position computePosition(NotificationHost notification) {
+    private NotificationEntryHolder computeEntryHolder(NotificationEntry entry) {
         GeneralConfig.Anchor anchor = config.anchor.get();
         boolean isVertical = config.orientation.get() == GeneralConfig.Orientation.VERTICAL;
         int padding = config.padding.get();
 
         int x = 0;
         int y = 0;
-        for (var h : currentNotificationHosts) {
-            int width = h.getWidth();
-            int height = h.getHeight();
+
+        for (var holder : showingHolders) {
+            int width = holder.getWidth();
+            int height = holder.getHeight();
 
             x += isVertical ? 0 : (anchor.isLeft() ? width : -width);
             y += isVertical ? (anchor.isTop() ? height : -height) : 0;
@@ -128,9 +131,11 @@ public class NotificationEngineImpl implements NotificationEngine {
             }
         }
 
-        int width = notification.getWidth();
-        int height = notification.getHeight();
-        int posX, posY;
+        int width = entry.getWidth();
+        int height = entry.getHeight();
+
+        int posX;
+        int posY;
 
         if (isVertical) {
             posX = anchor.isLeft() ? 0 : -width;
@@ -140,23 +145,21 @@ public class NotificationEngineImpl implements NotificationEngine {
             posY = anchor.isTop() ? 0 : -height;
         }
 
-        return new Position(posX, posY);
+        return new NotificationEntryHolder(entry, posX, posY);
     }
-
-    private record Position(int x, int y) {}
 
     @Override
     public void update() {
-        if (!isEmpty()) {
+        if (!showingHolders.isEmpty()) {
             float deltaTicks = deltaTracker.getGameTimeDeltaTicks();
-            for (var iterator = currentNotificationHosts.iterator(); iterator.hasNext();) {
-                var notificationHolder = iterator.next();
+            for (var iterator = showingHolders.iterator(); iterator.hasNext();) {
+                var nextHolder = iterator.next();
 
-                var notification = notificationHolder.getNotification();
-                if (notification.shouldRemove()) {
+                NotificationEntry entry = nextHolder.getNotificationEntry();
+                if (entry.shouldRemove()) {
                     iterator.remove();
-                    Log.info("Removed {}", notification.content.getClass().getSimpleName());
-                    allNotificationHosts.remove(notification);
+                    allEntries.remove(entry);
+                    Log.info("Removed {}", entry.getContent().getClass().getSimpleName());
                     continue;
                 }
 
@@ -164,75 +167,83 @@ public class NotificationEngineImpl implements NotificationEngine {
                 int padding = config.padding.get();
                 float anchorX = anchor.isLeft() ? padding : minecraft.getWindow().getGuiScaledWidth() - padding;
                 float anchorY = anchor.isTop() ? padding : minecraft.getWindow().getGuiScaledHeight() - padding;
-                notificationHolder.update(deltaTicks, anchorX, anchorY);
+                nextHolder.update(deltaTicks, anchorX, anchorY);
             }
 
             arrangeNotifications();
         }
 
-        while (!notificationHostQueue.isEmpty() && hasCurrentSlots()) {
-            NotificationHost next = notificationHostQueue.pollFirst();
-            if (next != null) {
-                Position position = computePosition(next);
-                currentNotificationHosts.add(new NotificationHolder(next, position.x(), position.y()));
-                Log.info("Showing next " + next.getClass().getSimpleName());
+        while (!entryQueue.isEmpty() && !isShowingListFull()) {
+            NotificationEntry nextEntry = entryQueue.pollFirst();
+            if (nextEntry != null) {
+                showingHolders.add(computeEntryHolder(nextEntry));
+                Log.info("Showing next " + nextEntry.getClass().getSimpleName());
             }
         }
     }
 
     @Override
-    public <T extends Notification> void remove(Class<T> notificationClass, Object id) {
-        for (NotificationHost host : allNotificationHosts) {
-            if (host.content.getClass() == notificationClass && id.equals(host.getId())) {
-                if (notificationHostQueue.contains(host)) {
-                    notificationHostQueue.remove(host);
-                    allNotificationHosts.remove(host);
-                } else {
-                    host.forceHide();
-                }
-                return;
+    public void remove(Class<? extends Notification> notificationClass, Object id) {
+        for (NotificationEntry entry : allEntries) {
+            if (entry.getContent().getClass() != notificationClass || id.equals(entry.getId())) {
+                continue;
             }
+
+            if (entryQueue.remove(entry)) {
+                allEntries.remove(entry);
+            } else {
+                entry.forceHide();
+            }
+
+            return;
         }
     }
 
     @Override
-    public void render(GuiGraphics guiGraphics, float partialTick) {
-        if (currentNotificationHosts.isEmpty() || minecraft.options.hideGui) return;
+    public void render(GuiGraphics guiGraphics) {
+        if (showingHolders.isEmpty() || minecraft.options.hideGui) {
+            return;
+        }
 
         PoseStack stack = guiGraphics.pose();
         stack.pushPose();
-        GeneralConfig.Anchor anchor = config.anchor.get();
-        int padding = config.padding.get();
 
         if (config.debug.get()) {
-            stack.translate(guiGraphics.guiWidth() / 2.0, guiGraphics.guiHeight() / 2.0, 800);
-
-            guiGraphics.fill(-500, 0, 500, 1, -58254424);
-            guiGraphics.fill(0, -500, 1, 500, -58254424);
-
-            guiGraphics.fill(-500, -1, 500, 0, -812254424);
-            guiGraphics.fill(-1, -500, 0, 500, -812254424);
-
-            guiGraphics.drawString(minecraft.font, "(-1, 1)", -37, 6, -1);
-            guiGraphics.drawString(minecraft.font, "(1, -1)", 6, -13, -1);
-            guiGraphics.drawString(minecraft.font, "(0, 0)", -13, -3, -1);
+            debugOverlay(guiGraphics, stack);
         } else {
-            stack.translate(anchor.isLeft() ? padding : guiGraphics.guiWidth() - padding, anchor.isTop() ? padding : guiGraphics.guiHeight() - padding, 800);
+            GeneralConfig.Anchor anchor = config.anchor.get();
+            int padding = config.padding.get();
+            int anchorX = anchor.isLeft() ? padding : guiGraphics.guiWidth() - padding;
+            int anchorY = anchor.isTop() ? padding : guiGraphics.guiHeight() - padding;
+            stack.translate(anchorX, anchorY, 800);
         }
 
-        for (var notificationHolder : currentNotificationHosts) {
-            notificationHolder.render(guiGraphics, partialTick);
+        float partialTick = deltaTracker.getGameTimeDeltaPartialTick(false);
+        for (var holder : showingHolders) {
+            holder.render(guiGraphics, partialTick);
         }
 
         stack.popPose();
     }
 
-    private static class NotificationHolder {
+    private void debugOverlay(GuiGraphics guiGraphics, PoseStack stack) {
+        stack.translate(guiGraphics.guiWidth() / 2.0, guiGraphics.guiHeight() / 2.0, 800);
+
+        guiGraphics.fill(-500, 0, 500, 1, -58254424);
+        guiGraphics.fill(0, -500, 1, 500, -58254424);
+
+        guiGraphics.fill(-500, -1, 500, 0, -812254424);
+        guiGraphics.fill(-1, -500, 0, 500, -812254424);
+
+        guiGraphics.drawString(minecraft.font, "(-1, 1)", -37, 6, -1);
+        guiGraphics.drawString(minecraft.font, "(1, -1)", 6, -13, -1);
+        guiGraphics.drawString(minecraft.font, "(0, 0)", -13, -3, -1);
+    }
+
+    private final static class NotificationEntryHolder {
         private final static int ANIMATION_SPEED = 20;
 
-        private final NotificationHost notification;
-
-        private float timeTicks;
+        private final NotificationEntry entry;
 
         private float x;
         private float oldX;
@@ -244,8 +255,10 @@ public class NotificationEngineImpl implements NotificationEngine {
         private float newY;
         private float yLastChangedTicks;
 
-        private NotificationHolder(NotificationHost notification, float x, float y) {
-            this.notification = notification;
+        private float timeTicks;
+
+        public NotificationEntryHolder(NotificationEntry entry, float x, float y) {
+            this.entry = entry;
 
             this.x = x;
             this.newX = x;
@@ -253,15 +266,19 @@ public class NotificationEngineImpl implements NotificationEngine {
             this.newY = y;
         }
 
-        private NotificationHost getNotification() {
-            return notification;
+        public NotificationEntry getNotificationEntry() {
+            return entry;
         }
 
-        private int getWidth() {
-            return notification.getWidth();
+        public int getWidth() {
+            return entry.getWidth();
         }
 
-        private void setX(float x) {
+        public int getHeight() {
+            return entry.getHeight();
+        }
+
+        public void setX(float x) {
             if (x != newX) {
                 oldX = this.x;
                 newX = x;
@@ -269,11 +286,7 @@ public class NotificationEngineImpl implements NotificationEngine {
             }
         }
 
-        private int getHeight() {
-            return notification.getHeight();
-        }
-
-        private void setY(float y) {
+        public void setY(float y) {
             if (y != newY) {
                 oldY = this.y;
                 newY = y;
@@ -281,8 +294,7 @@ public class NotificationEngineImpl implements NotificationEngine {
             }
         }
 
-        private void update(float deltaTicks, float anchorX, float anchorY) {
-            notification.update(deltaTicks, anchorX + x, anchorY + y);
+        public void update(float deltaTicks, float anchorX, float anchorY) {
             timeTicks += deltaTicks;
 
             if (x != newX) {
@@ -291,13 +303,15 @@ public class NotificationEngineImpl implements NotificationEngine {
             if (y != newY) {
                 y = Easing.QUART_EASE_OUT.lerp(oldY, newY, Keyframe.getProgress(timeTicks, yLastChangedTicks, ANIMATION_SPEED));
             }
+
+            entry.update(deltaTicks, anchorX + x, anchorY + y);
         }
 
-        private void render(GuiGraphics guiGraphics, float partialTick) {
+        public void render(GuiGraphics guiGraphics, float partialTick) {
             PoseStack stack = guiGraphics.pose();
             stack.pushPose();
             stack.translate(x, y, 0);
-            notification.render(guiGraphics, partialTick);
+            entry.render(guiGraphics, partialTick);
             stack.popPose();
         }
     }

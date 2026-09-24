@@ -100,7 +100,7 @@ public class ToastComponentMixin {
         NotificationEngine engine = FancyNotify.getInstance().getNotificationEngine();
         if (engine != null) {
             engine.update();
-            engine.render(guiGraphics, 1);
+            engine.render(guiGraphics);
         }
     }
 }

@@ -5,10 +5,10 @@ import net.bivrik.fancynotify.api.Notification;
 import net.bivrik.fancynotify.config.ConfigManager;
 import net.minecraft.client.Minecraft;
 
-public class ExpandableNotificationHost extends NotificationHost {
+public class ExpandableNotificationEntry extends NotificationEntry {
     private final ExpandableNotification content;
 
-    public ExpandableNotificationHost(ExpandableNotification content, Minecraft minecraft, ConfigManager configManager) {
+    public ExpandableNotificationEntry(ExpandableNotification content, Minecraft minecraft, ConfigManager configManager) {
         super(content, minecraft, configManager);
 
         this.content = content;

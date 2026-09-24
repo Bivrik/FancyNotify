@@ -7,5 +7,5 @@ public interface NotificationEngine extends NotificationManager {
 
     void update();
 
-    void render(GuiGraphics guiGraphics, float partialTick);
+    void render(GuiGraphics guiGraphics);
 }
