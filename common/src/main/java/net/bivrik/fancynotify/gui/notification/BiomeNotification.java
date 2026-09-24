@@ -47,7 +47,7 @@ public class BiomeNotification extends FancyExpandableNotification {
         PoseStack stack = guiGraphics.pose();
         stack.pushPose();
         stack.scale(0.85f, 0.85f, 1);
-        guiGraphics.renderFakeItem(icon, 10, (getTextOffset() / 2) - 6);
+        guiGraphics.renderFakeItem(icon, 10, getCenterY() - 6);
         stack.popPose();
     }
 }
