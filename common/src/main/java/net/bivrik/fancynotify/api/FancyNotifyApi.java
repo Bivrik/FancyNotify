@@ -6,6 +6,9 @@ public final class FancyNotifyApi {
     private static NotificationManager notificationManagerInstance;
 
     public static void setNotificationManager(NotificationManager notificationManager) {
+        if (notificationManagerInstance != null) {
+            throw new IllegalStateException("NotificationManager is already set!");
+        }
         notificationManagerInstance = notificationManager;
     }
 
