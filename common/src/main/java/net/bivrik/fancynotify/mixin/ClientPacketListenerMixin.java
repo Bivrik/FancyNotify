@@ -2,7 +2,6 @@ package net.bivrik.fancynotify.mixin;
 
 import com.mojang.authlib.GameProfile;
 import net.bivrik.fancynotify.FancyNotify;
-import net.bivrik.fancynotify.api.NotificationManager;
 import net.bivrik.fancynotify.gui.notification.PlayerLoginNotification;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.social.PlayerSocialManager;

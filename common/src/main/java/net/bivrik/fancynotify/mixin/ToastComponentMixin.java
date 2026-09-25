@@ -7,7 +7,6 @@ import net.bivrik.fancynotify.core.Constants;
 import net.bivrik.fancynotify.core.Log;
 import net.bivrik.fancynotify.gui.notification.AdvancementNotification;
 import net.bivrik.fancynotify.notification.NotificationEngine;
-import net.bivrik.fancynotify.notification.NotificationEngineImpl;
 import net.bivrik.fancynotify.platform.Services;
 import net.minecraft.advancements.DisplayInfo;
 import net.minecraft.client.gui.GuiGraphics;

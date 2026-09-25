@@ -3,7 +3,6 @@ package net.bivrik.fancynotify.mixin;
 import com.mojang.blaze3d.pipeline.RenderTarget;
 import com.mojang.blaze3d.platform.NativeImage;
 import net.bivrik.fancynotify.FancyNotify;
-import net.bivrik.fancynotify.api.NotificationManager;
 import net.bivrik.fancynotify.gui.notification.ScreenshotNotification;
 import net.minecraft.client.Screenshot;
 import net.minecraft.network.chat.Component;

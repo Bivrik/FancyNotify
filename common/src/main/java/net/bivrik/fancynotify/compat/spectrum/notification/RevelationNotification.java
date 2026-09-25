@@ -1,7 +1,5 @@
 package net.bivrik.fancynotify.compat.spectrum.notification;
 
-import net.bivrik.fancynotify.FancyNotify;
-import net.bivrik.fancynotify.api.Notification;
 import net.bivrik.fancynotify.api.NotificationContext;
 import net.bivrik.fancynotify.api.NotificationGraphics;
 import net.bivrik.fancynotify.gui.notification.FancyNotification;
