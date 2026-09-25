@@ -12,5 +12,5 @@ public abstract class ExpandableNotification extends Notification {
         return getClass() == other.getClass() && getId().equals(other.getId());
     }
 
-    public void expand(Notification expansion) {}
+    public abstract void expand(Notification expansion);
 }
