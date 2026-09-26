@@ -42,7 +42,7 @@ public class RecipeNotification extends FancyExpandableNotification {
 
     private float countTemp = 0;
     @Override
-    public void draw(NotificationGraphics graphics, float partialTick) {
+    public void render(NotificationGraphics graphics, float partialTick) {
         countTemp += 1 / 2f;
         graphics.sprite(BACKGROUND, 0, 0, getWidth(), getHeight());
         graphics.text(getTitle(), getTextOffset(), 7, TITLE_COLOR);

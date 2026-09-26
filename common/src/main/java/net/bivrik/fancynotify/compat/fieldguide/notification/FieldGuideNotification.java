@@ -28,7 +28,7 @@ public class FieldGuideNotification extends FancyNotification {
     }
 
     @Override
-    public void draw(NotificationGraphics graphics, float partialTick) {
+    public void render(NotificationGraphics graphics, float partialTick) {
         graphics.sprite(BACKGROUND, 0, 0, getWidth(), getHeight());
         graphics.text(getTitle(), getTextOffset(), 7, titleColor);
         graphics.multiline(getWrappedMessage(), getTextOffset(), 16, MESSAGE_COLOR);

@@ -128,7 +128,7 @@ public class NotificationEntry implements NotificationStateMachine.Listener {
         stack.translate(-halfWidth, -halfHeight, 0);
         stack.rotateAround(Axis.ZP.rotation(animator.getRotation()), halfWidth, halfHeight, 0);
         stack.translate(animator.getX(), animator.getY(), 0);
-        content.draw(notificationGraphics, partialTick);
+        content.render(notificationGraphics, partialTick);
         stack.popPose();
     }
 }

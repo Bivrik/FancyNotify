@@ -47,7 +47,7 @@ public class SystemNotification extends FancyExpandableNotification {
     }
 
     @Override
-    public void draw(NotificationGraphics graphics, float partialTick) {
+    public void render(NotificationGraphics graphics, float partialTick) {
         graphics.sprite(BACKGROUND, 0, 0, getWidth(), getHeight());
         List<FormattedCharSequence> messageLines = getWrappedMessage();
         int alignment = Math.min(messageLines.size(), 1);

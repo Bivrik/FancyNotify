@@ -36,7 +36,7 @@ public class WeatherNotification extends FancyExpandableNotification {
     }
 
     @Override
-    public void draw(NotificationGraphics graphics, float partialTick) {
+    public void render(NotificationGraphics graphics, float partialTick) {
         graphics.sprite(BACKGROUND, 0, 0, getWidth(), getHeight());
         graphics.text(getTitle(), getTextOffset(), 8, TITLE_COLOR);
         graphics.sprite(icon, 5, 1, 20, 20);

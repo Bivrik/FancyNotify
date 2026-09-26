@@ -43,7 +43,7 @@ public class MessageNotification extends FancyNotification {
     }
 
     @Override
-    public void draw(NotificationGraphics graphics, float partialTick) {
+    public void render(NotificationGraphics graphics, float partialTick) {
         graphics.sprite(BACKGROUND, 0, 0, getWidth(), getHeight());
         graphics.text(getTitle(), getTextOffset(), 7, TITLE_COLOR);
         graphics.multiline(getWrappedMessage(), getTextOffset(), 18, MESSAGE_COLOR);

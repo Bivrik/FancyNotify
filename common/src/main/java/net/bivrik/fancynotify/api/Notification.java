@@ -100,5 +100,5 @@ public abstract class Notification {
 
     public void onRemoval() {}
 
-    public abstract void draw(NotificationGraphics graphics, float partialTick);
+    public abstract void render(NotificationGraphics graphics, float partialTick);
 }
