@@ -36,7 +36,7 @@ public class UnlockedRecipeNotification extends FancyNotification {
     }
 
     @Override
-    public void onUpdate(NotificationContext context) {
+    public void update(NotificationContext context) {
         if (!isSoundPlayed && context.getTimeTicks() > 0) {
             isSoundPlayed = true;
             this.minecraft.getSoundManager().play(SimpleSoundInstance.forUI(sound, 1.0f, 0.6f));

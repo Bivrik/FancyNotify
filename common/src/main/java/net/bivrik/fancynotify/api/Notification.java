@@ -99,14 +99,7 @@ public abstract class Notification {
         return 140;
     }
 
-    public final void update(NotificationContext context) {
-        if (this.icon != null) {
-            icon.update(context);
-        }
-        onUpdate(context);
-    }
-
-    protected void onUpdate(NotificationContext context) {}
+    public void update(NotificationContext context) {}
 
     public void onShowing() {}
 

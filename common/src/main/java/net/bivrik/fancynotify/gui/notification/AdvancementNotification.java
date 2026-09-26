@@ -61,7 +61,7 @@ public class AdvancementNotification extends FancyNotification {
     }
 
     @Override
-    public void onUpdate(NotificationContext context) {
+    public void update(NotificationContext context) {
         if (!isCelebrated && context.getTimeTicks() >= context.getAnimationDurationTicks() * 0.3f) {
             isCelebrated = true;
 
