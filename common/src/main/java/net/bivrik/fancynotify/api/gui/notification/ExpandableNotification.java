@@ -1,4 +1,4 @@
-package net.bivrik.fancynotify.api;
+package net.bivrik.fancynotify.api.gui.notification;
 
 import net.minecraft.network.chat.Component;
 

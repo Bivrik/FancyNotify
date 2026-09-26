@@ -1,7 +1,7 @@
 package net.bivrik.fancynotify.gui.screen;
 
 import net.bivrik.fancynotify.FancyNotify;
-import net.bivrik.fancynotify.api.NotificationManager;
+import net.bivrik.fancynotify.api.gui.notification.NotificationManager;
 import net.bivrik.fancynotify.config.ConfigManager;
 import net.bivrik.fancynotify.config.Setting;
 import net.bivrik.fancynotify.config.data.GeneralConfig;

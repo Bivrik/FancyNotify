@@ -1,4 +1,4 @@
-package net.bivrik.fancynotify.api;
+package net.bivrik.fancynotify.api.gui.notification;
 
 public interface NotificationContext {
 

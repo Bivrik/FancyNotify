@@ -1,8 +1,8 @@
 package net.bivrik.fancynotify.compat.spectrum.notification;
 
-import net.bivrik.fancynotify.api.Icon;
-import net.bivrik.fancynotify.api.NotificationContext;
-import net.bivrik.fancynotify.api.NotificationGraphics;
+import net.bivrik.fancynotify.api.gui.icon.Icon;
+import net.bivrik.fancynotify.api.gui.notification.NotificationContext;
+import net.bivrik.fancynotify.api.gui.notification.NotificationGraphics;
 import net.bivrik.fancynotify.gui.notification.FancyNotification;
 import net.bivrik.fancynotify.utility.ResourceLocations;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;

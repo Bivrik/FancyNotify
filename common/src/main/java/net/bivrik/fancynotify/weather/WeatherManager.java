@@ -1,6 +1,6 @@
 package net.bivrik.fancynotify.weather;
 
-import net.bivrik.fancynotify.api.NotificationManager;
+import net.bivrik.fancynotify.api.gui.notification.NotificationManager;
 import net.bivrik.fancynotify.gui.notification.WeatherNotification;
 import net.minecraft.network.protocol.game.ClientboundGameEventPacket;
 

@@ -1,8 +1,8 @@
 package net.bivrik.fancynotify.gui.notification;
 
-import net.bivrik.fancynotify.api.Notification;
-import net.bivrik.fancynotify.api.NotificationGraphics;
-import net.bivrik.fancynotify.api.SpriteIcon;
+import net.bivrik.fancynotify.api.gui.icon.SpriteIcon;
+import net.bivrik.fancynotify.api.gui.notification.Notification;
+import net.bivrik.fancynotify.api.gui.notification.NotificationGraphics;
 import net.bivrik.fancynotify.utility.ResourceLocations;
 import net.bivrik.fancynotify.weather.WeatherType;
 import net.minecraft.network.chat.Component;

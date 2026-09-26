@@ -1,5 +1,7 @@
 package net.bivrik.fancynotify.api;
 
+import net.bivrik.fancynotify.api.gui.notification.NotificationManager;
+
 public final class FancyNotifyApi {
     private FancyNotifyApi() {}
 

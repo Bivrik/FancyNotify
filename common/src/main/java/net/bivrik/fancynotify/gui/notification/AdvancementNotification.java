@@ -1,9 +1,9 @@
 package net.bivrik.fancynotify.gui.notification;
 
 import net.bivrik.fancynotify.FancyNotify;
-import net.bivrik.fancynotify.api.ItemIcon;
-import net.bivrik.fancynotify.api.NotificationContext;
-import net.bivrik.fancynotify.api.NotificationGraphics;
+import net.bivrik.fancynotify.api.gui.icon.ItemIcon;
+import net.bivrik.fancynotify.api.gui.notification.NotificationContext;
+import net.bivrik.fancynotify.api.gui.notification.NotificationGraphics;
 import net.bivrik.fancynotify.particle.Particle2DSetup;
 import net.bivrik.fancynotify.utility.ResourceLocations;
 import net.minecraft.advancements.AdvancementType;

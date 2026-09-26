@@ -1,4 +1,6 @@
-package net.bivrik.fancynotify.api;
+package net.bivrik.fancynotify.api.gui.notification;
+
+import net.bivrik.fancynotify.api.FancyNotifyApi;
 
 /**
  * Entry point for showing and managing notifications from other mods

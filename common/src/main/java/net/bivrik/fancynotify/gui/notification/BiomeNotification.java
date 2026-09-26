@@ -1,9 +1,9 @@
 package net.bivrik.fancynotify.gui.notification;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.bivrik.fancynotify.api.ItemIcon;
-import net.bivrik.fancynotify.api.Notification;
-import net.bivrik.fancynotify.api.NotificationGraphics;
+import net.bivrik.fancynotify.api.gui.icon.ItemIcon;
+import net.bivrik.fancynotify.api.gui.notification.Notification;
+import net.bivrik.fancynotify.api.gui.notification.NotificationGraphics;
 import net.bivrik.fancynotify.utility.ResourceLocations;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;

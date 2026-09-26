@@ -1,8 +1,8 @@
 package net.bivrik.fancynotify.gui.notification;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.bivrik.fancynotify.api.Icon;
-import net.bivrik.fancynotify.api.NotificationGraphics;
+import net.bivrik.fancynotify.api.gui.icon.Icon;
+import net.bivrik.fancynotify.api.gui.notification.NotificationGraphics;
 import net.bivrik.fancynotify.utility.Components;
 import net.bivrik.fancynotify.utility.ResourceLocations;
 import net.minecraft.network.chat.Component;

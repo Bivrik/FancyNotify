@@ -1,7 +1,7 @@
 package net.bivrik.fancynotify.gui.notification;
 
-import net.bivrik.fancynotify.api.NotificationGraphics;
-import net.bivrik.fancynotify.api.SpriteIcon;
+import net.bivrik.fancynotify.api.gui.icon.SpriteIcon;
+import net.bivrik.fancynotify.api.gui.notification.NotificationGraphics;
 import net.bivrik.fancynotify.utility.ResourceLocations;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;

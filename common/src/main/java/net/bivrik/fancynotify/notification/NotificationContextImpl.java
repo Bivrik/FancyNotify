@@ -1,6 +1,6 @@
 package net.bivrik.fancynotify.notification;
 
-import net.bivrik.fancynotify.api.NotificationContext;
+import net.bivrik.fancynotify.api.gui.notification.NotificationContext;
 
 public record NotificationContextImpl(float globalX, float globalY, float timeTicks, int animationDuration) implements NotificationContext {
     @Override

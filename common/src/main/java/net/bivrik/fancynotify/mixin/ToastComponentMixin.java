@@ -2,7 +2,7 @@ package net.bivrik.fancynotify.mixin;
 
 import net.bivrik.fancynotify.FancyNotify;
 import net.bivrik.fancynotify.accessor.AdvancementHolderAccessor;
-import net.bivrik.fancynotify.api.NotificationManager;
+import net.bivrik.fancynotify.api.gui.notification.NotificationManager;
 import net.bivrik.fancynotify.core.Constants;
 import net.bivrik.fancynotify.core.Log;
 import net.bivrik.fancynotify.gui.notification.AdvancementNotification;

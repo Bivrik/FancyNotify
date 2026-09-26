@@ -3,7 +3,7 @@ package net.bivrik.fancynotify.platform.impl;
 import de.dafuqs.spectrum.progression.toast.MessageToast;
 import de.dafuqs.spectrum.progression.toast.RevelationToast;
 import de.dafuqs.spectrum.progression.toast.UnlockedRecipeToast;
-import net.bivrik.fancynotify.api.NotificationManager;
+import net.bivrik.fancynotify.api.gui.notification.NotificationManager;
 import net.bivrik.fancynotify.compat.spectrum.MessageToastAccessor;
 import net.bivrik.fancynotify.compat.spectrum.RevelationToastAccessor;
 import net.bivrik.fancynotify.compat.spectrum.UnlockedRecipeToastAccessor;

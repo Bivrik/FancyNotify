@@ -1,8 +1,8 @@
 package net.bivrik.fancynotify.notification;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.bivrik.fancynotify.api.ExpandableNotification;
-import net.bivrik.fancynotify.api.Notification;
+import net.bivrik.fancynotify.api.gui.notification.ExpandableNotification;
+import net.bivrik.fancynotify.api.gui.notification.Notification;
 import net.bivrik.fancynotify.config.ConfigManager;
 import net.bivrik.fancynotify.config.data.GeneralConfig;
 import net.bivrik.fancynotify.core.Log;

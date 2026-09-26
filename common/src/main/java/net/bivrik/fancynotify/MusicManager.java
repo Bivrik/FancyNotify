@@ -1,6 +1,6 @@
 package net.bivrik.fancynotify;
 
-import net.bivrik.fancynotify.api.NotificationManager;
+import net.bivrik.fancynotify.api.gui.notification.NotificationManager;
 import net.bivrik.fancynotify.core.Log;
 import net.bivrik.fancynotify.gui.notification.MusicNotification;
 import net.bivrik.fancynotify.utility.Components;

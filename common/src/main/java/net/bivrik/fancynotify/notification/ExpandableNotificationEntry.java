@@ -1,7 +1,7 @@
 package net.bivrik.fancynotify.notification;
 
-import net.bivrik.fancynotify.api.ExpandableNotification;
-import net.bivrik.fancynotify.api.Notification;
+import net.bivrik.fancynotify.api.gui.notification.ExpandableNotification;
+import net.bivrik.fancynotify.api.gui.notification.Notification;
 import net.bivrik.fancynotify.config.ConfigManager;
 import net.minecraft.client.Minecraft;
 
