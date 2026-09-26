@@ -9,6 +9,7 @@ import net.bivrik.fancynotify.notification.animation.NotificationAnimator;
 import net.bivrik.fancynotify.notification.animation.QuirkyAnimation;
 import net.bivrik.fancynotify.notification.animation.TopDownAnimation;
 import net.bivrik.fancynotify.notification.animation.VanillaAnimation;
+import net.bivrik.fancynotify.utility.Components;
 import net.minecraft.network.chat.Component;
 
 public class GeneralConfig extends Config implements ListenerRegistrar {
@@ -49,7 +50,7 @@ public class GeneralConfig extends Config implements ListenerRegistrar {
         private final Component displayName;
 
         Orientation(String name) {
-            this.displayName = Component.translatable("fancynotify.gui.orientation." + name);
+            this.displayName = Components.of("gui.orientation." + name);
         }
 
         public Component getDisplayName() {
@@ -68,7 +69,7 @@ public class GeneralConfig extends Config implements ListenerRegistrar {
         private final boolean isTop;
 
         Anchor(String name, boolean isLeft, boolean isTop) {
-            this.displayName = Component.translatable("fancynotify.gui.anchor." + name);
+            this.displayName = Components.of("gui.anchor." + name);
             this.isLeft = isLeft;
             this.isTop = isTop;
         }
@@ -94,7 +95,7 @@ public class GeneralConfig extends Config implements ListenerRegistrar {
         private final Component displayName;
 
         Animation(String name) {
-            this.displayName = Component.translatable("fancynotify.gui.animation." + name);
+            this.displayName = Components.of("gui.animation." + name);
         }
 
         public Component getDisplayName() {

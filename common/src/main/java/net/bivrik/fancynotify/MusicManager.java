@@ -3,6 +3,7 @@ package net.bivrik.fancynotify;
 import net.bivrik.fancynotify.api.NotificationManager;
 import net.bivrik.fancynotify.core.Log;
 import net.bivrik.fancynotify.gui.notification.MusicNotification;
+import net.bivrik.fancynotify.utility.Components;
 import net.bivrik.fancynotify.utility.ResourceLocations;
 import net.minecraft.client.Options;
 import net.minecraft.locale.Language;
@@ -14,7 +15,7 @@ import java.util.Arrays;
 import java.util.stream.Collectors;
 
 public class MusicManager {
-    private static final Component FALLBACK_MESSAGE = Component.translatable("fancynotify.gui.music.message");
+    private static final Component FALLBACK_MESSAGE = Components.of("gui.music.message");
 
     private final Options options;
     private final NotificationManager notificationManager;

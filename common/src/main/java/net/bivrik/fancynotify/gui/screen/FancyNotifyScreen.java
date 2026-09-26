@@ -2,6 +2,7 @@ package net.bivrik.fancynotify.gui.screen;
 
 import net.bivrik.fancynotify.FancyNotify;
 import net.bivrik.fancynotify.core.Constants;
+import net.bivrik.fancynotify.utility.Components;
 import net.bivrik.fancynotify.utility.ResourceLocations;
 import net.minecraft.Util;
 import net.minecraft.client.gui.GuiGraphics;
@@ -20,13 +21,13 @@ import java.util.List;
 
 public class FancyNotifyScreen extends UniversalScreen {
     private static final Component TITLE = Component.literal(Constants.MOD_NAME);
-    private static final Component SETTINGS_LABEL = Component.translatable("fancynotify.label.settings");
-    private static final Component FILTERS_LABEL = Component.translatable("fancynotify.label.filters");
-    private static final Component CREDITS_LABEL = Component.translatable("fancynotify.label.credits");
-    private static final Component GITHUB_LABEL = Component.translatable("fancynotify.label.creator_note");
-    private static final Component DISCORD_TOOLTIP = Component.translatable("fancynotify.tooltip.discord");
-    private static final Component BOOSTY_TOOLTIP = Component.translatable("fancynotify.tooltip.boosty");
-    private static final Component YOUTUBE_TOOLTIP = Component.translatable("fancynotify.tooltip.youtube");
+    private static final Component SETTINGS_LABEL = Components.of("label.settings");
+    private static final Component FILTERS_LABEL = Components.of("label.filters");
+    private static final Component CREDITS_LABEL = Components.of("label.credits");
+    private static final Component GITHUB_LABEL = Components.of("label.creator_note");
+    private static final Component DISCORD_TOOLTIP = Components.of("tooltip.discord");
+    private static final Component BOOSTY_TOOLTIP = Components.of("tooltip.boosty");
+    private static final Component YOUTUBE_TOOLTIP = Components.of("tooltip.youtube");
     private static final URI GITHUB_URI = URI.create("https://github.com/Bivrik");
     private static final URI DISCORD_URI = URI.create("https://discord.gg/9XuRDgbbZe");
     private static final URI BOOSTY_URI = URI.create("https://boosty.to/bivrik");

@@ -1,7 +1,7 @@
 package net.bivrik.fancynotify.gui;
 
 import net.bivrik.fancynotify.CreditsManager;
-import net.bivrik.fancynotify.core.Constants;
+import net.bivrik.fancynotify.utility.Components;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -131,7 +131,7 @@ public class CreditsList extends AbstractSelectionList<CreditsList.Entry> {
         public CategoryEntry(CreditsList parentList, String content) {
             super(parentList, content);
 
-            this.displayName = Component.translatable(Constants.MOD_ID + ".credits." + this.content);
+            this.displayName = Components.of("credits." + this.content);
             this.xCenter = parentList.getWidth() / 2;
         }
 

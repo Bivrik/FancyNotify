@@ -5,6 +5,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.bivrik.fancynotify.CreditsManager;
 import net.bivrik.fancynotify.FancyNotify;
 import net.bivrik.fancynotify.gui.CreditsList;
+import net.bivrik.fancynotify.utility.Components;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
@@ -13,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class CreditsScreen extends UniversalScreen {
     private static final ResourceLocation VIGNETTE_LOCATION = ResourceLocation.withDefaultNamespace("textures/misc/credits_vignette.png");
-    private static final Component TITLE = Component.translatable("fancynotify.title.credits");
+    private static final Component TITLE = Components.of("title.credits");
 
     private final CreditsManager.CreditsData creditsData;
 

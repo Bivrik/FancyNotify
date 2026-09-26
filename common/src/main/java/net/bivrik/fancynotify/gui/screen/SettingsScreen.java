@@ -9,6 +9,7 @@ import net.bivrik.fancynotify.gui.IntegerEditBox;
 import net.bivrik.fancynotify.gui.SettingsList;
 import net.bivrik.fancynotify.gui.Slider;
 import net.bivrik.fancynotify.gui.notification.SystemNotification;
+import net.bivrik.fancynotify.utility.Components;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.CycleButton;
 import net.minecraft.client.gui.components.Tooltip;
@@ -21,24 +22,24 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Supplier;
 
 public class SettingsScreen extends UniversalScreen {
-    private static final Component TITLE = Component.translatable("fancynotify.title.settings");
-    private static final Component TRANSPARENCY_LABEL = Component.translatable("fancynotify.label.notification.transparency");
-    private static final Component WIDTH_LABEL = Component.translatable("fancynotify.label.notification.width");
+    private static final Component TITLE = Components.of("title.settings");
+    private static final Component TRANSPARENCY_LABEL = Components.of("label.notification.transparency");
+    private static final Component WIDTH_LABEL = Components.of("label.notification.width");
     private static final Component DISPLAY_TIME_LABEL = Component.translatable("options.notifications.display_time");
-    private static final Component ORIENTATION_LABEL = Component.translatable("fancynotify.label.notification.orientation");
-    private static final Component ANCHOR_LABEL = Component.translatable("fancynotify.label.notification.anchor");
-    private static final Component PADDING_LABEL = Component.translatable("fancynotify.label.notification.padding");
-    private static final Component ANIMATION_LABEL = Component.translatable("fancynotify.label.notification.animation");
-    private static final Component AMOUNT_LABEL = Component.translatable("fancynotify.label.notification.max_amount");
-    private static final Component ANIMATION_DURATION_LABEL = Component.translatable("fancynotify.label.notification.animation_duration");
-    private static final Component PARTICLES_LABEL = Component.translatable("fancynotify.label.notification.particles");
-    private static final Component DUMMY_LABEL = Component.translatable("fancynotify.label.send_dummy");
+    private static final Component ORIENTATION_LABEL = Components.of("label.notification.orientation");
+    private static final Component ANCHOR_LABEL = Components.of("label.notification.anchor");
+    private static final Component PADDING_LABEL = Components.of("label.notification.padding");
+    private static final Component ANIMATION_LABEL = Components.of("label.notification.animation");
+    private static final Component AMOUNT_LABEL = Components.of("label.notification.max_amount");
+    private static final Component ANIMATION_DURATION_LABEL = Components.of("label.notification.animation_duration");
+    private static final Component PARTICLES_LABEL = Components.of("label.notification.particles");
+    private static final Component DUMMY_LABEL = Components.of("label.send_dummy");
 
     private static final Component DISPLAY_TIME_TOOLTIP = Component.translatable("options.notifications.display_time.tooltip");
-    private static final Component ORIENTATION_TOOLTIP = Component.translatable("fancynotify.tooltip.orientation");
-    private static final Component ANCHOR_TOOLTIP = Component.translatable("fancynotify.tooltip.anchor");
-    private static final Component ANIMATION_TOOLTIP = Component.translatable("fancynotify.tooltip.animation");
-    private static final Component PARTICLES_TOOLTIP = Component.translatable("fancynotify.tooltip.particles");
+    private static final Component ORIENTATION_TOOLTIP = Components.of("tooltip.orientation");
+    private static final Component ANCHOR_TOOLTIP = Components.of("tooltip.anchor");
+    private static final Component ANIMATION_TOOLTIP = Components.of("tooltip.animation");
+    private static final Component PARTICLES_TOOLTIP = Components.of("tooltip.particles");
 
     private final ConfigManager configManager;
     private final NotificationManager notificationManager;

@@ -6,6 +6,7 @@ import net.bivrik.fancynotify.config.Setting;
 import net.bivrik.fancynotify.config.data.FiltersConfig;
 import net.bivrik.fancynotify.gui.SettingsList;
 import net.bivrik.fancynotify.platform.Services;
+import net.bivrik.fancynotify.utility.Components;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.CycleButton;
 import net.minecraft.client.gui.components.Tooltip;
@@ -14,20 +15,20 @@ import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 
 public class FiltersScreen extends UniversalScreen {
-    private static final Component TITLE = Component.translatable("fancynotify.title.filters");
-    private static final Component ADVANCEMENTS_NOTIFICATION_TITLE = Component.translatable("fancynotify.label.advancements");
-    private static final Component RECIPES_NOTIFICATION_TITLE = Component.translatable("fancynotify.label.recipes");
-    private static final Component MUSIC_NOTIFICATION_TITLE = Component.translatable("fancynotify.label.musics");
-    private static final Component SCREENSHOT_NOTIFICATION_TITLE = Component.translatable("fancynotify.label.screenshots");
-    private static final Component SYSTEM_NOTIFICATION_TITLE = Component.translatable("fancynotify.label.systems");
-    private static final Component WEATHER_NOTIFICATION_TITLE = Component.translatable("fancynotify.label.weathers");
-    private static final Component BIOME_NOTIFICATION_TITLE = Component.translatable("fancynotify.label.biomes");
-    private static final Component PLAYER_LOGIN_NOTIFICATION_TITLE = Component.translatable("fancynotify.label.player_logins");
-    private static final Component PLAYER_LOGIN_NOTIFICATION_TOOLTIP = Component.translatable("fancynotify.tooltip.player_logins");
-    private static final Component FIELD_GUIDE_NOTIFICATION_TITLE = Component.translatable("fancynotify.label.field_guide.notifications");
-    private static final Component SPECTRUM_MESSAGE_NOTIFICATION_TITLE = Component.translatable("fancynotify.label.spectrum.messages");
-    private static final Component SPECTRUM_REVELATION_NOTIFICATION_TITLE = Component.translatable("fancynotify.label.spectrum.revelations");
-    private static final Component SPECTRUM_UNLOCKED_RECIPE_NOTIFICATION_TITLE = Component.translatable("fancynotify.label.spectrum.unlocked_recipes");
+    private static final Component TITLE = Components.of("title.filters");
+    private static final Component ADVANCEMENTS_NOTIFICATION_TITLE = Components.of("label.advancements");
+    private static final Component RECIPES_NOTIFICATION_TITLE = Components.of("label.recipes");
+    private static final Component MUSIC_NOTIFICATION_TITLE = Components.of("label.musics");
+    private static final Component SCREENSHOT_NOTIFICATION_TITLE = Components.of("label.screenshots");
+    private static final Component SYSTEM_NOTIFICATION_TITLE = Components.of("label.systems");
+    private static final Component WEATHER_NOTIFICATION_TITLE = Components.of("label.weathers");
+    private static final Component BIOME_NOTIFICATION_TITLE = Components.of("label.biomes");
+    private static final Component PLAYER_LOGIN_NOTIFICATION_TITLE = Components.of("label.player_logins");
+    private static final Component PLAYER_LOGIN_NOTIFICATION_TOOLTIP = Components.of("tooltip.player_logins");
+    private static final Component FIELD_GUIDE_NOTIFICATION_TITLE = Components.of("label.field_guide.notifications");
+    private static final Component SPECTRUM_MESSAGE_NOTIFICATION_TITLE = Components.of("label.spectrum.messages");
+    private static final Component SPECTRUM_REVELATION_NOTIFICATION_TITLE = Components.of("label.spectrum.revelations");
+    private static final Component SPECTRUM_UNLOCKED_RECIPE_NOTIFICATION_TITLE = Components.of("label.spectrum.unlocked_recipes");
 
     private final ConfigManager configManager;
 

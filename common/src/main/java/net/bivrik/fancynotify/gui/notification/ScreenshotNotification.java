@@ -3,7 +3,7 @@ package net.bivrik.fancynotify.gui.notification;
 import com.mojang.blaze3d.platform.NativeImage;
 import net.bivrik.fancynotify.api.Notification;
 import net.bivrik.fancynotify.api.NotificationGraphics;
-import net.bivrik.fancynotify.core.Constants;
+import net.bivrik.fancynotify.utility.Components;
 import net.bivrik.fancynotify.utility.ResourceLocations;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.client.renderer.texture.TextureManager;
@@ -17,14 +17,14 @@ public class ScreenshotNotification extends FancyExpandableNotification {
     private static final ResourceLocation BACKGROUND = ResourceLocations.of("notifications/screenshot");
     private static final ResourceLocation SCREENSHOT_PREVIEW = ResourceLocations.of("screenshot_preview");
 
-    private static final Component TITLE = Component.translatable("fancynotify.gui.screenshot.title");
+    private static final Component TITLE = Components.of("gui.screenshot.title");
     private static final int TITLE_COLOR = new Color(43, 181, 43).getRGB();
 
     private final TextureManager textureManager;
     private final DynamicTexture dynamicScreenshotTexture;
 
     public ScreenshotNotification(NativeImage screenshotImage) {
-        super(TITLE, Component.translatable(Constants.MOD_ID + ".gui.screenshot." + ThreadLocalRandom.current().nextInt(3)));
+        super(TITLE, Components.of("gui.screenshot." + ThreadLocalRandom.current().nextInt(3)));
 
         this.textureManager = this.minecraft.getTextureManager();
         this.dynamicScreenshotTexture = new DynamicTexture(screenshotImage);
