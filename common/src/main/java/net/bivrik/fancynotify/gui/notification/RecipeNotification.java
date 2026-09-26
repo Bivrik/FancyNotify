@@ -2,7 +2,6 @@ package net.bivrik.fancynotify.gui.notification;
 
 import net.bivrik.fancynotify.api.Icon;
 import net.bivrik.fancynotify.api.Notification;
-import net.bivrik.fancynotify.api.NotificationContext;
 import net.bivrik.fancynotify.api.NotificationGraphics;
 import net.bivrik.fancynotify.utility.ResourceLocations;
 import net.minecraft.client.Minecraft;
@@ -25,7 +24,7 @@ public class RecipeNotification extends FancyExpandableNotification {
 
     public RecipeNotification(RecipeHolder<?> recipe) {
         super(TITLE, MESSAGE);
-        setIcon(new RecipeIcon(Minecraft.getInstance(), recipe));
+        setIcon(new RecipeIcon(this.minecraft, recipe, getLifeTimeTicks()));
     }
 
     @Override
@@ -54,17 +53,18 @@ public class RecipeNotification extends FancyExpandableNotification {
     private static final class RecipeIcon implements Icon {
         private final Minecraft minecraft;
         private final List<RecipeHolder<?>> recipes = new ArrayList<>();
+        private final float lifeTimeTicks;
 
         private float count = 0;
-        private int orderedIndex = 0;
 
-        public RecipeIcon(Minecraft minecraft, RecipeHolder<?> recipe) {
+        public RecipeIcon(Minecraft minecraft, RecipeHolder<?> recipe, float lifeTimeTicks) {
             this.minecraft = minecraft;
-            recipes.add(recipe);
+            this.recipes.add(recipe);
+            this.lifeTimeTicks = lifeTimeTicks;
         }
 
-        public void addRecipes(List<RecipeHolder<?>> recipes) {
-            this.recipes.addAll(recipes);
+        public void addRecipes(List<RecipeHolder<?>> recipeExpansion) {
+            recipes.addAll(recipeExpansion);
         }
 
         public List<RecipeHolder<?>> getRecipes() {
@@ -72,13 +72,9 @@ public class RecipeNotification extends FancyExpandableNotification {
         }
 
         @Override
-        public void update(NotificationContext context) {
-            count += 1 / 2f;
-            orderedIndex = (int) (count / Math.max(1f, (double) context.getTimeTicks() / recipes.size()) % recipes.size());
-        }
-
-        @Override
         public void draw(NotificationGraphics graphics, int x, int y) {
+            count += 1 / 2.0f;
+            int orderedIndex = (int) (count / Math.max(1.0f, lifeTimeTicks / recipes.size()) % recipes.size());
             var recipe = recipes.get(orderedIndex).value();
             GuiGraphics guiGraphics = graphics.unwrap();
             var stack = guiGraphics.pose();
