@@ -1,7 +1,7 @@
 package net.bivrik.fancynotify.compat.fieldguide.notification;
 
+import net.bivrik.fancynotify.api.Icon;
 import net.bivrik.fancynotify.api.NotificationGraphics;
-import net.bivrik.fancynotify.compat.fieldguide.FieldGuideIconRenderer;
 import net.bivrik.fancynotify.gui.notification.FancyNotification;
 import net.bivrik.fancynotify.utility.ResourceLocations;
 import net.minecraft.network.chat.Component;
@@ -13,13 +13,12 @@ public class FieldGuideNotification extends FancyNotification {
     private static final int MESSAGE_COLOR = 11504732;
 
     private final int titleColor;
-    private final FieldGuideIconRenderer iconRenderer;
 
-    public FieldGuideNotification(Component title, int titleColor, FieldGuideIconRenderer iconRenderer) {
+    public FieldGuideNotification(Component title, int titleColor, Icon icon) {
         super(title, MESSAGE);
+        setIcon(icon);
 
         this.titleColor = titleColor;
-        this.iconRenderer = iconRenderer;
     }
 
     @Override
@@ -32,6 +31,6 @@ public class FieldGuideNotification extends FancyNotification {
         graphics.sprite(BACKGROUND, 0, 0, getWidth(), getHeight());
         graphics.text(getTitle(), getTextOffset(), 7, titleColor);
         graphics.multilineText(getWrappedMessage(), getTextOffset(), 16, MESSAGE_COLOR);
-        iconRenderer.draw(graphics.unwrap(), 16, 17);
+        graphics.icon(getIcon(), 16, 17);
     }
 }

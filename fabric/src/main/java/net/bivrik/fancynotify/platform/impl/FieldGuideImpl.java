@@ -11,8 +11,8 @@ import com.evandev.fieldguide.compat.cobblemon.ClientFieldGuideCobblemonCompat;
 import com.evandev.fieldguide.config.ClientConfig;
 import com.evandev.fieldguide.entry.EntryResolver;
 import com.evandev.fieldguide.variant.FieldGuideVariantManager;
+import net.bivrik.fancynotify.api.Icon;
 import net.bivrik.fancynotify.api.NotificationManager;
-import net.bivrik.fancynotify.compat.fieldguide.FieldGuideIconRenderer;
 import net.bivrik.fancynotify.compat.fieldguide.FieldGuideToastAccessor;
 import net.bivrik.fancynotify.compat.fieldguide.notification.FieldGuideNotification;
 import net.bivrik.fancynotify.platform.Services;
@@ -70,26 +70,26 @@ public class FieldGuideImpl implements FieldGuideApi {
             cachedEntity = null;
         }
 
-        FieldGuideIconRenderer iconRenderer = null;
+        Icon icon = null;
         if (entry instanceof GuideEntry && guideEntry.isStructure() && coreEntry instanceof Block) {
-            iconRenderer = (graphics, x, y) -> EntryRenderHelper.renderStructure(graphics, guideEntry, x, y, 24, true, false, 1.0f);
+            icon = (graphics, x, y) -> EntryRenderHelper.renderStructure(graphics.unwrap(), guideEntry, x, y, 24, true, false, 1.0f);
         } else if (isCobblemon && cachedEntity instanceof LivingEntity) {
-            iconRenderer = (graphics, x, y) -> EntryRenderHelper.renderCobblemon(graphics, (GuideEntry) entry, x, y, 24, 24, true, false, 1.0f, false);
+            icon = (graphics, x, y) -> EntryRenderHelper.renderCobblemon(graphics.unwrap(), (GuideEntry) entry, x, y, 24, 24, true, false, 1.0f, false);
         } else if (isTutorial) {
-            iconRenderer = (graphics, x, y) -> EntryRenderHelper.renderTutorial(graphics, (GuideEntry) entry, x, y, 24, 24, true, false, 1.0f);
+            icon = (graphics, x, y) -> EntryRenderHelper.renderTutorial(graphics.unwrap(), (GuideEntry) entry, x, y, 24, 24, true, false, 1.0f);
         } else if (coreEntry instanceof EntityType<?> && cachedEntity != null) {
-            iconRenderer = (graphics, x, y) -> EntryRenderHelper.renderEntityNormalized(graphics, cachedEntity, x, y, 24, 24, true, false, 1.0f, false);
+            icon = (graphics, x, y) -> EntryRenderHelper.renderEntityNormalized(graphics.unwrap(), cachedEntity, x, y, 24, 24, true, false, 1.0f, false);
         } else if (coreEntry instanceof Block block) {
-            iconRenderer = (graphics, x, y) -> EntryRenderHelper.renderBlock(graphics, block, x, y, 12.0f, true, false, 1.0f);
+            icon = (graphics, x, y) -> EntryRenderHelper.renderBlock(graphics.unwrap(), block, x, y, 12.0f, true, false, 1.0f);
         } else if (coreEntry instanceof Item item) {
-            iconRenderer = (graphics, x, y) -> EntryRenderHelper.renderItem(graphics, item, x, y, 20.0f, true, false, 1.0f);
+            icon = (graphics, x, y) -> EntryRenderHelper.renderItem(graphics.unwrap(), item, x, y, 20.0f, true, false, 1.0f);
         }
 
-        if (iconRenderer == null) {
-            iconRenderer = (graphics, x, y) -> graphics.blit(Constants.TOAST_ICON, 8, 8, 0, 0, 16, 16, 16, 16);
+        if (icon == null) {
+            icon = (graphics, x, y) -> graphics.unwrap().blit(Constants.TOAST_ICON, 8, 8, 0, 0, 16, 16, 16, 16);
         }
 
-        notificationManager.add(new FieldGuideNotification(title, titleColor, iconRenderer));
+        notificationManager.add(new FieldGuideNotification(title, titleColor, icon));
         return true;
     }
 }

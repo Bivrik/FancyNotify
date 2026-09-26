@@ -1,5 +1,6 @@
 package net.bivrik.fancynotify.compat.spectrum.notification;
 
+import net.bivrik.fancynotify.api.ItemIcon;
 import net.bivrik.fancynotify.api.NotificationContext;
 import net.bivrik.fancynotify.api.NotificationGraphics;
 import net.bivrik.fancynotify.gui.notification.FancyNotification;
@@ -19,15 +20,14 @@ public class RevelationNotification extends FancyNotification {
     private static final int TITLE_COLOR = new Color(115, 40, 244).getRGB();
     private static final int MESSAGE_COLOR = new Color(35, 35, 35).getRGB();
 
-    private final ItemStack icon;
     private final SoundEvent sound;
 
     private boolean isSoundPlayed;
 
     public RevelationNotification(ItemStack icon, SoundEvent sound) {
         super(TITLE, MESSAGE);
+        setIcon(new ItemIcon(icon));
 
-        this.icon = icon;
         this.sound = sound;
     }
 
@@ -37,7 +37,7 @@ public class RevelationNotification extends FancyNotification {
     }
 
     @Override
-    public void update(NotificationContext context) {
+    public void onUpdate(NotificationContext context) {
         if (!isSoundPlayed && context.getTimeTicks() > 0) {
             isSoundPlayed = true;
             this.minecraft.getSoundManager().play(SimpleSoundInstance.forUI(sound, 1.0f, 0.6f));
@@ -49,6 +49,6 @@ public class RevelationNotification extends FancyNotification {
         graphics.sprite(BACKGROUND, 0, 0, getWidth(), getHeight());
         graphics.text(getTitle(), getTextOffset(), 7, TITLE_COLOR);
         graphics.multilineText(getWrappedMessage(), getTextOffset(), 18, MESSAGE_COLOR);
-        graphics.unwrap().renderFakeItem(icon, 8, getCenterY() - 8);
+        graphics.icon(getIcon(), 8, getCenterY() - 8);
     }
 }

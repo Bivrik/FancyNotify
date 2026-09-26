@@ -16,6 +16,7 @@ public abstract class Notification {
 
     private Component title;
     private Component message;
+    private Icon icon;
 
     private int preferableWidth;
     private int minWidth;
@@ -29,6 +30,10 @@ public abstract class Notification {
         this.message = message == null ? Component.empty() : message;
 
         minWidth = minecraft.font.width(this.title) + getTextOffset() + 7;
+    }
+
+    protected final void setIcon(Icon icon) {
+        this.icon = icon;
     }
 
     public final void setPreferableWidth(int preferableWidth) {
@@ -48,6 +53,10 @@ public abstract class Notification {
 
     protected final Component getMessage() {
         return message;
+    }
+
+    protected final Icon getIcon() {
+        return icon;
     }
 
     protected final List<FormattedCharSequence> getWrappedMessage() {
@@ -90,7 +99,14 @@ public abstract class Notification {
         return 140;
     }
 
-    public void update(NotificationContext context) {}
+    public final void update(NotificationContext context) {
+        if (this.icon != null) {
+            icon.update(context);
+        }
+        onUpdate(context);
+    }
+
+    protected void onUpdate(NotificationContext context) {}
 
     public void onShowing() {}
 

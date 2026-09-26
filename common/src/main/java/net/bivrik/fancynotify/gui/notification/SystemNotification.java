@@ -2,6 +2,7 @@ package net.bivrik.fancynotify.gui.notification;
 
 import net.bivrik.fancynotify.api.Notification;
 import net.bivrik.fancynotify.api.NotificationGraphics;
+import net.bivrik.fancynotify.api.SpriteIcon;
 import net.bivrik.fancynotify.core.Log;
 import net.bivrik.fancynotify.utility.ResourceLocations;
 import net.minecraft.client.gui.components.toasts.SystemToast;
@@ -20,6 +21,7 @@ public class SystemNotification extends FancyExpandableNotification {
 
     public SystemNotification(Identifier id, Component title, Component description) {
         super(title, description);
+        setIcon(new SpriteIcon(id.sprite(), 20, 20));
 
         this.id = id;
     }
@@ -53,7 +55,7 @@ public class SystemNotification extends FancyExpandableNotification {
         int alignment = Math.min(messageLines.size(), 1);
         graphics.text(getTitle(), getTextOffset(), 8 - alignment, Color.yellow.getRGB());
         graphics.multilineText(messageLines, getTextOffset(), 18, -1);
-        graphics.sprite(id.sprite(), 6, getCenterY() - 10, 20, 20);
+        graphics.icon(getIcon(), 6, getCenterY() - 10);
     }
 
     public enum Identifier {

@@ -24,6 +24,8 @@ public interface NotificationGraphics {
         texture(texture, x, y, width, height, textureWidth, textureHeight, 0, 0, textureWidth, textureHeight);
     }
 
+    void icon(Icon icon, int x, int y);
+
     void text(FormattedCharSequence text, int x, int y, int color);
 
     default void text(Component text, int x, int y, int color) {

@@ -1,6 +1,7 @@
 package net.bivrik.fancynotify.gui.notification;
 
 import com.mojang.blaze3d.platform.NativeImage;
+import net.bivrik.fancynotify.api.Icon;
 import net.bivrik.fancynotify.api.Notification;
 import net.bivrik.fancynotify.api.NotificationGraphics;
 import net.bivrik.fancynotify.utility.Components;
@@ -25,7 +26,7 @@ public class ScreenshotNotification extends FancyExpandableNotification {
 
     public ScreenshotNotification(NativeImage screenshotImage) {
         super(TITLE, Components.of("gui.screenshot." + ThreadLocalRandom.current().nextInt(3)));
-
+        setIcon(new ScreenshotIcon(SCREENSHOT_PREVIEW));
         this.textureManager = this.minecraft.getTextureManager();
         this.dynamicScreenshotTexture = new DynamicTexture(screenshotImage);
     }
@@ -70,12 +71,20 @@ public class ScreenshotNotification extends FancyExpandableNotification {
         graphics.sprite(BACKGROUND, 0, 0, getWidth(), getHeight());
         graphics.text(getTitle(), getTextOffset(), 7, TITLE_COLOR);
         graphics.multilineText(getWrappedMessage(), getTextOffset(), 18, -1);
-        int width = 38;
-        int height = 22;
-        graphics.texture(SCREENSHOT_PREVIEW,
-                5, getCenterY() - height / 2,
-                width, height,
-                width * 4, height * 4,
-                ((width * 4) - width) / 2, ((height * 4) - height) / 2);
+        graphics.icon(getIcon(), 5, getCenterY() - 11);
+    }
+
+    private record ScreenshotIcon(ResourceLocation id) implements Icon {
+        @Override
+        public void draw(NotificationGraphics graphics, int x, int y) {
+            int width = 38;
+            int height = 22;
+            int scaledWidth = width * 4;
+            int scaledHeight = height * 4;
+            graphics.texture(id,
+                    x, y, width, height,
+                    scaledWidth, scaledHeight,
+                    (scaledWidth - width) / 2, (scaledHeight - height) / 2);
+        }
     }
 }

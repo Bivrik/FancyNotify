@@ -1,6 +1,7 @@
 package net.bivrik.fancynotify.gui.notification;
 
 import net.bivrik.fancynotify.FancyNotify;
+import net.bivrik.fancynotify.api.ItemIcon;
 import net.bivrik.fancynotify.api.NotificationContext;
 import net.bivrik.fancynotify.api.NotificationGraphics;
 import net.bivrik.fancynotify.particle.Particle2DSetup;
@@ -23,7 +24,6 @@ public class AdvancementNotification extends FancyNotification {
     private static final Color CHALLENGE_COLOR = new Color(255, 94, 209);
 
     private final AdvancementType type;
-    private final ItemStack icon;
     private final int textColor;
     private final ResourceLocation background;
 
@@ -31,9 +31,9 @@ public class AdvancementNotification extends FancyNotification {
 
     public AdvancementNotification(Component title, AdvancementType type, ItemStack icon) {
         super(type.getDisplayName(), title);
+        setIcon(new ItemIcon(icon));
 
         this.type = type;
-        this.icon = icon;
         switch (type) {
             case GOAL -> {
                 this.textColor = GOAL_COLOR.getRGB();
@@ -61,7 +61,7 @@ public class AdvancementNotification extends FancyNotification {
     }
 
     @Override
-    public void update(NotificationContext context) {
+    public void onUpdate(NotificationContext context) {
         if (!isCelebrated && context.getTimeTicks() >= context.getAnimationDurationTicks() * 0.3f) {
             isCelebrated = true;
 
@@ -101,6 +101,6 @@ public class AdvancementNotification extends FancyNotification {
         graphics.sprite(background, 0, 0, getWidth(), getHeight());
         graphics.text(getTitle(), getTextOffset(), 7, textColor);
         graphics.multilineText(getWrappedMessage(), getTextOffset(), 18, -1);
-        graphics.unwrap().renderFakeItem(icon, 8, getCenterY() - 8);
+        graphics.icon(getIcon(), 8, getCenterY() - 8);
     }
 }

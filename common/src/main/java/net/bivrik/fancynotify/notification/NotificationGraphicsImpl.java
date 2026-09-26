@@ -2,6 +2,7 @@ package net.bivrik.fancynotify.notification;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.ByteBufferBuilder;
+import net.bivrik.fancynotify.api.Icon;
 import net.bivrik.fancynotify.api.NotificationGraphics;
 import net.bivrik.fancynotify.notification.animation.NotificationAnimator;
 import net.minecraft.client.gui.Font;
@@ -37,6 +38,24 @@ public record NotificationGraphicsImpl(GuiGraphics unwrap, Font font, Notificati
         RenderSystem.enableBlend();
         unwrap.setColor(1, 1, 1, animator.getAlpha());
         unwrap.blit(texture, x, y, width, height, uOffset, vOffset, uWidth, vHeight, textureWidth, textureHeight);
+        unwrap.setColor(1, 1, 1, 1);
+        RenderSystem.disableBlend();
+    }
+
+    @Override
+    public void icon(Icon icon, int x, int y) {
+        if (icon == null) {
+            return;
+        }
+
+        if (animator.getAlpha() == 1) {
+            icon.draw(this, x, y);
+            return;
+        }
+
+        RenderSystem.enableBlend();
+        unwrap.setColor(1, 1, 1, animator.getAlpha());
+        icon.draw(this, x, y);
         unwrap.setColor(1, 1, 1, 1);
         RenderSystem.disableBlend();
     }
