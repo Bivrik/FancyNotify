@@ -16,6 +16,7 @@ import java.util.Map;
 
 public class SystemNotification extends FancyExpandableNotification {
     private static final ResourceLocation BACKGROUND = ResourceLocations.of("notifications/system");
+    private static final int TITLE_COLOR = Color.yellow.getRGB();
 
     private final Identifier id;
 
@@ -53,7 +54,7 @@ public class SystemNotification extends FancyExpandableNotification {
         graphics.sprite(BACKGROUND, 0, 0, getWidth(), getHeight());
         List<FormattedCharSequence> messageLines = getWrappedMessage();
         int alignment = Math.min(messageLines.size(), 1);
-        graphics.text(getTitle(), getTextOffset(), 8 - alignment, Color.yellow.getRGB());
+        graphics.text(getTitle(), getTextOffset(), 8 - alignment, TITLE_COLOR);
         graphics.multilineText(messageLines, getTextOffset(), 18, -1);
         graphics.icon(getIcon(), 6, getCenterY() - 10);
     }
