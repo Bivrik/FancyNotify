@@ -34,5 +34,5 @@ public interface NotificationGraphics {
         text(FormattedCharSequence.forward(text, Style.EMPTY), x, y, color);
     }
 
-    void multiline(List<FormattedCharSequence> wrappedText, int x, int y, int color);
+    void multilineText(List<FormattedCharSequence> wrappedText, int x, int y, int color);
 }

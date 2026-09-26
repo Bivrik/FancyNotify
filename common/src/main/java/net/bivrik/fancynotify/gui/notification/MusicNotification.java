@@ -24,7 +24,7 @@ public class MusicNotification extends FancyNotification {
     public void render(NotificationGraphics graphics, float partialTick) {
         graphics.sprite(BACKGROUND, 0, 0, getWidth(), getHeight());
         graphics.text(getTitle(), getTextOffset(), 7, Color.cyan.getRGB());
-        graphics.multiline(getWrappedMessage(), getTextOffset(), 18, -1);
+        graphics.multilineText(getWrappedMessage(), getTextOffset(), 18, -1);
         graphics.sprite(ICON, 4, getCenterY() - 10, 21, 21);
     }
 }

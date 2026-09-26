@@ -49,7 +49,7 @@ public class UnlockedRecipeNotification extends FancyNotification {
         countTemp += 1 / 2f;
         graphics.sprite(BACKGROUND, 0, 0, getWidth(), getHeight());
         graphics.text(getTitle(), getTextOffset(), 7, TITLE_COLOR);
-        graphics.multiline(getWrappedMessage(), getTextOffset(), 18, MESSAGE_COLOR);
+        graphics.multilineText(getWrappedMessage(), getTextOffset(), 18, MESSAGE_COLOR);
         int orderedIndex = (int) (countTemp / Math.max(1f, (double) getLifeTimeTicks() / icons.size()) % icons.size());
         graphics.unwrap().renderFakeItem(icons.get(orderedIndex), 8, getCenterY() - 8);
     }

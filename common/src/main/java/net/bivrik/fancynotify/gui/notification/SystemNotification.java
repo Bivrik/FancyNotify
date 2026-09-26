@@ -52,7 +52,7 @@ public class SystemNotification extends FancyExpandableNotification {
         List<FormattedCharSequence> messageLines = getWrappedMessage();
         int alignment = Math.min(messageLines.size(), 1);
         graphics.text(getTitle(), getTextOffset(), 8 - alignment, Color.yellow.getRGB());
-        graphics.multiline(messageLines, getTextOffset(), 18, -1);
+        graphics.multilineText(messageLines, getTextOffset(), 18, -1);
         graphics.sprite(id.sprite(), 6, getCenterY() - 10, 20, 20);
     }
 

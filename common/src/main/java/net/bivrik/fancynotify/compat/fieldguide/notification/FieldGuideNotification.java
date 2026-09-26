@@ -31,7 +31,7 @@ public class FieldGuideNotification extends FancyNotification {
     public void render(NotificationGraphics graphics, float partialTick) {
         graphics.sprite(BACKGROUND, 0, 0, getWidth(), getHeight());
         graphics.text(getTitle(), getTextOffset(), 7, titleColor);
-        graphics.multiline(getWrappedMessage(), getTextOffset(), 16, MESSAGE_COLOR);
+        graphics.multilineText(getWrappedMessage(), getTextOffset(), 16, MESSAGE_COLOR);
         iconRenderer.draw(graphics.unwrap(), 16, 17);
     }
 }

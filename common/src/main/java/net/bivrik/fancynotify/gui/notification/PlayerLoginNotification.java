@@ -33,7 +33,7 @@ public class PlayerLoginNotification extends FancyNotification {
     public void render(NotificationGraphics graphics, float partialTick) {
         graphics.sprite(BACKGROUND, 0, 0, getWidth(), getHeight());
         graphics.text(getTitle(), getTextOffset(), 7, TITLE_COLOR);
-        graphics.multiline(getWrappedMessage(), getTextOffset(), 18, -1);
+        graphics.multilineText(getWrappedMessage(), getTextOffset(), 18, -1);
         graphics.texture(playerTexture, 8, 8, 16, 16, 64, 64, 8, 8, 8, 8);
         if (hasHat) {
             RenderSystem.enableBlend();

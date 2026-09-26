@@ -48,7 +48,7 @@ public class RevelationNotification extends FancyNotification {
     public void render(NotificationGraphics graphics, float partialTick) {
         graphics.sprite(BACKGROUND, 0, 0, getWidth(), getHeight());
         graphics.text(getTitle(), getTextOffset(), 7, TITLE_COLOR);
-        graphics.multiline(getWrappedMessage(), getTextOffset(), 18, MESSAGE_COLOR);
+        graphics.multilineText(getWrappedMessage(), getTextOffset(), 18, MESSAGE_COLOR);
         graphics.unwrap().renderFakeItem(icon, 8, getCenterY() - 8);
     }
 }

@@ -71,7 +71,7 @@ public record NotificationGraphicsImpl(GuiGraphics unwrap, Font font, Notificati
     }
 
     @Override
-    public void multiline(List<FormattedCharSequence> wrappedText, int x, int y, int color) {
+    public void multilineText(List<FormattedCharSequence> wrappedText, int x, int y, int color) {
         for (int i = 0; i < wrappedText.size(); i++) {
             FormattedCharSequence line = wrappedText.get(i);
             text(line, x, y + i * 9, color);
