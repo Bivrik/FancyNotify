@@ -1,6 +1,6 @@
 package net.bivrik.fancynotify.platform;
 
-public interface IPlatformHelper {
+public interface PlatformHelper {
 
     String getName();
 

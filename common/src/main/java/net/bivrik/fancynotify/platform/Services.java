@@ -1,8 +1,8 @@
 package net.bivrik.fancynotify.platform;
 
 import net.bivrik.fancynotify.core.Log;
-import net.bivrik.fancynotify.platform.api.IFieldGuideApi;
-import net.bivrik.fancynotify.platform.api.ISpectrumApi;
+import net.bivrik.fancynotify.platform.api.FieldGuideApi;
+import net.bivrik.fancynotify.platform.api.SpectrumApi;
 import net.bivrik.fancynotify.platform.fallback.FieldGuideFallback;
 import net.bivrik.fancynotify.platform.fallback.SpectrumFallback;
 
@@ -20,11 +20,11 @@ public final class Services {
     private static final org.slf4j.Logger LOGGER = Log.getSpecificLogger(Services.class);
 
     // Must-have services. Platform has to be loaded
-    public static final IPlatformHelper PLATFORM = load(IPlatformHelper.class);
+    public static final PlatformHelper PLATFORM = load(PlatformHelper.class);
 
     // Optional services. Can have fallback implementation
-    public static final ISpectrumApi SPECTRUM = loadOptional(ISpectrumApi.class, SpectrumFallback::new);
-    public static final IFieldGuideApi FIELD_GUIDE = loadOptional(IFieldGuideApi.class, FieldGuideFallback::new);
+    public static final SpectrumApi SPECTRUM = loadOptional(SpectrumApi.class, SpectrumFallback::new);
+    public static final FieldGuideApi FIELD_GUIDE = loadOptional(FieldGuideApi.class, FieldGuideFallback::new);
 
     // Loads a service that has implementation in every mod loader
     private static <T> T load(final Class<T> clazz) {

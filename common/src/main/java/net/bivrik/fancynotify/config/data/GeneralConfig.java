@@ -2,16 +2,16 @@ package net.bivrik.fancynotify.config.data;
 
 import net.bivrik.fancynotify.FancyNotify;
 import net.bivrik.fancynotify.config.ConfigManager;
-import net.bivrik.fancynotify.config.IListenerRegistrar;
+import net.bivrik.fancynotify.config.ListenerRegistrar;
 import net.bivrik.fancynotify.config.Setting;
 import net.bivrik.fancynotify.eventbus.event.NotificationWidthChangedEvent;
-import net.bivrik.fancynotify.notification.NotificationAnimator;
+import net.bivrik.fancynotify.notification.animation.NotificationAnimator;
 import net.bivrik.fancynotify.notification.animation.QuirkyAnimation;
 import net.bivrik.fancynotify.notification.animation.TopDownAnimation;
 import net.bivrik.fancynotify.notification.animation.VanillaAnimation;
 import net.minecraft.network.chat.Component;
 
-public class GeneralConfig extends Config implements IListenerRegistrar {
+public class GeneralConfig extends Config implements ListenerRegistrar {
     private static final String GENERAL_CONFIG_PATH = ConfigManager.CONFIG_FOLDER_PATH + "general.json";
 
     public GeneralConfig() {

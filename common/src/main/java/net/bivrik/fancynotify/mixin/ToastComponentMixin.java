@@ -1,7 +1,7 @@
 package net.bivrik.fancynotify.mixin;
 
 import net.bivrik.fancynotify.FancyNotify;
-import net.bivrik.fancynotify.accessor.IAdvancementHolderAccessor;
+import net.bivrik.fancynotify.accessor.AdvancementHolderAccessor;
 import net.bivrik.fancynotify.api.NotificationManager;
 import net.bivrik.fancynotify.core.Constants;
 import net.bivrik.fancynotify.core.Log;
@@ -45,7 +45,7 @@ public class ToastComponentMixin {
         }
 
         if (toast instanceof AdvancementToast) {
-            Optional<DisplayInfo> optionalDisplay = ((IAdvancementHolderAccessor) toast).getAdvancementHolder().value().display();
+            Optional<DisplayInfo> optionalDisplay = ((AdvancementHolderAccessor) toast).getAdvancementHolder().value().display();
             optionalDisplay.ifPresent(display -> manager.add(new AdvancementNotification(display.getTitle(), display.getType(), display.getIcon())));
             info.cancel();
             return;

@@ -1,7 +1,6 @@
 package net.bivrik.fancynotify.notification.animation;
 
 import net.bivrik.fancynotify.config.data.GeneralConfig;
-import net.bivrik.fancynotify.notification.NotificationAnimator;
 import net.bivrik.fancynotify.notification.NotificationState;
 
 public class TopDownAnimation extends NotificationAnimator {

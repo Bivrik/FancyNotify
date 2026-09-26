@@ -7,7 +7,7 @@ import net.bivrik.fancynotify.config.ConfigManager;
 import net.bivrik.fancynotify.core.Constants;
 import net.bivrik.fancynotify.core.Log;
 import net.bivrik.fancynotify.eventbus.EventBus;
-import net.bivrik.fancynotify.eventbus.IEventBus;
+import net.bivrik.fancynotify.eventbus.EventBusImpl;
 import net.bivrik.fancynotify.notification.NotificationEngine;
 import net.bivrik.fancynotify.notification.NotificationEngineImpl;
 import net.bivrik.fancynotify.particle.Particle2DEngine;
@@ -23,7 +23,7 @@ public final class FancyNotify {
 
     private static final FancyNotify INSTANCE = new FancyNotify();
 
-    public static final IEventBus EVENT_BUS = new EventBus();
+    public static final EventBus EVENT_BUS = new EventBusImpl();
 
     private ConfigManager configManager;
     private NotificationEngine notificationEngine;

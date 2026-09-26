@@ -4,7 +4,7 @@ import net.bivrik.fancynotify.core.Constants;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.loading.FMLLoader;
 
-public class NeoForgePlatformHelper implements IPlatformHelper {
+public class NeoForgePlatformHelper implements PlatformHelper {
     @Override
     public String getName() {
         return Constants.NEOFORGE_NAME;

@@ -3,6 +3,7 @@ package net.bivrik.fancynotify.notification;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.ByteBufferBuilder;
 import net.bivrik.fancynotify.api.NotificationGraphics;
+import net.bivrik.fancynotify.notification.animation.NotificationAnimator;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.MultiBufferSource;

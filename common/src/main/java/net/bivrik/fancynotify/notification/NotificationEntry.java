@@ -9,6 +9,7 @@ import net.bivrik.fancynotify.config.ConfigManager;
 import net.bivrik.fancynotify.config.data.GeneralConfig;
 import net.bivrik.fancynotify.eventbus.SubscribeEvent;
 import net.bivrik.fancynotify.eventbus.event.NotificationWidthChangedEvent;
+import net.bivrik.fancynotify.notification.animation.NotificationAnimator;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;

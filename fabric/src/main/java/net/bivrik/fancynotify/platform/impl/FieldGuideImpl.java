@@ -16,7 +16,7 @@ import net.bivrik.fancynotify.compat.fieldguide.FieldGuideIconRenderer;
 import net.bivrik.fancynotify.compat.fieldguide.FieldGuideToastAccessor;
 import net.bivrik.fancynotify.compat.fieldguide.notification.FieldGuideNotification;
 import net.bivrik.fancynotify.platform.Services;
-import net.bivrik.fancynotify.platform.api.IFieldGuideApi;
+import net.bivrik.fancynotify.platform.api.FieldGuideApi;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.toasts.Toast;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -29,7 +29,7 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 
-public class FieldGuideImpl implements IFieldGuideApi {
+public class FieldGuideImpl implements FieldGuideApi {
     @Override
     public boolean tryHandleToast(Toast toast, NotificationManager notificationManager) {
         if (!(toast instanceof FieldGuideToast)) return false;

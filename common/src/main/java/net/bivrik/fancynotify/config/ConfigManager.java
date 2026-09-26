@@ -53,7 +53,7 @@ public class ConfigManager {
         }
         LOGGER.info("Successfully read config {}", configClass.getSimpleName());
         T result = optionalConfig.get();
-        if (result instanceof IListenerRegistrar listenerRegistrar) {
+        if (result instanceof ListenerRegistrar listenerRegistrar) {
             listenerRegistrar.registerListeners();
         }
         LOGGER.info(result.toString());

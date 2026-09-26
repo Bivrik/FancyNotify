@@ -1,5 +1,5 @@
 package net.bivrik.fancynotify.config;
 
-public interface IListenerRegistrar {
+public interface ListenerRegistrar {
     void registerListeners();
 }

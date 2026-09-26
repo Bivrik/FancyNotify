@@ -4,7 +4,7 @@ import net.bivrik.fancynotify.core.Constants;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.loading.FMLLoader;
 
-public class ForgePlatformHelper implements IPlatformHelper {
+public class ForgePlatformHelper implements PlatformHelper {
     @Override
     public String getName() {
         return Constants.FORGE_NAME;

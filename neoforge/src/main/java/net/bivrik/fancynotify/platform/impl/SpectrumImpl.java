@@ -10,10 +10,10 @@ import net.bivrik.fancynotify.compat.spectrum.UnlockedRecipeToastAccessor;
 import net.bivrik.fancynotify.compat.spectrum.notification.MessageNotification;
 import net.bivrik.fancynotify.compat.spectrum.notification.RevelationNotification;
 import net.bivrik.fancynotify.compat.spectrum.notification.UnlockedRecipeNotification;
-import net.bivrik.fancynotify.platform.api.ISpectrumApi;
+import net.bivrik.fancynotify.platform.api.SpectrumApi;
 import net.minecraft.client.gui.components.toasts.Toast;
 
-public class SpectrumImpl implements ISpectrumApi {
+public class SpectrumImpl implements SpectrumApi {
     @Override
     public boolean tryHandleMessageToast(Toast toast, NotificationManager notificationManager) {
         if (!(toast instanceof MessageToast)) {
