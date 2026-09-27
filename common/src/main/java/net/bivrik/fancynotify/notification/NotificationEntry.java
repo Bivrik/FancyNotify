@@ -22,8 +22,10 @@ public class NotificationEntry implements NotificationStateMachine.Listener {
     protected final Minecraft minecraft;
     protected final GeneralConfig config;
     private final Notification content;
+
     protected float timeTicks = 0;
     protected float offsetTicks = 0;
+    private boolean shouldRemove;
 
     public NotificationEntry(Notification content, Minecraft minecraft, ConfigManager configManager) {
         this.minecraft = minecraft;
@@ -65,12 +67,12 @@ public class NotificationEntry implements NotificationStateMachine.Listener {
         return content.getLifeTimeTicks();
     }
 
-    public final boolean shouldRemove() {
-        return stateMachine.isInState(NotificationState.REMOVAL);
-    }
-
     public final void forceHide() {
         stateMachine.hide();
+    }
+
+    public final boolean shouldRemove() {
+        return shouldRemove;
     }
 
     public boolean tryMerge(Notification other) {
@@ -99,6 +101,7 @@ public class NotificationEntry implements NotificationStateMachine.Listener {
     public void onRemoval() {
         FancyNotify.EVENT_BUS.unregister(this);
         content.onRemoval();
+        shouldRemove = true;
     }
 
     public void update(float deltaTicks, float globalX, float globalY) {
