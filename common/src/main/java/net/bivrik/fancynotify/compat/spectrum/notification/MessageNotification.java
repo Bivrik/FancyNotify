@@ -35,7 +35,7 @@ public class MessageNotification extends FancyNotification {
     }
 
     @Override
-    public void update(NotificationContext context) {
+    public void onUpdate(NotificationContext context) {
         if (!isSoundPlayed && context.getTimeTicks() > 0) {
             isSoundPlayed = true;
             this.minecraft.getSoundManager().play(SimpleSoundInstance.forUI(sound, 1.0f, 0.75f));

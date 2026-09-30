@@ -100,7 +100,9 @@ public abstract class Notification {
         return 140;
     }
 
-    public void update(NotificationContext context) {}
+    public final void update(NotificationContext context) {
+        onUpdate(context);
+    }
 
     public void onShowing() {}
 
@@ -109,6 +111,8 @@ public abstract class Notification {
     public void onHiding() {}
 
     public void onRemoval() {}
+
+    protected void onUpdate(NotificationContext context) {}
 
     public abstract void render(NotificationGraphics graphics, float partialTick);
 }
