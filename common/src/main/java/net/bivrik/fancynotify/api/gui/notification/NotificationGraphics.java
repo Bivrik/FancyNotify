@@ -87,7 +87,7 @@ public interface NotificationGraphics {
      * @param text the text to draw
      * @param x left edge
      * @param y top edge
-     * @param color the text color in packed RGBA
+     * @param color the text color in packed ARGB
      */
     void text(FormattedCharSequence text, int x, int y, int color);
 
@@ -115,7 +115,7 @@ public interface NotificationGraphics {
      * @param wrappedText the lines to draw
      * @param x left edge
      * @param y top edge
-     * @param color the text color in packed RGBA
+     * @param color the text color in packed ARGB
      */
     void multilineText(List<FormattedCharSequence> wrappedText, int x, int y, int color);
 }
