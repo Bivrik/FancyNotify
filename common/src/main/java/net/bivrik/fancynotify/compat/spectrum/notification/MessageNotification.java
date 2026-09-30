@@ -4,6 +4,7 @@ import net.bivrik.fancynotify.api.gui.icon.ItemIcon;
 import net.bivrik.fancynotify.api.gui.notification.NotificationContext;
 import net.bivrik.fancynotify.api.gui.notification.NotificationGraphics;
 import net.bivrik.fancynotify.gui.notification.FancyNotification;
+import net.bivrik.fancynotify.utility.Color;
 import net.bivrik.fancynotify.utility.ResourceLocations;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
@@ -11,12 +12,10 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.ItemStack;
 
-import java.awt.*;
-
 public class MessageNotification extends FancyNotification {
     private static final ResourceLocation BACKGROUND = ResourceLocations.of("notifications/spectrum/message");
-    private static final int TITLE_COLOR = new Color(115, 40, 244).getRGB();
-    private static final int MESSAGE_COLOR = new Color(35, 35, 35).getRGB();
+    private static final int TITLE_COLOR = Color.create(115, 40, 244);
+    private static final int MESSAGE_COLOR = Color.create(35, 35, 35);
 
     private final SoundEvent sound;
 

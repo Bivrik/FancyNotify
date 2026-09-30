@@ -4,19 +4,19 @@ import net.bivrik.fancynotify.api.gui.icon.SpriteIcon;
 import net.bivrik.fancynotify.api.gui.notification.Notification;
 import net.bivrik.fancynotify.api.gui.notification.NotificationGraphics;
 import net.bivrik.fancynotify.core.Log;
+import net.bivrik.fancynotify.utility.Color;
 import net.bivrik.fancynotify.utility.ResourceLocations;
 import net.minecraft.client.gui.components.toasts.SystemToast;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
 
-import java.awt.*;
 import java.util.List;
 import java.util.Map;
 
 public class SystemNotification extends FancyExpandableNotification {
     private static final ResourceLocation BACKGROUND = ResourceLocations.of("notifications/system");
-    private static final int TITLE_COLOR = Color.yellow.getRGB();
+    private static final int TITLE_COLOR = Color.YELLOW;
 
     private final Identifier id;
 

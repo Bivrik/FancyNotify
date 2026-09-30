@@ -5,6 +5,7 @@ import net.bivrik.fancynotify.api.gui.icon.ItemIcon;
 import net.bivrik.fancynotify.api.gui.notification.NotificationContext;
 import net.bivrik.fancynotify.api.gui.notification.NotificationGraphics;
 import net.bivrik.fancynotify.particle.Particle2DSetup;
+import net.bivrik.fancynotify.utility.Color;
 import net.bivrik.fancynotify.utility.ResourceLocations;
 import net.minecraft.advancements.AdvancementType;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
@@ -13,15 +14,13 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.ItemStack;
 
-import java.awt.*;
-
 public class AdvancementNotification extends FancyNotification {
     private static final ResourceLocation TASK_BACKGROUND = ResourceLocations.of("notifications/task");
     private static final ResourceLocation GOAL_BACKGROUND = ResourceLocations.of("notifications/goal");
     private static final ResourceLocation CHALLENGE_BACKGROUND = ResourceLocations.of("notifications/challenge");
-    private static final Color TASK_COLOR = Color.yellow;
-    private static final Color GOAL_COLOR = Color.cyan;
-    private static final Color CHALLENGE_COLOR = new Color(255, 94, 209);
+    private static final int TASK_COLOR = Color.YELLOW;
+    private static final int GOAL_COLOR = Color.CYAN;
+    private static final int CHALLENGE_COLOR = Color.create(255, 94, 209);
 
     private final AdvancementType type;
     private final int textColor;
@@ -36,15 +35,15 @@ public class AdvancementNotification extends FancyNotification {
         this.type = type;
         switch (type) {
             case GOAL -> {
-                this.textColor = GOAL_COLOR.getRGB();
+                this.textColor = GOAL_COLOR;
                 this.background = GOAL_BACKGROUND;
             }
             case CHALLENGE -> {
-                this.textColor = CHALLENGE_COLOR.getRGB();
+                this.textColor = CHALLENGE_COLOR;
                 this.background = CHALLENGE_BACKGROUND;
             }
             default -> {
-                this.textColor = TASK_COLOR.getRGB();
+                this.textColor = TASK_COLOR;
                 this.background = TASK_BACKGROUND;
             }
         }

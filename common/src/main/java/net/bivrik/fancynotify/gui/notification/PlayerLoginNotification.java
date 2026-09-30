@@ -3,17 +3,16 @@ package net.bivrik.fancynotify.gui.notification;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.bivrik.fancynotify.api.gui.icon.Icon;
 import net.bivrik.fancynotify.api.gui.notification.NotificationGraphics;
+import net.bivrik.fancynotify.utility.Color;
 import net.bivrik.fancynotify.utility.Components;
 import net.bivrik.fancynotify.utility.ResourceLocations;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
-import java.awt.*;
-
 public class PlayerLoginNotification extends FancyNotification {
     private static final ResourceLocation BACKGROUND = ResourceLocations.of("notifications/player_login");
     private static final Component MESSAGE = Components.of("gui.player_login.message");
-    private static final int TITLE_COLOR = Color.yellow.getRGB();
+    private static final int TITLE_COLOR = Color.YELLOW;
 
     public PlayerLoginNotification(String playerName, ResourceLocation playerTextures, boolean hasHat) {
         super(Component.literal(playerName), MESSAGE);

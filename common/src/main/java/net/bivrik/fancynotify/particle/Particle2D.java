@@ -4,14 +4,12 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.gui.GuiGraphics;
 
-import java.awt.*;
-
 public class Particle2D {
     private boolean isAlive = true;
     private int timeTicks;
     private final int lifetimeTicks;
 
-    private final Color color;
+    private final int color;
 
     private float previousX;
     private float previousY;
@@ -27,7 +25,7 @@ public class Particle2D {
     private final float startScale;
     private final float endScale;
 
-    public Particle2D(int lifetimeTicks, float spawnX, float spawnY, int angle, float speed, float movementFriction, int startRotation, int endRotation, float startScale, float endScale, Color color) {
+    public Particle2D(int lifetimeTicks, float spawnX, float spawnY, int angle, float speed, float movementFriction, int startRotation, int endRotation, float startScale, float endScale, int color) {
         this.lifetimeTicks = Math.max(lifetimeTicks, 0);
         this.movementFriction = Math.clamp(1.0f - movementFriction, 0, 1);
         this.color = color;
@@ -92,7 +90,7 @@ public class Particle2D {
         stack.translate(renderX, renderY, 0);
         stack.scale(renderScale, renderScale, 1);
         stack.rotateAround(Axis.ZP.rotationDegrees(renderRotation), 0, 0, 0);
-        guiGraphics.fill(-2, -2, 2, 2, color.getRGB());
+        guiGraphics.fill(-2, -2, 2, 2, color);
         stack.popPose();
     }
 }

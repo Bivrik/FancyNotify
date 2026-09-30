@@ -2,19 +2,18 @@ package net.bivrik.fancynotify.gui.screen;
 
 import net.bivrik.fancynotify.FancyNotify;
 import net.bivrik.fancynotify.core.Constants;
+import net.bivrik.fancynotify.utility.Color;
 import net.bivrik.fancynotify.utility.Components;
 import net.bivrik.fancynotify.utility.ResourceLocations;
 import net.minecraft.Util;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.*;
-import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.ConfirmLinkScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 
-import java.awt.*;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -116,7 +115,7 @@ public class FancyNotifyScreen extends UniversalScreen {
         stack.translate(x, y, 0);
         stack.scale(size, size, 1);
         stack.translate(-x, -y, 0);
-        guiGraphics.drawCenteredString(this.font, splash, this.width / 2, 12 + 9, Color.yellow.getRGB());
+        guiGraphics.drawCenteredString(this.font, splash, this.width / 2, 12 + 9, Color.YELLOW);
         stack.popPose();
     }
 }

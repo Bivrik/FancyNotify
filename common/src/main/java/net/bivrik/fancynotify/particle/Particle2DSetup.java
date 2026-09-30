@@ -1,7 +1,6 @@
 package net.bivrik.fancynotify.particle;
 
-
-import java.awt.*;
+import net.bivrik.fancynotify.utility.Color;
 
 public class Particle2DSetup {
     public final int lifetimeTicks;
@@ -23,7 +22,7 @@ public class Particle2DSetup {
     public final float spreadStartScale;
     public final float endScale;
     public final float spreadEndScale;
-    public final Color color;
+    public final int color;
 
     private Particle2DSetup(Builder builder) {
         this.lifetimeTicks = builder.lifetimeTicks;
@@ -68,7 +67,7 @@ public class Particle2DSetup {
         private float spreadStartScale = 0.25f;
         private float endScale = 0;
         private float spreadEndScale = 0;
-        private Color color = Color.white;
+        private int color = Color.WHITE;
 
         public Builder(int lifetimeTicks, float x, float y) {
             this.lifetimeTicks = lifetimeTicks;
@@ -156,7 +155,7 @@ public class Particle2DSetup {
             return this;
         }
 
-        public Builder color(Color color) {
+        public Builder color(int color) {
             this.color = color;
             return this;
         }

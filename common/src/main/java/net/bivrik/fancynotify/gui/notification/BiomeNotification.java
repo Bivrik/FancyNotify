@@ -4,18 +4,17 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.bivrik.fancynotify.api.gui.icon.ItemIcon;
 import net.bivrik.fancynotify.api.gui.notification.Notification;
 import net.bivrik.fancynotify.api.gui.notification.NotificationGraphics;
+import net.bivrik.fancynotify.utility.Color;
 import net.bivrik.fancynotify.utility.ResourceLocations;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
-import java.awt.*;
-
 public class BiomeNotification extends FancyExpandableNotification {
     private static final ResourceLocation BACKGROUND = ResourceLocations.of("notifications/biome");
     private static final Component MESSAGE = Component.empty();
-    private static final int TITLE_COLOR = new Color(41, 92, 38).getRGB();
+    private static final int TITLE_COLOR = Color.create(41, 92, 38);
 
     public BiomeNotification(Component biomeName, ItemStack icon) {
         super(biomeName, Component.empty());

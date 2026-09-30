@@ -1,6 +1,7 @@
 package net.bivrik.fancynotify.gui;
 
 import net.bivrik.fancynotify.CreditsManager;
+import net.bivrik.fancynotify.utility.Color;
 import net.bivrik.fancynotify.utility.Components;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -11,7 +12,6 @@ import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.glfw.GLFW;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -137,7 +137,7 @@ public class CreditsList extends AbstractSelectionList<CreditsList.Entry> {
 
         @Override
         public void render(@NotNull GuiGraphics guiGraphics, int index, int y, int x, int width, int height, int mouseX, int mouseY, boolean isHovering, float partialTick) {
-            guiGraphics.drawCenteredString(font, displayName, xCenter, y, Color.yellow.getRGB());
+            guiGraphics.drawCenteredString(font, displayName, xCenter, y, Color.YELLOW);
         }
     }
 
@@ -159,10 +159,10 @@ public class CreditsList extends AbstractSelectionList<CreditsList.Entry> {
 
         @Override
         public void render(@NotNull GuiGraphics guiGraphics, int index, int y, int x, int width, int height, int mouseX, int mouseY, boolean isHovering, float partialTick) {
-            guiGraphics.drawString(this.font, this.content, x, y, Color.white.getRGB());
+            guiGraphics.drawString(this.font, this.content, x, y, -1);
 
             if (isValidAnnotation) {
-                guiGraphics.drawString(this.font, annotation, x + font.width(this.content) + 8, y, Color.lightGray.getRGB());
+                guiGraphics.drawString(this.font, annotation, x + font.width(this.content) + 8, y, Color.LIGHT_GRAY);
             }
         }
     }

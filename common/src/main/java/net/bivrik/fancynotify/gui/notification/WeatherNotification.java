@@ -3,17 +3,16 @@ package net.bivrik.fancynotify.gui.notification;
 import net.bivrik.fancynotify.api.gui.icon.SpriteIcon;
 import net.bivrik.fancynotify.api.gui.notification.Notification;
 import net.bivrik.fancynotify.api.gui.notification.NotificationGraphics;
+import net.bivrik.fancynotify.utility.Color;
 import net.bivrik.fancynotify.utility.ResourceLocations;
 import net.bivrik.fancynotify.weather.WeatherType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
-import java.awt.*;
-
 public class WeatherNotification extends FancyExpandableNotification {
     private static final ResourceLocation BACKGROUND = ResourceLocations.of("notifications/weather");
     private static final Component MESSAGE = Component.empty();
-    private static final int TITLE_COLOR = new Color(174, 203, 255).getRGB();
+    private static final int TITLE_COLOR = Color.create(174, 203, 255);
 
     public WeatherNotification(WeatherType weather) {
         super(weather.getDisplayName(), MESSAGE);

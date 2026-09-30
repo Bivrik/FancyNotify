@@ -4,6 +4,7 @@ import com.mojang.blaze3d.platform.NativeImage;
 import net.bivrik.fancynotify.api.gui.icon.Icon;
 import net.bivrik.fancynotify.api.gui.notification.Notification;
 import net.bivrik.fancynotify.api.gui.notification.NotificationGraphics;
+import net.bivrik.fancynotify.utility.Color;
 import net.bivrik.fancynotify.utility.Components;
 import net.bivrik.fancynotify.utility.ResourceLocations;
 import net.minecraft.client.renderer.texture.DynamicTexture;
@@ -11,14 +12,13 @@ import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
-import java.awt.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class ScreenshotNotification extends FancyExpandableNotification {
     private static final ResourceLocation BACKGROUND = ResourceLocations.of("notifications/screenshot");
     private static final ResourceLocation SCREENSHOT_PREVIEW = ResourceLocations.of("screenshot_preview");
     private static final Component TITLE = Components.of("gui.screenshot.title");
-    private static final int TITLE_COLOR = new Color(43, 181, 43).getRGB();
+    private static final int TITLE_COLOR = Color.create(43, 181, 43);
 
     private final TextureManager textureManager;
     private final DynamicTexture dynamicScreenshotTexture;

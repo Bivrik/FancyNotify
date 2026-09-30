@@ -3,6 +3,7 @@ package net.bivrik.fancynotify.gui.notification;
 import net.bivrik.fancynotify.api.gui.icon.Icon;
 import net.bivrik.fancynotify.api.gui.notification.Notification;
 import net.bivrik.fancynotify.api.gui.notification.NotificationGraphics;
+import net.bivrik.fancynotify.utility.Color;
 import net.bivrik.fancynotify.utility.ResourceLocations;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -10,7 +11,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeHolder;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -19,8 +19,8 @@ public class RecipeNotification extends FancyExpandableNotification {
     private static final ResourceLocation BACKGROUND = ResourceLocations.of("notifications/recipe");
     private static final Component TITLE = Component.translatable("recipe.toast.title");
     private static final Component MESSAGE = Component.translatable("recipe.toast.description");
-    private static final int TITLE_COLOR = new Color(119, 0, 119).getRGB();
-    private static final int MESSAGE_COLOR = Color.black.getRGB();
+    private static final int TITLE_COLOR = Color.create(119, 0, 119);
+    private static final int MESSAGE_COLOR = Color.BLACK;
 
     public RecipeNotification(RecipeHolder<?> recipe) {
         super(TITLE, MESSAGE);
