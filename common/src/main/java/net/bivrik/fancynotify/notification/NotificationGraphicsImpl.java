@@ -48,16 +48,10 @@ public record NotificationGraphicsImpl(GuiGraphics unwrap, Font font, Notificati
             return;
         }
 
-        if (animator.getAlpha() == 1) {
-            icon.draw(this, x, y);
-            return;
-        }
-
-        RenderSystem.enableBlend();
-        unwrap.setColor(1, 1, 1, animator.getAlpha());
+        // Do something with this, alpha somehow gets leaked TO ALL THE TEXT in-game,
+        // similar to old problem with guiGraphics.drawString() I don't have a single clue why.
+        // So not alpha for icons for now I guess
         icon.draw(this, x, y);
-        unwrap.setColor(1, 1, 1, 1);
-        RenderSystem.disableBlend();
     }
 
     @Override
