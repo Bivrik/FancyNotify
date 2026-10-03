@@ -38,8 +38,8 @@ public class SystemNotification extends FancyExpandableNotification {
     }
 
     @Override
-    public int getLifeTimeTicks() {
-        return id.lifeTimeTicks();
+    public int getDurationTicks() {
+        return id.durationTicks();
     }
 
     @Override
@@ -87,15 +87,15 @@ public class SystemNotification extends FancyExpandableNotification {
         );
 
         private final ResourceLocation sprite;
-        private final int lifeTimeTicks;
+        private final int durationTicks;
 
-        Identifier(ResourceLocation sprite, int lifeTimeTicks) {
+        Identifier(ResourceLocation sprite, int durationTicks) {
             this.sprite = sprite;
-            this.lifeTimeTicks = lifeTimeTicks;
+            this.durationTicks = durationTicks;
         }
 
-        Identifier(int lifeTimeTicks) {
-            this(ResourceLocations.of("icons/important"), lifeTimeTicks);
+        Identifier(int durationTicks) {
+            this(ResourceLocations.of("icons/important"), durationTicks);
         }
 
         Identifier(ResourceLocation sprite) {
@@ -106,8 +106,8 @@ public class SystemNotification extends FancyExpandableNotification {
             this(ResourceLocations.of("icons/important"), 120);
         }
 
-        public int lifeTimeTicks() {
-            return lifeTimeTicks;
+        public int durationTicks() {
+            return durationTicks;
         }
 
         public ResourceLocation sprite() {

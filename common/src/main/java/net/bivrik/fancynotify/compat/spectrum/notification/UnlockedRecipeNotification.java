@@ -25,7 +25,7 @@ public class UnlockedRecipeNotification extends FancyNotification {
 
     public UnlockedRecipeNotification(Component title, Component message, List<ItemStack> icons, SoundEvent sound) {
         super(title, message);
-        setIcon(new UnlockedRecipeIcon(icons, getLifeTimeTicks()));
+        setIcon(new UnlockedRecipeIcon(icons, getDurationTicks()));
 
         this.sound = sound;
     }
@@ -53,19 +53,19 @@ public class UnlockedRecipeNotification extends FancyNotification {
 
     private static final class UnlockedRecipeIcon implements Icon {
         private final List<ItemStack> recipeResults;
-        private final float lifeTimeTicks;
+        private final float durationTicks;
 
         private float count = 0;
 
-        public UnlockedRecipeIcon(List<ItemStack> recipeResults, float lifeTimeTicks) {
+        public UnlockedRecipeIcon(List<ItemStack> recipeResults, float durationTicks) {
             this.recipeResults = recipeResults;
-            this.lifeTimeTicks = lifeTimeTicks;
+            this.durationTicks = durationTicks;
         }
 
         @Override
         public void draw(NotificationGraphics graphics, int x, int y) {
             count += 1 / 2.0f;
-            int orderedIndex = (int) (count / Math.max(1.0f, lifeTimeTicks / recipeResults.size()) % recipeResults.size());
+            int orderedIndex = (int) (count / Math.max(1.0f, durationTicks / recipeResults.size()) % recipeResults.size());
             graphics.unwrap().renderFakeItem(recipeResults.get(orderedIndex), x, y);
         }
     }

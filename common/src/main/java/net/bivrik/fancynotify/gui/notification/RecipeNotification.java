@@ -24,7 +24,7 @@ public class RecipeNotification extends FancyExpandableNotification {
 
     public RecipeNotification(RecipeHolder<?> recipe) {
         super(TITLE, MESSAGE);
-        setIcon(new RecipeIcon(this.minecraft, recipe, getLifeTimeTicks()));
+        setIcon(new RecipeIcon(this.minecraft, recipe, getDurationTicks()));
     }
 
     @Override
@@ -53,14 +53,14 @@ public class RecipeNotification extends FancyExpandableNotification {
     private static final class RecipeIcon implements Icon {
         private final Minecraft minecraft;
         private final List<RecipeHolder<?>> recipes = new ArrayList<>();
-        private final float lifeTimeTicks;
+        private final float durationTicks;
 
         private float count = 0;
 
-        public RecipeIcon(Minecraft minecraft, RecipeHolder<?> recipe, float lifeTimeTicks) {
+        public RecipeIcon(Minecraft minecraft, RecipeHolder<?> recipe, float durationTicks) {
             this.minecraft = minecraft;
             this.recipes.add(recipe);
-            this.lifeTimeTicks = lifeTimeTicks;
+            this.durationTicks = durationTicks;
         }
 
         public void addRecipes(List<RecipeHolder<?>> recipeExpansion) {
@@ -74,7 +74,7 @@ public class RecipeNotification extends FancyExpandableNotification {
         @Override
         public void draw(NotificationGraphics graphics, int x, int y) {
             count += 1 / 2.0f;
-            int orderedIndex = (int) (count / Math.max(1.0f, lifeTimeTicks / recipes.size()) % recipes.size());
+            int orderedIndex = (int) (count / Math.max(1.0f, durationTicks / recipes.size()) % recipes.size());
             var recipe = recipes.get(orderedIndex).value();
             GuiGraphics guiGraphics = graphics.unwrap();
             var stack = guiGraphics.pose();

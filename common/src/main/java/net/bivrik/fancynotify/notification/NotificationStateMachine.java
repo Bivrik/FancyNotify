@@ -35,7 +35,7 @@ public class NotificationStateMachine {
         changeState(NotificationState.HIDING, timeTicks);
     }
 
-    public void update(float timeTicks, float offsetTimeTicks, float animationDurationTicks, float lifeTimeTicks) {
+    public void update(float timeTicks, float offsetTimeTicks, float animationDurationTicks, float durationTicks) {
         this.timeTicks = timeTicks;
 
         switch (state) {
@@ -46,12 +46,12 @@ public class NotificationStateMachine {
                 }
             }
             case VISIBLE -> {
-                if (timeTicks - offsetTimeTicks >= lifeTimeTicks * minecraft.options.notificationDisplayTime().get() - animationDurationTicks) {
+                if (timeTicks - offsetTimeTicks >= durationTicks * minecraft.options.notificationDisplayTime().get() - animationDurationTicks) {
                     changeState(NotificationState.HIDING, timeTicks);
                 }
             }
             case HIDING -> {
-                if (timeTicks - offsetTimeTicks >= lifeTimeTicks * minecraft.options.notificationDisplayTime().get()) {
+                if (timeTicks - offsetTimeTicks >= durationTicks * minecraft.options.notificationDisplayTime().get()) {
                     changeState(NotificationState.REMOVAL, timeTicks);
                 }
             }

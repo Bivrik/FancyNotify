@@ -20,8 +20,8 @@ public class ExpandableNotificationEntry extends NotificationEntry {
             return false;
         }
 
-        double lifeTimeTicks = getLifeTimeTicks() * this.minecraft.options.notificationDisplayTime().get() - this.config.animationDuration.get();
-        if (this.timeTicks - this.offsetTicks < lifeTimeTicks) {
+        double durationTicks = getDurationTicks() * this.minecraft.options.notificationDisplayTime().get() - this.config.animationDuration.get();
+        if (this.timeTicks - this.offsetTicks < durationTicks) {
             this.offsetTicks = this.timeTicks;
         }
 

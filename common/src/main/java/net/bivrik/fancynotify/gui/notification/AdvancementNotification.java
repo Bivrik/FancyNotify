@@ -55,8 +55,8 @@ public class AdvancementNotification extends FancyNotification {
     }
 
     @Override
-    public int getLifeTimeTicks() {
-        return super.getLifeTimeTicks() + 30;
+    public int getDurationTicks() {
+        return super.getDurationTicks() + 30;
     }
 
     @Override

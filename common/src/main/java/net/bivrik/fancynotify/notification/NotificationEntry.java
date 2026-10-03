@@ -63,8 +63,8 @@ public class NotificationEntry implements NotificationStateMachine.Listener {
         return content.shouldDisplay();
     }
 
-    protected final int getLifeTimeTicks() {
-        return content.getLifeTimeTicks();
+    protected final int getDurationTicks() {
+        return content.getDurationTicks();
     }
 
     public final void forceHide() {
@@ -107,7 +107,7 @@ public class NotificationEntry implements NotificationStateMachine.Listener {
     public void update(float deltaTicks, float globalX, float globalY) {
         timeTicks += deltaTicks;
 
-        stateMachine.update(timeTicks, offsetTicks, config.animationDuration.get(), getLifeTimeTicks());
+        stateMachine.update(timeTicks, offsetTicks, config.animationDuration.get(), getDurationTicks());
         animator.update(timeTicks, stateMachine.getState(), stateMachine.getTimingTicks(), getWidth(), getHeight(), config.animationDuration.get());
 
         NotificationContext context = new NotificationContextImpl(globalX, globalY, timeTicks, config.animationDuration.get());

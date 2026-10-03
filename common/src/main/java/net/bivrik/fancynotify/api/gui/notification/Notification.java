@@ -96,7 +96,7 @@ public abstract class Notification {
         return true;
     }
 
-    public int getLifeTimeTicks() {
+    public int getDurationTicks() {
         return 140;
     }
 
