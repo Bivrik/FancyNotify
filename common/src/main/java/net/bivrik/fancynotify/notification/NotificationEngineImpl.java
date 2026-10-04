@@ -154,6 +154,12 @@ public class NotificationEngineImpl implements NotificationEngine {
     public void update() {
         if (!showingHolders.isEmpty()) {
             float realtimeDeltaTicks = deltaTracker.getRealtimeDeltaTicks();
+
+            GeneralConfig.Anchor anchor = config.anchor.get();
+            int padding = config.padding.get();
+            float anchorX = anchor.isLeft() ? padding : minecraft.getWindow().getGuiScaledWidth() - padding;
+            float anchorY = anchor.isTop() ? padding : minecraft.getWindow().getGuiScaledHeight() - padding;
+
             for (var iterator = showingHolders.iterator(); iterator.hasNext();) {
                 var nextHolder = iterator.next();
 
@@ -165,10 +171,6 @@ public class NotificationEngineImpl implements NotificationEngine {
                     continue;
                 }
 
-                GeneralConfig.Anchor anchor = config.anchor.get();
-                int padding = config.padding.get();
-                float anchorX = anchor.isLeft() ? padding : minecraft.getWindow().getGuiScaledWidth() - padding;
-                float anchorY = anchor.isTop() ? padding : minecraft.getWindow().getGuiScaledHeight() - padding;
                 nextHolder.update(realtimeDeltaTicks, anchorX, anchorY);
             }
 
