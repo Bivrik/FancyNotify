@@ -55,14 +55,6 @@ public class NotificationEntry implements NotificationStateMachine.Listener {
         return content.getHeight();
     }
 
-    public final Object getId() {
-        return content.getId();
-    }
-
-    public final boolean shouldDisplay() {
-        return content.shouldDisplay();
-    }
-
     protected final float getMultipliedDurationTicks() {
         return (float) (content.getDurationTicks() * minecraft.options.notificationDisplayTime().get());
     }

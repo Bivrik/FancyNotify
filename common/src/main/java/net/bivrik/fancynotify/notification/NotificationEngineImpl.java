@@ -189,7 +189,8 @@ public class NotificationEngineImpl implements NotificationEngine {
     @Override
     public void remove(Class<? extends Notification> notificationClass, Object id) {
         for (NotificationEntry entry : allEntries) {
-            if (entry.getContent().getClass() != notificationClass || id.equals(entry.getId())) {
+            Notification content = entry.getContent();
+            if (content.getClass() != notificationClass || id.equals(content.getId())) {
                 continue;
             }
 
