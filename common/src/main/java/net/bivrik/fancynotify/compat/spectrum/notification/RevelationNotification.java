@@ -1,7 +1,6 @@
 package net.bivrik.fancynotify.compat.spectrum.notification;
 
 import net.bivrik.fancynotify.api.gui.icon.ItemIcon;
-import net.bivrik.fancynotify.api.gui.notification.NotificationContext;
 import net.bivrik.fancynotify.api.gui.notification.NotificationGraphics;
 import net.bivrik.fancynotify.gui.notification.FancyNotification;
 import net.bivrik.fancynotify.utility.Color;
@@ -21,8 +20,6 @@ public class RevelationNotification extends FancyNotification {
 
     private final SoundEvent sound;
 
-    private boolean isSoundPlayed;
-
     public RevelationNotification(ItemStack icon, SoundEvent sound) {
         super(TITLE, MESSAGE);
         setIcon(new ItemIcon(icon));
@@ -36,11 +33,8 @@ public class RevelationNotification extends FancyNotification {
     }
 
     @Override
-    public void onUpdate(NotificationContext context) {
-        if (!isSoundPlayed && context.getElapsedTicks() > 0) {
-            isSoundPlayed = true;
-            this.minecraft.getSoundManager().play(SimpleSoundInstance.forUI(sound, 1.0f, 0.6f));
-        }
+    public void onShowing() {
+        this.minecraft.getSoundManager().play(SimpleSoundInstance.forUI(sound, 1.0f, 0.6f));
     }
 
     @Override

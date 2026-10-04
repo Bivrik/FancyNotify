@@ -1,7 +1,6 @@
 package net.bivrik.fancynotify.compat.spectrum.notification;
 
 import net.bivrik.fancynotify.api.gui.icon.Icon;
-import net.bivrik.fancynotify.api.gui.notification.NotificationContext;
 import net.bivrik.fancynotify.api.gui.notification.NotificationGraphics;
 import net.bivrik.fancynotify.gui.notification.FancyNotification;
 import net.bivrik.fancynotify.utility.Color;
@@ -21,8 +20,6 @@ public class UnlockedRecipeNotification extends FancyNotification {
 
     private final SoundEvent sound;
 
-    private boolean isSoundPlayed;
-
     public UnlockedRecipeNotification(Component title, Component message, List<ItemStack> icons, SoundEvent sound) {
         super(title, message);
         setIcon(new UnlockedRecipeIcon(icons, getDurationTicks()));
@@ -36,11 +33,8 @@ public class UnlockedRecipeNotification extends FancyNotification {
     }
 
     @Override
-    public void onUpdate(NotificationContext context) {
-        if (!isSoundPlayed && context.getElapsedTicks() > 0) {
-            isSoundPlayed = true;
-            this.minecraft.getSoundManager().play(SimpleSoundInstance.forUI(sound, 1.0f, 0.6f));
-        }
+    public void onShowing() {
+        this.minecraft.getSoundManager().play(SimpleSoundInstance.forUI(sound, 1.0f, 0.6f));
     }
 
     @Override
