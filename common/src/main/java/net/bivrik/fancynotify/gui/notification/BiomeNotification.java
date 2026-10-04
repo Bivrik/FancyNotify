@@ -35,7 +35,7 @@ public class BiomeNotification extends FancyExpandableNotification {
     }
 
     @Override
-    public void render(NotificationGraphics graphics, float partialTick) {
+    public void render(NotificationGraphics graphics) {
         graphics.sprite(BACKGROUND, 0, 0, getWidth(), getHeight());
         graphics.text(getTitle(), getTextOffset(), 8, TITLE_COLOR);
         GuiGraphics guiGraphics = graphics.unwrap();

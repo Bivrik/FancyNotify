@@ -114,5 +114,5 @@ public abstract class Notification {
 
     protected void onUpdate(NotificationContext context) {}
 
-    public abstract void render(NotificationGraphics graphics, float partialTick);
+    public abstract void render(NotificationGraphics graphics);
 }

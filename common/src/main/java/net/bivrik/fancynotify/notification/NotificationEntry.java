@@ -100,8 +100,8 @@ public class NotificationEntry implements NotificationStateMachine.Listener {
     @Override
     public void onRemoval() {
         FancyNotify.EVENT_BUS.unregister(this);
-        content.onRemoval();
         shouldRemove = true;
+        content.onRemoval();
     }
 
     public void update(float deltaTicks, float globalX, float globalY) {
@@ -114,7 +114,7 @@ public class NotificationEntry implements NotificationStateMachine.Listener {
         content.update(context);
     }
 
-    public final void render(GuiGraphics guiGraphics, float partialTick) {
+    public final void render(GuiGraphics guiGraphics) {
         if (stateMachine.isInState(NotificationState.HIDDEN) || stateMachine.isInState(NotificationState.REMOVAL)) {
             return;
         }
@@ -131,7 +131,7 @@ public class NotificationEntry implements NotificationStateMachine.Listener {
         stack.translate(-halfWidth, -halfHeight, 0);
         stack.rotateAround(Axis.ZP.rotation(animator.getRotation()), halfWidth, halfHeight, 0);
         stack.translate(animator.getX(), animator.getY(), 0);
-        content.render(notificationGraphics, partialTick);
+        content.render(notificationGraphics);
         stack.popPose();
     }
 }

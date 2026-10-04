@@ -96,7 +96,7 @@ public class AdvancementNotification extends FancyNotification {
     }
 
     @Override
-    public void render(NotificationGraphics graphics, float partialTick) {
+    public void render(NotificationGraphics graphics) {
         graphics.sprite(background, 0, 0, getWidth(), getHeight());
         graphics.text(getTitle(), getTextOffset(), 7, textColor);
         graphics.multilineText(getWrappedMessage(), getTextOffset(), 18, -1);

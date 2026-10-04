@@ -218,9 +218,8 @@ public class NotificationEngineImpl implements NotificationEngine {
             stack.translate(anchorX, anchorY, 800);
         }
 
-        float partialTick = deltaTracker.getGameTimeDeltaPartialTick(false);
         for (var holder : showingHolders) {
-            holder.render(guiGraphics, partialTick);
+            holder.render(guiGraphics);
         }
 
         stack.popPose();
@@ -307,11 +306,11 @@ public class NotificationEngineImpl implements NotificationEngine {
             entry.update(deltaTicks, anchorX + x, anchorY + y);
         }
 
-        public void render(GuiGraphics guiGraphics, float partialTick) {
+        public void render(GuiGraphics guiGraphics) {
             PoseStack stack = guiGraphics.pose();
             stack.pushPose();
             stack.translate(x, y, 0);
-            entry.render(guiGraphics, partialTick);
+            entry.render(guiGraphics);
             stack.popPose();
         }
     }
