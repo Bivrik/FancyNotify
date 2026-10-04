@@ -9,7 +9,7 @@ public class VanillaAnimation extends NotificationAnimator {
     }
 
     @Override
-    public void update(float timeTicks, NotificationState state, float animationTimingTicks, int width, int height, float animationDurationTicks) {
+    public void update(float elapsedTicks, NotificationState state, float animationTimingTicks, int width, int height, float animationDurationTicks) {
         switch (state) {
             case SHOWING -> {
                 float startX = width + generalConfig.padding.get();
@@ -18,13 +18,13 @@ public class VanillaAnimation extends NotificationAnimator {
                 float endX = 0;
                 float endAlpha = 1;
 
-                float showingProgress = Keyframe.getProgress(timeTicks, animationTimingTicks, animationDurationTicks);
+                float showingProgress = Keyframe.getProgress(elapsedTicks, animationTimingTicks, animationDurationTicks);
                 if (Keyframe.isActive(showingProgress)) {
                     x = Easing.SINE_OUT.lerp(startX, endX, showingProgress);
                     alpha = Easing.SINE_OUT.lerp(startAlpha, endAlpha, showingProgress);
                 }
 
-                if (timeTicks >= animationTimingTicks + animationDurationTicks) {
+                if (elapsedTicks >= animationTimingTicks + animationDurationTicks) {
                     x = endX;
                     alpha = endAlpha;
                 }
@@ -40,13 +40,13 @@ public class VanillaAnimation extends NotificationAnimator {
                 float endX = width + generalConfig.padding.get();
                 float endAlpha = 0;
 
-                float hidingProgress = Keyframe.getProgress(timeTicks, animationTimingTicks, animationDurationTicks);
+                float hidingProgress = Keyframe.getProgress(elapsedTicks, animationTimingTicks, animationDurationTicks);
                 if (Keyframe.isActive(hidingProgress)) {
                     x = Easing.SINE_IN.lerp(startX, endX, hidingProgress);
                     alpha = Easing.SINE_IN.lerp(startAlpha, endAlpha, hidingProgress);
                 }
 
-                if (timeTicks >= animationTimingTicks + animationDurationTicks) {
+                if (elapsedTicks >= animationTimingTicks + animationDurationTicks) {
                     x = endX;
                     alpha = endAlpha;
                 }

@@ -88,8 +88,9 @@ public class NotificationEngineImpl implements NotificationEngine {
         int y = 0;
 
         for (var holder : showingHolders) {
-            int width = holder.getWidth();
-            int height = holder.getHeight();
+            var holderEntry = holder.getNotificationEntry();
+            int width = holderEntry.getWidth();
+            int height = holderEntry.getHeight();
 
             int xOffset = anchor.isLeft() ? (isVertical ? 0 : -width) : (isVertical ? -width : 0);
             int yOffset = anchor.isTop() ? (isVertical ? -height : 0) : (isVertical ? 0 : -height);
@@ -97,8 +98,8 @@ public class NotificationEngineImpl implements NotificationEngine {
             x += isVertical ? 0 : (anchor.isLeft() ? width : -width);
             y += isVertical ? (anchor.isTop() ? height : -height) : 0;
 
-            holder.setX(x + xOffset);
-            holder.setY(y + yOffset);
+            holder.setOffsetX(x + xOffset);
+            holder.setOffsetY(y + yOffset);
 
             if (isVertical) {
                 y += anchor.isTop() ? padding : -padding;
@@ -118,8 +119,9 @@ public class NotificationEngineImpl implements NotificationEngine {
         int y = 0;
 
         for (var holder : showingHolders) {
-            int width = holder.getWidth();
-            int height = holder.getHeight();
+            var holderEntry = holder.getNotificationEntry();
+            int width = holderEntry.getWidth();
+            int height = holderEntry.getHeight();
 
             x += isVertical ? 0 : (anchor.isLeft() ? width : -width);
             y += isVertical ? (anchor.isTop() ? height : -height) : 0;
@@ -151,7 +153,7 @@ public class NotificationEngineImpl implements NotificationEngine {
     @Override
     public void update() {
         if (!showingHolders.isEmpty()) {
-            float deltaTicks = deltaTracker.getGameTimeDeltaTicks();
+            float realtimeDeltaTicks = deltaTracker.getRealtimeDeltaTicks();
             for (var iterator = showingHolders.iterator(); iterator.hasNext();) {
                 var nextHolder = iterator.next();
 
@@ -167,7 +169,7 @@ public class NotificationEngineImpl implements NotificationEngine {
                 int padding = config.padding.get();
                 float anchorX = anchor.isLeft() ? padding : minecraft.getWindow().getGuiScaledWidth() - padding;
                 float anchorY = anchor.isTop() ? padding : minecraft.getWindow().getGuiScaledHeight() - padding;
-                nextHolder.update(deltaTicks, anchorX, anchorY);
+                nextHolder.update(realtimeDeltaTicks, anchorX, anchorY);
             }
 
             arrangeNotifications();
@@ -240,76 +242,68 @@ public class NotificationEngineImpl implements NotificationEngine {
     }
 
     private final static class NotificationEntryHolder {
-        private final static int ANIMATION_SPEED = 20;
+        private final static int ANIMATION_DURATION = 20;
 
         private final NotificationEntry entry;
 
-        private float x;
-        private float oldX;
-        private float newX;
-        private float xLastChangedTicks;
+        private float offsetX;
+        private float fromX;
+        private float toX;
+        private float xMoveStartTicks;
 
-        private float y;
-        private float oldY;
-        private float newY;
-        private float yLastChangedTicks;
+        private float offsetY;
+        private float fromY;
+        private float toY;
+        private float yMoveStartTicks;
 
-        private float timeTicks;
+        private float elapsedTicks;
 
-        public NotificationEntryHolder(NotificationEntry entry, float x, float y) {
+        public NotificationEntryHolder(NotificationEntry entry, float offsetX, float offsetY) {
             this.entry = entry;
 
-            this.x = x;
-            this.newX = x;
-            this.y = y;
-            this.newY = y;
+            this.offsetX = offsetX;
+            this.toX = offsetX;
+            this.offsetY = offsetY;
+            this.toY = offsetY;
         }
 
         public NotificationEntry getNotificationEntry() {
             return entry;
         }
 
-        public int getWidth() {
-            return entry.getWidth();
-        }
-
-        public int getHeight() {
-            return entry.getHeight();
-        }
-
-        public void setX(float x) {
-            if (x != newX) {
-                oldX = this.x;
-                newX = x;
-                xLastChangedTicks = timeTicks;
+        public void setOffsetX(float newOffset) {
+            if (newOffset != toX) {
+                fromX = this.offsetX;
+                toX = newOffset;
+                xMoveStartTicks = elapsedTicks;
             }
         }
 
-        public void setY(float y) {
-            if (y != newY) {
-                oldY = this.y;
-                newY = y;
-                yLastChangedTicks = timeTicks;
+        public void setOffsetY(float newOffset) {
+            if (newOffset != toY) {
+                fromY = this.offsetY;
+                toY = newOffset;
+                yMoveStartTicks = elapsedTicks;
             }
         }
 
-        public void update(float deltaTicks, float anchorX, float anchorY) {
-            timeTicks += deltaTicks;
+        public void update(float realtimeDeltaTicks, float anchorX, float anchorY) {
+            elapsedTicks += realtimeDeltaTicks;
 
-            if (x != newX) {
-                x = Easing.QUART_EASE_OUT.lerp(oldX, newX, Keyframe.getProgress(timeTicks, xLastChangedTicks, ANIMATION_SPEED));
+            if (offsetX != toX) {
+                offsetX = Easing.QUART_EASE_OUT.lerp(fromX, toX, Keyframe.getProgress(elapsedTicks, xMoveStartTicks, ANIMATION_DURATION));
             }
-            if (y != newY) {
-                y = Easing.QUART_EASE_OUT.lerp(oldY, newY, Keyframe.getProgress(timeTicks, yLastChangedTicks, ANIMATION_SPEED));
+            if (offsetY != toY) {
+                offsetY = Easing.QUART_EASE_OUT.lerp(fromY, toY, Keyframe.getProgress(elapsedTicks, yMoveStartTicks, ANIMATION_DURATION));
             }
 
-            entry.update(deltaTicks, anchorX + x, anchorY + y);
+            entry.update(elapsedTicks, anchorX + offsetX, anchorY + offsetY);
         }
 
         public void render(GuiGraphics guiGraphics) {
             PoseStack stack = guiGraphics.pose();
             stack.pushPose();
-            stack.translate(x, y, 0);
+            stack.translate(offsetX, offsetY, 0);
             entry.render(guiGraphics);
             stack.popPose();
         }

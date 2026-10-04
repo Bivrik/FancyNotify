@@ -1,17 +1,13 @@
 package net.bivrik.fancynotify.notification;
 
-import net.minecraft.client.Minecraft;
-
 public class NotificationStateMachine {
-    private final Minecraft minecraft;
     private final Listener listener;
 
-    private float timeTicks;
+    private float elapsedTicks;
     private float timingTicks = 0;
     private NotificationState state = NotificationState.HIDDEN;
 
-    public NotificationStateMachine(Minecraft minecraft, Listener listener) {
-        this.minecraft = minecraft;
+    public NotificationStateMachine(Listener listener) {
         this.listener = listener;
     }
 
@@ -27,32 +23,30 @@ public class NotificationStateMachine {
         return timingTicks;
     }
 
-    public void show() {
-        changeState(NotificationState.SHOWING, timeTicks);
+    public void forceHide() {
+        changeState(NotificationState.HIDING, elapsedTicks);
     }
 
-    public void hide() {
-        changeState(NotificationState.HIDING, timeTicks);
-    }
+    public void update(float elapsedTicks, float offsetTicks, float durationTicks, float animationDurationTicks) {
+        this.elapsedTicks = elapsedTicks;
 
-    public void update(float timeTicks, float offsetTimeTicks, float animationDurationTicks, float durationTicks) {
-        this.timeTicks = timeTicks;
+        float offsetElapsedTicks = elapsedTicks - offsetTicks;
 
         switch (state) {
-            case HIDDEN -> changeState(NotificationState.SHOWING, timeTicks);
+            case HIDDEN -> changeState(NotificationState.SHOWING, elapsedTicks);
             case SHOWING -> {
-                if (timeTicks - timingTicks > animationDurationTicks) {
-                    changeState(NotificationState.VISIBLE, timeTicks);
+                if (offsetElapsedTicks > animationDurationTicks) {
+                    changeState(NotificationState.VISIBLE, elapsedTicks);
                 }
             }
             case VISIBLE -> {
-                if (timeTicks - offsetTimeTicks >= durationTicks * minecraft.options.notificationDisplayTime().get() - animationDurationTicks) {
-                    changeState(NotificationState.HIDING, timeTicks);
+                if (offsetElapsedTicks >= durationTicks - animationDurationTicks) {
+                    changeState(NotificationState.HIDING, elapsedTicks);
                 }
             }
             case HIDING -> {
-                if (timeTicks - offsetTimeTicks >= durationTicks * minecraft.options.notificationDisplayTime().get()) {
-                    changeState(NotificationState.REMOVAL, timeTicks);
+                if (offsetElapsedTicks >= durationTicks) {
+                    changeState(NotificationState.REMOVAL, elapsedTicks);
                 }
             }
         }

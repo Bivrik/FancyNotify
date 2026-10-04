@@ -41,5 +41,5 @@ public abstract class NotificationAnimator {
         return alpha * generalConfig.notificationsTransparency.get();
     }
 
-    public abstract void update(float timeTicks, NotificationState state, float animationTimingTicks, int width, int height, float animationDurationTicks);
+    public abstract void update(float elapsedTicks, NotificationState state, float animationTimingTicks, int width, int height, float animationDurationTicks);
 }

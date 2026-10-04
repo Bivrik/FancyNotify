@@ -9,7 +9,7 @@ public class TopDownAnimation extends NotificationAnimator {
     }
 
     @Override
-    public void update(float timeTicks, NotificationState state, float animationTimingTicks, int width, int height, float animationDurationTicks) {
+    public void update(float elapsedTicks, NotificationState state, float animationTimingTicks, int width, int height, float animationDurationTicks) {
         switch (state) {
             case SHOWING -> {
                 float startY = -(height + generalConfig.padding.get());
@@ -18,13 +18,13 @@ public class TopDownAnimation extends NotificationAnimator {
                 float endY = 0;
                 float endAlpha = 1;
 
-                float showingProgress = Keyframe.getProgress(timeTicks, animationTimingTicks, animationDurationTicks);
+                float showingProgress = Keyframe.getProgress(elapsedTicks, animationTimingTicks, animationDurationTicks);
                 if (Keyframe.isActive(showingProgress)) {
                     y = Easing.QUART_EASE_OUT.lerp(startY, endY, showingProgress);
                     alpha = Easing.QUART_EASE_OUT.lerp(startAlpha, endAlpha, showingProgress);
                 }
 
-                if (timeTicks >= animationTimingTicks + animationDurationTicks) {
+                if (elapsedTicks >= animationTimingTicks + animationDurationTicks) {
                     y = endY;
                     alpha = endAlpha;
                 }
@@ -40,13 +40,13 @@ public class TopDownAnimation extends NotificationAnimator {
                 float endY = -(height + generalConfig.padding.get());
                 float endAlpha = 0;
 
-                float hidingProgress = Keyframe.getProgress(timeTicks, animationTimingTicks, animationDurationTicks);
+                float hidingProgress = Keyframe.getProgress(elapsedTicks, animationTimingTicks, animationDurationTicks);
                 if (Keyframe.isActive(hidingProgress)) {
                     y = Easing.QUART_EASE_IN.lerp(startY, endY, hidingProgress);
                     alpha = Easing.QUART_EASE_IN.lerp(startAlpha, endAlpha, hidingProgress);
                 }
 
-                if (timeTicks >= animationTimingTicks + animationDurationTicks) {
+                if (elapsedTicks >= animationTimingTicks + animationDurationTicks) {
                     y = endY;
                     alpha = endAlpha;
                 }

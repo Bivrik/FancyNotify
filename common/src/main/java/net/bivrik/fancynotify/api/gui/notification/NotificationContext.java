@@ -12,7 +12,7 @@ public interface NotificationContext {
 
     float getGlobalY();
 
-    float getTimeTicks();
+    float getElapsedTicks();
 
     int getAnimationDurationTicks();
 }

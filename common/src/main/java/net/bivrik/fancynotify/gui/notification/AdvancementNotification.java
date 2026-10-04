@@ -61,7 +61,7 @@ public class AdvancementNotification extends FancyNotification {
 
     @Override
     public void onUpdate(NotificationContext context) {
-        if (!isCelebrated && context.getTimeTicks() >= context.getAnimationDurationTicks() * 0.3f) {
+        if (!isCelebrated && context.getElapsedTicks() >= context.getAnimationDurationTicks() * 0.3f) {
             isCelebrated = true;
 
             Particle2DSetup.Builder setupBuilder = new Particle2DSetup.Builder(30, context.getGlobalX() + getCenterX(), context.getGlobalY() + getCenterY())

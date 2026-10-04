@@ -19,12 +19,12 @@ public class NotificationEntry implements NotificationStateMachine.Listener {
     private final NotificationStateMachine stateMachine;
     private final NotificationAnimator animator;
 
-    protected final Minecraft minecraft;
+    private final Minecraft minecraft;
     protected final GeneralConfig config;
     private final Notification content;
 
-    protected float timeTicks = 0;
-    protected float offsetTicks = 0;
+    private float elapsedTicks = 0.0f;
+    protected float offsetTicks = 0.0f;
     private boolean shouldRemove;
 
     public NotificationEntry(Notification content, Minecraft minecraft, ConfigManager configManager) {
@@ -34,7 +34,7 @@ public class NotificationEntry implements NotificationStateMachine.Listener {
         this.content = content;
         this.content.setPreferableWidth(this.config.notificationsWidth.get());
 
-        this.stateMachine = new NotificationStateMachine(minecraft, this);
+        this.stateMachine = new NotificationStateMachine(this);
         this.animator = this.config.getAnimator();
     }
 
@@ -63,12 +63,16 @@ public class NotificationEntry implements NotificationStateMachine.Listener {
         return content.shouldDisplay();
     }
 
-    protected final int getDurationTicks() {
-        return content.getDurationTicks();
+    protected final float getMultipliedDurationTicks() {
+        return (float) (content.getDurationTicks() * minecraft.options.notificationDisplayTime().get());
+    }
+
+    protected final float getElapsedTicks() {
+        return elapsedTicks;
     }
 
     public final void forceHide() {
-        stateMachine.hide();
+        stateMachine.forceHide();
     }
 
     public final boolean shouldRemove() {
@@ -104,13 +108,15 @@ public class NotificationEntry implements NotificationStateMachine.Listener {
         content.onRemoval();
     }
 
-    public void update(float deltaTicks, float globalX, float globalY) {
-        timeTicks += deltaTicks;
+    public void update(float elapsedTicks, float globalX, float globalY) {
+        this.elapsedTicks = elapsedTicks;
 
-        stateMachine.update(timeTicks, offsetTicks, config.animationDuration.get(), getDurationTicks());
-        animator.update(timeTicks, stateMachine.getState(), stateMachine.getTimingTicks(), getWidth(), getHeight(), config.animationDuration.get());
+        int animationDurationTicks = config.animationDuration.get();
 
-        NotificationContext context = new NotificationContextImpl(globalX, globalY, timeTicks, config.animationDuration.get());
+        stateMachine.update(elapsedTicks, offsetTicks, getMultipliedDurationTicks(), animationDurationTicks);
+        animator.update(elapsedTicks, stateMachine.getState(), stateMachine.getTimingTicks(), getWidth(), getHeight(), animationDurationTicks);
+
+        NotificationContext context = new NotificationContextImpl(globalX, globalY, elapsedTicks, animationDurationTicks);
         content.update(context);
     }
 

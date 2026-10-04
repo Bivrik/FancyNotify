@@ -6,7 +6,7 @@ import net.minecraft.client.gui.GuiGraphics;
 
 public class Particle2D {
     private boolean isAlive = true;
-    private int timeTicks;
+    private int ageTicks;
     private final int lifetimeTicks;
 
     private final int color;
@@ -51,8 +51,8 @@ public class Particle2D {
             return;
         }
 
-        timeTicks++;
-        if (timeTicks > lifetimeTicks) {
+        ageTicks++;
+        if (ageTicks > lifetimeTicks) {
             isAlive = false;
             return;
         }
@@ -73,12 +73,12 @@ public class Particle2D {
 
     // Batching but it's too much effort for now
     public void render(GuiGraphics guiGraphics, float partialTick) {
-        if (!isAlive || timeTicks == 0) {
+        if (!isAlive || ageTicks == 0) {
             return;
         }
 
-        float renderTimeTicks = timeTicks + partialTick;
-        float progress = Math.min(renderTimeTicks / lifetimeTicks, 1);
+        float renderElapsedTicks = ageTicks + partialTick;
+        float progress = Math.min(renderElapsedTicks / lifetimeTicks, 1);
 
         float renderX = previousX + (currentX - previousX) * partialTick;
         float renderY = previousY + (currentY - previousY) * partialTick;

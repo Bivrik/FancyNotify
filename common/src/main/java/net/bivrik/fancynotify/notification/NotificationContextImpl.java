@@ -2,7 +2,7 @@ package net.bivrik.fancynotify.notification;
 
 import net.bivrik.fancynotify.api.gui.notification.NotificationContext;
 
-public record NotificationContextImpl(float globalX, float globalY, float timeTicks, int animationDuration) implements NotificationContext {
+public record NotificationContextImpl(float globalX, float globalY, float elapsedTicks, int animationDurationTicks) implements NotificationContext {
     @Override
     public float getGlobalX() {
         return globalX;
@@ -14,12 +14,12 @@ public record NotificationContextImpl(float globalX, float globalY, float timeTi
     }
 
     @Override
-    public float getTimeTicks() {
-        return timeTicks;
+    public float getElapsedTicks() {
+        return elapsedTicks;
     }
 
     @Override
     public int getAnimationDurationTicks() {
-        return animationDuration;
+        return animationDurationTicks;
     }
 }

@@ -1,8 +1,8 @@
 package net.bivrik.fancynotify.notification.animation;
 
 public class Keyframe {
-    public static float getProgress(float timeTicks, float startPositionTicks, float durationTicks) {
-        return Math.clamp((timeTicks - startPositionTicks) / durationTicks, 0.0f, 1.0f);
+    public static float getProgress(float elapsedTicks, float startPositionTicks, float durationTicks) {
+        return Math.clamp((elapsedTicks - startPositionTicks) / durationTicks, 0.0f, 1.0f);
     }
 
     public static boolean isActive(float progress) {

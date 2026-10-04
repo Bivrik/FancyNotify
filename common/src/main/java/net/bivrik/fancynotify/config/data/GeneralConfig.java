@@ -113,7 +113,7 @@ public class GeneralConfig extends Config implements ListenerRegistrar {
                 .append("orientation", orientation.get())
                 .append("anchor", anchor.get())
                 .append("animation", animation.get())
-                .append("animationDuration", animationDuration.get())
+                .append("animationDurationTicks", animationDuration.get())
                 .append("particlesEnabled", particlesEnabled.get())
                 .append("debug", debug.get())
                 .toString();
