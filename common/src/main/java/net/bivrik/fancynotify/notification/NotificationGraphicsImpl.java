@@ -13,32 +13,36 @@ import net.minecraft.util.FormattedCharSequence;
 
 import java.util.List;
 
-public record NotificationGraphicsImpl(GuiGraphics unwrap, Font font, NotificationAnimator animator) implements NotificationGraphics {
+public record NotificationGraphicsImpl(GuiGraphics unwrap, Font font, NotificationAnimator animator, float notificationsTransparency) implements NotificationGraphics {
+    private float getMultipliedAlpha() {
+        return animator.getAlpha() * notificationsTransparency;
+    }
+
     @Override
     public void sprite(ResourceLocation sprite, int x, int y, int width, int height) {
-        if (animator.getAlpha() == 1) {
+        if (getMultipliedAlpha() >= 0.99f) {
             unwrap.blitSprite(sprite, x, y, width, height);
             return;
         }
 
         RenderSystem.enableBlend();
-        unwrap.setColor(1, 1, 1, animator.getAlpha());
+        unwrap.setColor(1.0f, 1.0f, 1.0f, getMultipliedAlpha());
         unwrap.blitSprite(sprite, x, y, width, height);
-        unwrap.setColor(1, 1, 1, 1);
+        unwrap.setColor(1.0f, 1.0f, 1.0f, 1.0f);
         RenderSystem.disableBlend();
     }
 
     @Override
     public void texture(ResourceLocation texture, int x, int y, int width, int height, int textureWidth, int textureHeight, int uOffset, int vOffset, int uWidth, int vHeight) {
-        if (animator.getAlpha() == 1) {
+        if (getMultipliedAlpha() >= 0.99f) {
             unwrap.blit(texture, x, y, width, height, uOffset, vOffset, uWidth, vHeight, textureWidth, textureHeight);
             return;
         }
 
         RenderSystem.enableBlend();
-        unwrap.setColor(1, 1, 1, animator.getAlpha());
+        unwrap.setColor(1.0f, 1.0f, 1.0f, getMultipliedAlpha());
         unwrap.blit(texture, x, y, width, height, uOffset, vOffset, uWidth, vHeight, textureWidth, textureHeight);
-        unwrap.setColor(1, 1, 1, 1);
+        unwrap.setColor(1.0f, 1.0f, 1.0f, 1.0f);
         RenderSystem.disableBlend();
     }
 
@@ -53,7 +57,7 @@ public record NotificationGraphicsImpl(GuiGraphics unwrap, Font font, Notificati
 
     @Override
     public void text(FormattedCharSequence text, int x, int y, int color) {
-        if (animator.getAlpha() == 1) {
+        if (getMultipliedAlpha() >= 0.99f) {
             unwrap.drawString(font, text, x, y, color, false);
             return;
         }
@@ -65,9 +69,9 @@ public record NotificationGraphicsImpl(GuiGraphics unwrap, Font font, Notificati
         // Why without all of this there is a bug,
         // when using guiGraphics.setColor(),
         // it makes all the tooltips with the same color?
-        MultiBufferSource.BufferSource isolatedBuffer = MultiBufferSource.immediate(new ByteBufferBuilder(256));
-        int iAlpha = Math.max((int) (animator.getAlpha() * 255), 25);
+        int iAlpha = Math.clamp((int) (getMultipliedAlpha() * 255), 25, 255);
         int alphaColor = (iAlpha << 24) | (color & 0x00FFFFFF);
+        MultiBufferSource.BufferSource isolatedBuffer = MultiBufferSource.immediate(new ByteBufferBuilder(256));
         RenderSystem.enableBlend();
         font.drawInBatch(
                 text, x, y, alphaColor, false,

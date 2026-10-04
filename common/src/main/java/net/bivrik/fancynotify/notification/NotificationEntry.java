@@ -35,7 +35,7 @@ public class NotificationEntry implements NotificationStateMachine.Listener {
         this.content.setPreferableWidth(this.config.notificationsWidth.get());
 
         this.stateMachine = new NotificationStateMachine(this);
-        this.animator = this.config.getAnimator();
+        this.animator = this.config.animation.get().getAnimator();
     }
 
     @SubscribeEvent
@@ -128,7 +128,7 @@ public class NotificationEntry implements NotificationStateMachine.Listener {
         float halfWidth = getWidth() / 2.0f;
         float halfHeight = getHeight() / 2.0f;
 
-        var notificationGraphics = new NotificationGraphicsImpl(guiGraphics, minecraft.font, animator);
+        var notificationGraphics = new NotificationGraphicsImpl(guiGraphics, minecraft.font, animator, config.notificationsTransparency.get());
 
         PoseStack stack = guiGraphics.pose();
         stack.pushPose();

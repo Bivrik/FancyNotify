@@ -1,21 +1,16 @@
 package net.bivrik.fancynotify.notification.animation;
 
-import net.bivrik.fancynotify.config.data.GeneralConfig;
 import net.bivrik.fancynotify.notification.NotificationState;
 
 public abstract class NotificationAnimator {
-    protected final GeneralConfig generalConfig;
-
     protected float x = 0;
     protected float y = 0;
-    protected float scaleX = 1;
-    protected float scaleY = 1;
+    protected float scaleX = 1.0f;
+    protected float scaleY = 1.0f;
     protected float rotation = 0;
-    protected float alpha = 1;
+    protected float alpha = 1.0f;
 
-    public NotificationAnimator(GeneralConfig generalConfig) {
-        this.generalConfig = generalConfig;
-    }
+    protected NotificationAnimator() {}
 
     public final float getX() {
         return x;
@@ -38,7 +33,7 @@ public abstract class NotificationAnimator {
     }
 
     public final float getAlpha() {
-        return alpha * generalConfig.notificationsTransparency.get();
+        return alpha;
     }
 
     public abstract void update(float elapsedTicks, NotificationState state, float animationTimingTicks, int width, int height, float animationDurationTicks);

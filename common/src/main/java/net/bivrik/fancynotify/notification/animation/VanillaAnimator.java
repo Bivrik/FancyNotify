@@ -1,47 +1,49 @@
 package net.bivrik.fancynotify.notification.animation;
 
-import net.bivrik.fancynotify.config.data.GeneralConfig;
 import net.bivrik.fancynotify.notification.NotificationState;
 
-public class QuirkyAnimation extends NotificationAnimator {
-    public QuirkyAnimation(GeneralConfig generalConfig) {
-        super(generalConfig);
-    }
-
+public class VanillaAnimator extends NotificationAnimator {
     @Override
     public void update(float elapsedTicks, NotificationState state, float animationTimingTicks, int width, int height, float animationDurationTicks) {
         switch (state) {
             case SHOWING -> {
+                float startX = width;
+                float startAlpha = 0;
+
+                float endX = 0;
+                float endAlpha = 1;
+
                 float showingProgress = Keyframe.getProgress(elapsedTicks, animationTimingTicks, animationDurationTicks);
                 if (Keyframe.isActive(showingProgress)) {
-                    scaleX = Easing.QUART_EASE_OUT.lerp(0, 1, showingProgress);
-                    scaleY = Easing.QUART_EASE_OUT.lerp(2, 1, showingProgress);
-                    rotation = Easing.QUART_EASE_OUT.lerp(-0.15f, 0, showingProgress);
+                    x = Easing.SINE_OUT.lerp(startX, endX, showingProgress);
+                    alpha = Easing.SINE_OUT.lerp(startAlpha, endAlpha, showingProgress);
                 }
 
                 if (elapsedTicks >= animationTimingTicks + animationDurationTicks) {
-                    scaleX = 1;
-                    scaleY = 1;
-                    rotation = 0;
+                    x = endX;
+                    alpha = endAlpha;
                 }
             }
             case VISIBLE -> {
-                scaleX = 1;
-                scaleY = 1;
-                rotation = 0;
+                x = 0;
+                alpha = 1;
             }
             case HIDING -> {
+                float startX = 0;
+                float startAlpha = 1;
+
+                float endX = width;
+                float endAlpha = 0;
+
                 float hidingProgress = Keyframe.getProgress(elapsedTicks, animationTimingTicks, animationDurationTicks);
                 if (Keyframe.isActive(hidingProgress)) {
-                    scaleX = Easing.QUART_EASE_IN.lerp(1, 1.5f, hidingProgress);
-                    scaleY = Easing.QUART_EASE_IN.lerp(1, 0, hidingProgress);
-                    rotation = Easing.QUART_EASE_IN.lerp(0, 0.15f, hidingProgress);
+                    x = Easing.SINE_IN.lerp(startX, endX, hidingProgress);
+                    alpha = Easing.SINE_IN.lerp(startAlpha, endAlpha, hidingProgress);
                 }
 
                 if (elapsedTicks >= animationTimingTicks + animationDurationTicks) {
-                    scaleX = 0;
-                    scaleY = 0;
-                    rotation = 0.15f;
+                    x = endX;
+                    alpha = endAlpha;
                 }
             }
         }

@@ -6,11 +6,13 @@ import net.bivrik.fancynotify.config.ListenerRegistrar;
 import net.bivrik.fancynotify.config.Setting;
 import net.bivrik.fancynotify.eventbus.event.NotificationWidthChangedEvent;
 import net.bivrik.fancynotify.notification.animation.NotificationAnimator;
-import net.bivrik.fancynotify.notification.animation.QuirkyAnimation;
-import net.bivrik.fancynotify.notification.animation.TopDownAnimation;
-import net.bivrik.fancynotify.notification.animation.VanillaAnimation;
+import net.bivrik.fancynotify.notification.animation.QuirkyAnimator;
+import net.bivrik.fancynotify.notification.animation.TopDownAnimator;
+import net.bivrik.fancynotify.notification.animation.VanillaAnimator;
 import net.bivrik.fancynotify.utility.Components;
 import net.minecraft.network.chat.Component;
+
+import java.util.function.Supplier;
 
 public class GeneralConfig extends Config implements ListenerRegistrar {
     private static final String GENERAL_CONFIG_PATH = ConfigManager.CONFIG_FOLDER_PATH + "general.json";
@@ -34,14 +36,6 @@ public class GeneralConfig extends Config implements ListenerRegistrar {
     public Setting<Integer> animationDuration = new Setting<>(15);
     public Setting<Boolean> particlesEnabled = new Setting<>(true);
     public Setting<Boolean> debug = new Setting<>(false);
-
-    public NotificationAnimator getAnimator() {
-        return switch (animation.get()) {
-            case VANILLA -> new VanillaAnimation(this);
-            case TOP_DOWN -> new TopDownAnimation(this);
-            case QUIRKY -> new QuirkyAnimation(this);
-        };
-    }
 
     public enum Orientation {
         VERTICAL("vertical"),
@@ -88,18 +82,24 @@ public class GeneralConfig extends Config implements ListenerRegistrar {
     }
 
     public enum Animation {
-        VANILLA("vanilla"),
-        TOP_DOWN("top_down"),
-        QUIRKY("quirky");
+        VANILLA("vanilla", VanillaAnimator::new),
+        TOP_DOWN("top_down", TopDownAnimator::new),
+        QUIRKY("quirky", QuirkyAnimator::new);
 
         private final Component displayName;
+        private final Supplier<NotificationAnimator> animatorSupplier;
 
-        Animation(String name) {
+        Animation(String name, Supplier<NotificationAnimator> animatorSupplier) {
             this.displayName = Components.of("gui.animation." + name);
+            this.animatorSupplier = animatorSupplier;
         }
 
         public Component getDisplayName() {
             return displayName;
+        }
+
+        public NotificationAnimator getAnimator() {
+            return animatorSupplier.get();
         }
     }
 
