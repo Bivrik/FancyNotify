@@ -148,12 +148,12 @@ public class SettingsScreen extends UniversalScreen {
     }
 
     private static final List<Supplier<SystemNotification>> DUMMY_NOTIFICATIONS = List.of(
-            () -> new SystemNotification(SystemNotification.Identifier.PERIODIC_NOTIFICATION, Component.literal("Bivrik is lazy"), Component.literal("WHO WROTE THAT?!")),
-            () -> new SystemNotification(SystemNotification.Identifier.CHUNK_SAVE_FAILURE, Component.literal("Some title"), Component.literal("Some error message")),
-            () -> new SystemNotification(SystemNotification.Identifier.LOW_DISK_SPACE, Component.literal("Low disk space"), Component.literal("Oh no! Your disk is full of stuff! You cannot save or smth idk")),
-            () -> new SystemNotification(SystemNotification.Identifier.UNSECURE_SERVER_WARNING, Component.literal("Unsecure server connection"), Component.literal("Oh no, you cannot connect to this unsecure and totally legit server")),
-            () -> new SystemNotification(SystemNotification.Identifier.PACK_LOAD_FAILURE, Component.literal("Resource pack failure"), Component.literal("Failed to load non-existent resource pack")),
-            () -> new SystemNotification(SystemNotification.Identifier.WORLD_ACCESS_FAILURE, Component.literal("No worlds"), Component.literal("\"NO WORLDS?\""))
+            () -> new SystemNotification(SystemNotification.Type.PERIODIC_NOTIFICATION, Component.literal("Bivrik is lazy"), Component.literal("WHO WROTE THAT?!")),
+            () -> new SystemNotification(SystemNotification.Type.CHUNK_SAVE_FAILURE, Component.literal("Some title"), Component.literal("Some error message")),
+            () -> new SystemNotification(SystemNotification.Type.LOW_DISK_SPACE, Component.literal("Low disk space"), Component.literal("Oh no! Your disk is full of stuff! You cannot save or smth idk")),
+            () -> new SystemNotification(SystemNotification.Type.UNSECURE_SERVER_WARNING, Component.literal("Unsecure server connection"), Component.literal("Oh no, you cannot connect to this unsecure and totally legit server")),
+            () -> new SystemNotification(SystemNotification.Type.PACK_LOAD_FAILURE, Component.literal("Resource pack failure"), Component.literal("Failed to load non-existent resource pack")),
+            () -> new SystemNotification(SystemNotification.Type.WORLD_ACCESS_FAILURE, Component.literal("No worlds"), Component.literal("\"NO WORLDS?\""))
     );
 
     private void sendDummy() {

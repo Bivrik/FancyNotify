@@ -3,6 +3,7 @@ package net.bivrik.fancynotify.notification;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.bivrik.fancynotify.api.gui.notification.ExpandableNotification;
 import net.bivrik.fancynotify.api.gui.notification.Notification;
+import net.bivrik.fancynotify.api.gui.notification.NotificationIdentifier;
 import net.bivrik.fancynotify.config.ConfigManager;
 import net.bivrik.fancynotify.config.data.GeneralConfig;
 import net.bivrik.fancynotify.core.Log;
@@ -43,7 +44,7 @@ public class NotificationEngineImpl implements NotificationEngine {
 
         for (NotificationEntry entry : allEntries) {
             if (entry.tryMerge(notification)) {
-                Log.info("Expanded {}", notificationClassName);
+                Log.info("Expanded {} ({})", notificationClassName, notification.getId());
                 return;
             }
         }
@@ -56,10 +57,10 @@ public class NotificationEngineImpl implements NotificationEngine {
 
         if (isShowingListFull()) {
             entryQueue.add(entry);
-            Log.info("Added new {} to queue", notificationClassName);
+            Log.info("Added new {} ({}) to queue", notificationClassName, notification.getId());
         } else {
             showingHolders.add(computeEntryHolder(entry));
-            Log.info("Showing new {}", notificationClassName);
+            Log.info("Showing new {} ({})", notificationClassName, notification.getId());
         }
     }
 
@@ -167,7 +168,7 @@ public class NotificationEngineImpl implements NotificationEngine {
                 if (entry.shouldRemove()) {
                     iterator.remove();
                     allEntries.remove(entry);
-                    Log.info("Removed {}", entry.getContent().getClass().getSimpleName());
+                    Log.info("Removed {} ({})", entry.getContent().getClass().getSimpleName(), entry.getContent().getId());
                     continue;
                 }
 
@@ -187,10 +188,10 @@ public class NotificationEngineImpl implements NotificationEngine {
     }
 
     @Override
-    public void remove(Class<? extends Notification> notificationClass, Object id) {
+    public void remove(Class<? extends Notification> notificationClass, NotificationIdentifier id) {
         for (NotificationEntry entry : allEntries) {
             Notification content = entry.getContent();
-            if (content.getClass() != notificationClass || id.equals(content.getId())) {
+            if (content.getClass() != notificationClass || !id.equals(content.getId())) {
                 continue;
             }
 

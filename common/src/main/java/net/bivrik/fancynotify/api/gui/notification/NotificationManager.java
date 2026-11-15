@@ -22,9 +22,9 @@ public interface NotificationManager {
      * Removes a notification from the overall pool
      *
      * @param notificationClass the notification's class
-     * @param id the notification's {@link Notification#getId()}
+     * @param id the notification's {@link Notification#getId()} ({@link NotificationIdentifier})
      */
-    void remove(Class<? extends Notification> notificationClass, Object id);
+    void remove(Class<? extends Notification> notificationClass, NotificationIdentifier id);
 
     /**
      * Removes absolutely all notifications from the overall pool, both showing and queued

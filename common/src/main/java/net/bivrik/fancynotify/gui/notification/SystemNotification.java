@@ -3,6 +3,7 @@ package net.bivrik.fancynotify.gui.notification;
 import net.bivrik.fancynotify.api.gui.icon.SpriteIcon;
 import net.bivrik.fancynotify.api.gui.notification.Notification;
 import net.bivrik.fancynotify.api.gui.notification.NotificationGraphics;
+import net.bivrik.fancynotify.api.gui.notification.NotificationIdentifier;
 import net.bivrik.fancynotify.core.Log;
 import net.bivrik.fancynotify.utility.Color;
 import net.bivrik.fancynotify.utility.ResourceLocations;
@@ -18,13 +19,13 @@ public class SystemNotification extends FancyExpandableNotification {
     private static final ResourceLocation BACKGROUND = ResourceLocations.of("notifications/system");
     private static final int TITLE_COLOR = Color.YELLOW;
 
-    private final Identifier id;
+    private final Type type;
 
-    public SystemNotification(Identifier id, Component title, Component description) {
+    public SystemNotification(Type type, Component title, Component description) {
         super(title, description);
-        setIcon(new SpriteIcon(id.sprite(), 20, 20));
+        setIcon(new SpriteIcon(type.getSprite(), 20, 20));
 
-        this.id = id;
+        this.type = type;
     }
 
     @Override
@@ -33,13 +34,13 @@ public class SystemNotification extends FancyExpandableNotification {
     }
 
     @Override
-    public Identifier getId() {
-        return id;
+    public NotificationIdentifier getId() {
+        return type.getId();
     }
 
     @Override
     public int getDurationTicks() {
-        return id.durationTicks();
+        return type.getDurationTicks();
     }
 
     @Override
@@ -59,20 +60,20 @@ public class SystemNotification extends FancyExpandableNotification {
         graphics.icon(getIcon(), 6, getCenterY() - 10);
     }
 
-    public enum Identifier {
-        NARRATOR(ResourceLocations.of("icons/narrator"), 80),
-        WORLD_BACKUP(ResourceLocations.of("icons/storage")),
-        PACK_LOAD_FAILURE(ResourceLocations.of("icons/folder")),
-        WORLD_ACCESS_FAILURE(ResourceLocations.of("icons/storage")),
-        PACK_COPY_FAILURE(ResourceLocations.of("icons/folder")),
-        FILE_DROP_FAILURE(ResourceLocations.of("icons/storage")),
-        PERIODIC_NOTIFICATION,
-        LOW_DISK_SPACE(ResourceLocations.of("icons/storage"), 220),
-        CHUNK_LOAD_FAILURE(ResourceLocations.of("icons/chunk")),
-        CHUNK_SAVE_FAILURE(ResourceLocations.of("icons/chunk")),
-        UNSECURE_SERVER_WARNING(220);
+    public enum Type {
+        NARRATOR("narrator", ResourceLocations.of("icons/narrator"), 80),
+        WORLD_BACKUP("world_backup", ResourceLocations.of("icons/storage")),
+        PACK_LOAD_FAILURE("pack_load_failure", ResourceLocations.of("icons/folder")),
+        WORLD_ACCESS_FAILURE("world_access_failure", ResourceLocations.of("icons/storage")),
+        PACK_COPY_FAILURE("pack_copy_failure", ResourceLocations.of("icons/folder")),
+        FILE_DROP_FAILURE("file_drop_failure", ResourceLocations.of("icons/storage")),
+        PERIODIC_NOTIFICATION("periodic_notification"),
+        LOW_DISK_SPACE("low_disk_space", ResourceLocations.of("icons/storage"), 220),
+        CHUNK_LOAD_FAILURE("chunk_load_failure", ResourceLocations.of("icons/chunk")),
+        CHUNK_SAVE_FAILURE("chunk_save_failure", ResourceLocations.of("icons/chunk")),
+        UNSECURE_SERVER_WARNING("unsecure_server_warning", 220);
 
-        private static final Map<SystemToast.SystemToastId, Identifier> VANILLA_ID_TO_NEW_ID = Map.ofEntries(
+        private static final Map<SystemToast.SystemToastId, Type> VANILLA_ID_TO_TYPE = Map.ofEntries(
                 Map.entry(SystemToast.SystemToastId.NARRATOR_TOGGLE, NARRATOR),
                 Map.entry(SystemToast.SystemToastId.WORLD_BACKUP, WORLD_BACKUP),
                 Map.entry(SystemToast.SystemToastId.PACK_LOAD_FAILURE, PACK_LOAD_FAILURE),
@@ -86,41 +87,47 @@ public class SystemNotification extends FancyExpandableNotification {
                 Map.entry(SystemToast.SystemToastId.UNSECURE_SERVER_WARNING, UNSECURE_SERVER_WARNING)
         );
 
+        private final NotificationIdentifier id;
         private final ResourceLocation sprite;
         private final int durationTicks;
 
-        Identifier(ResourceLocation sprite, int durationTicks) {
+        Type(String id, ResourceLocation sprite, int durationTicks) {
+            this.id = NotificationIdentifier.of("minecraft", "system/" + id);
             this.sprite = sprite;
             this.durationTicks = durationTicks;
         }
 
-        Identifier(int durationTicks) {
-            this(ResourceLocations.of("icons/important"), durationTicks);
+        Type(String id, ResourceLocation sprite) {
+            this(id, sprite, 120);
         }
 
-        Identifier(ResourceLocation sprite) {
-            this(sprite, 120);
+        Type(String id, int durationTicks) {
+            this(id, ResourceLocations.of("icons/important"), durationTicks);
         }
 
-        Identifier() {
-            this(ResourceLocations.of("icons/important"), 120);
+        Type(String id) {
+            this(id, ResourceLocations.of("icons/important"), 120);
         }
 
-        public int durationTicks() {
-            return durationTicks;
+        public NotificationIdentifier getId() {
+            return id;
         }
 
-        public ResourceLocation sprite() {
+        public ResourceLocation getSprite() {
             return sprite;
         }
 
-        public static Identifier fromSystemToastId(SystemToast.SystemToastId id) {
-            Identifier systemToastId = VANILLA_ID_TO_NEW_ID.get(id);
-            if (systemToastId == null) {
+        public int getDurationTicks() {
+            return durationTicks;
+        }
+
+        public static Type fromSystemToastId(SystemToast.SystemToastId id) {
+            Type type = VANILLA_ID_TO_TYPE.get(id);
+            if (type == null) {
                 Log.error("Failed to parse {}, falling back to PERIODIC_NOTIFICATION instead", id);
-                return Identifier.PERIODIC_NOTIFICATION;
+                return Type.PERIODIC_NOTIFICATION;
             }
-            return systemToastId;
+            return type;
         }
     }
 }

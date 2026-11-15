@@ -9,8 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Notification {
-    private static final Object NO_ID = new Object();
-
     protected final Minecraft minecraft = Minecraft.getInstance();
 
     private final List<FormattedCharSequence> wrappedMessage = new ArrayList<>();
@@ -84,8 +82,8 @@ public abstract class Notification {
         return 23 + wrappedMessage.size() * 9;
     }
 
-    public Object getId() {
-        return NO_ID;
+    public NotificationIdentifier getId() {
+        return NotificationIdentifier.NONE;
     }
 
     public boolean canExpandFrom(Notification other) {
