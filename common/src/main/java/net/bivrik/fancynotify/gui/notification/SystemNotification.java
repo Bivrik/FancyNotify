@@ -61,16 +61,16 @@ public class SystemNotification extends FancyExpandableNotification {
     }
 
     public enum Type {
-        NARRATOR("narrator", ResourceLocations.of("icons/narrator"), 80),
-        WORLD_BACKUP("world_backup", ResourceLocations.of("icons/storage")),
-        PACK_LOAD_FAILURE("pack_load_failure", ResourceLocations.of("icons/folder")),
-        WORLD_ACCESS_FAILURE("world_access_failure", ResourceLocations.of("icons/storage")),
-        PACK_COPY_FAILURE("pack_copy_failure", ResourceLocations.of("icons/folder")),
-        FILE_DROP_FAILURE("file_drop_failure", ResourceLocations.of("icons/storage")),
+        NARRATOR("narrator", "narrator", 80),
+        WORLD_BACKUP("world_backup", "storage"),
+        PACK_LOAD_FAILURE("pack_load_failure", "folder"),
+        WORLD_ACCESS_FAILURE("world_access_failure", "storage"),
+        PACK_COPY_FAILURE("pack_copy_failure", "folder"),
+        FILE_DROP_FAILURE("file_drop_failure", "storage"),
         PERIODIC_NOTIFICATION("periodic_notification"),
-        LOW_DISK_SPACE("low_disk_space", ResourceLocations.of("icons/storage"), 220),
-        CHUNK_LOAD_FAILURE("chunk_load_failure", ResourceLocations.of("icons/chunk")),
-        CHUNK_SAVE_FAILURE("chunk_save_failure", ResourceLocations.of("icons/chunk")),
+        LOW_DISK_SPACE("low_disk_space", "storage", 220),
+        CHUNK_LOAD_FAILURE("chunk_load_failure", "chunk"),
+        CHUNK_SAVE_FAILURE("chunk_save_failure", "chunk"),
         UNSECURE_SERVER_WARNING("unsecure_server_warning", 220);
 
         private static final Map<SystemToast.SystemToastId, Type> VANILLA_ID_TO_TYPE = Map.ofEntries(
@@ -91,22 +91,22 @@ public class SystemNotification extends FancyExpandableNotification {
         private final ResourceLocation sprite;
         private final int durationTicks;
 
-        Type(String id, ResourceLocation sprite, int durationTicks) {
+        Type(String id, String sprite, int durationTicks) {
             this.id = NotificationIdentifier.of("minecraft", "system/" + id);
-            this.sprite = sprite;
+            this.sprite = ResourceLocation.fromNamespaceAndPath("fancynotify", "icons/" + sprite);
             this.durationTicks = durationTicks;
         }
 
-        Type(String id, ResourceLocation sprite) {
+        Type(String id, String sprite) {
             this(id, sprite, 120);
         }
 
         Type(String id, int durationTicks) {
-            this(id, ResourceLocations.of("icons/important"), durationTicks);
+            this(id, "important", durationTicks);
         }
 
         Type(String id) {
-            this(id, ResourceLocations.of("icons/important"), 120);
+            this(id, "important", 120);
         }
 
         public NotificationIdentifier getId() {

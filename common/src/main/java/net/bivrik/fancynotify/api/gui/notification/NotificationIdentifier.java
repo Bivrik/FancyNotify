@@ -9,8 +9,8 @@ public final class NotificationIdentifier {
     private final String id;
 
     private NotificationIdentifier(String namespace, String id) {
-        this.namespace = Objects.requireNonNull(namespace);
-        this.id = Objects.requireNonNull(id);
+        this.namespace = namespace;
+        this.id = id;
     }
 
     public static NotificationIdentifier of(String namespace, String id) {
