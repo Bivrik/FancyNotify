@@ -7,7 +7,6 @@ public abstract class ExpandableNotification extends Notification {
         super(title, message);
     }
 
-    @Override
     public final boolean canExpandFrom(Notification other) {
         return getClass() == other.getClass() && getId().equals(other.getId());
     }

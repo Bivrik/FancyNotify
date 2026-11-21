@@ -93,10 +93,6 @@ public abstract class Notification {
         return NotificationIdentifier.NONE;
     }
 
-    public boolean canExpandFrom(Notification other) {
-        return false;
-    }
-
     public boolean shouldDisplay() {
         return true;
     }
