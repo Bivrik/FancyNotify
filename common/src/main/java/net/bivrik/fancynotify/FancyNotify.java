@@ -34,6 +34,7 @@ public final class FancyNotify {
     private CreditsManager creditsManager;
     private WeatherManager weatherManager;
     private MusicManager musicManager;
+    private DayCounterManager dayCounterManager;
 
     private boolean isInitialized = false;
     private boolean isMinecraftInitialized = false;
@@ -71,11 +72,13 @@ public final class FancyNotify {
         weatherManager = new WeatherManager(notificationManager);
         biomeManager = new BiomeManager(minecraft, notificationManager);
         musicManager = new MusicManager(minecraft.options, notificationManager);
+        dayCounterManager = new DayCounterManager(minecraft, notificationManager);
     }
 
     public void onClientTick() {
         biomeManager.tick();
         particleEngine.tick();
+        dayCounterManager.tick();
     }
 
     public void onGuiRender(GuiGraphics guiGraphics, float partialTick) {
@@ -116,5 +119,9 @@ public final class FancyNotify {
 
     public MusicManager getMusicManager() {
         return musicManager;
+    }
+
+    public DayCounterManager getDayCounterManager() {
+        return dayCounterManager;
     }
 }

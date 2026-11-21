@@ -38,10 +38,10 @@ public class UnlockedRecipeNotification extends FancyNotification {
     }
 
     @Override
-    public void render(NotificationGraphics graphics) {
+    public void onRender(NotificationGraphics graphics) {
         graphics.sprite(BACKGROUND, 0, 0, getWidth(), getHeight());
-        graphics.text(getTitle(), getTextOffset(), 7, TITLE_COLOR);
-        graphics.multilineText(getWrappedMessage(), getTextOffset(), 18, MESSAGE_COLOR);
+        graphics.text(getTitle(), getTextLeftPadding(), 7, TITLE_COLOR);
+        graphics.multilineText(getMessageLines(), getTextLeftPadding(), 18, MESSAGE_COLOR);
         graphics.icon(getIcon(), 8, getCenterY() - 8);
     }
 

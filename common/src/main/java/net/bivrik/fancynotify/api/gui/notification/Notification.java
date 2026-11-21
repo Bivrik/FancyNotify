@@ -11,13 +11,13 @@ import java.util.List;
 public abstract class Notification {
     protected final Minecraft minecraft = Minecraft.getInstance();
 
-    private final List<FormattedCharSequence> wrappedMessage = new ArrayList<>();
+    private List<FormattedCharSequence> messageLines = List.of();
 
     private Component title;
     private Component message;
     private Icon icon;
 
-    private int preferableWidth;
+    private int preferredWidth;
     private int minWidth;
 
     protected Notification(Component title, Component message) {
@@ -28,22 +28,33 @@ public abstract class Notification {
         this.title = title == null ? Component.empty() : title;
         this.message = message == null ? Component.empty() : message;
 
-        minWidth = minecraft.font.width(this.title) + getTextOffset() + 7;
+        minWidth = minecraft.font.width(this.title) + getTextLeftPadding() + getTextRightPadding();
     }
 
     protected final void setIcon(Icon icon) {
         this.icon = icon;
     }
 
-    public final void setPreferableWidth(int preferableWidth) {
-        this.preferableWidth = preferableWidth;
+    public final void setPreferredWidth(int preferredWidth) {
+        this.preferredWidth = preferredWidth;
 
-        wrappedMessage.clear();
-        wrappedMessage.addAll(wrapText(message));
+        messageLines = List.copyOf(splitIntoLines(message));
     }
 
-    private List<FormattedCharSequence> wrapText(Component text) {
-        return minecraft.font.split(text, getWidth() - getTextOffset() - 7);
+    private List<FormattedCharSequence> splitIntoLines(Component text) {
+        return minecraft.font.split(text, getTextMaxWidth());
+    }
+
+    protected int getTextMaxWidth() {
+        return getWidth() - getTextLeftPadding() - getTextRightPadding();
+    }
+
+    protected int getTextLeftPadding() {
+        return 29;
+    }
+
+    protected int getTextRightPadding() {
+        return 7;
     }
 
     protected final Component getTitle() {
@@ -58,8 +69,8 @@ public abstract class Notification {
         return icon;
     }
 
-    protected final List<FormattedCharSequence> getWrappedMessage() {
-        return List.copyOf(wrappedMessage);
+    protected final List<FormattedCharSequence> getMessageLines() {
+        return messageLines;
     }
 
     protected final int getCenterX() {
@@ -70,16 +81,12 @@ public abstract class Notification {
         return getHeight() / 2;
     }
 
-    protected int getTextOffset() {
-        return 29;
-    }
-
     public int getWidth() {
-        return Math.max(minWidth, preferableWidth);
+        return Math.max(minWidth, preferredWidth);
     }
 
     public int getHeight() {
-        return 23 + wrappedMessage.size() * 9;
+        return 23 + messageLines.size() * 9;
     }
 
     public NotificationIdentifier getId() {
@@ -102,6 +109,10 @@ public abstract class Notification {
         onUpdate(context);
     }
 
+    public final void render(NotificationGraphics graphics) {
+        onRender(graphics);
+    }
+
     public void onShowing() {}
 
     public void onVisible() {}
@@ -112,5 +123,5 @@ public abstract class Notification {
 
     protected void onUpdate(NotificationContext context) {}
 
-    public abstract void render(NotificationGraphics graphics);
+    protected abstract void onRender(NotificationGraphics graphics);
 }

@@ -51,12 +51,12 @@ public class SystemNotification extends FancyExpandableNotification {
     }
 
     @Override
-    public void render(NotificationGraphics graphics) {
+    public void onRender(NotificationGraphics graphics) {
         graphics.sprite(BACKGROUND, 0, 0, getWidth(), getHeight());
-        List<FormattedCharSequence> messageLines = getWrappedMessage();
+        List<FormattedCharSequence> messageLines = getMessageLines();
         int alignment = Math.min(messageLines.size(), 1);
-        graphics.text(getTitle(), getTextOffset(), 8 - alignment, TITLE_COLOR);
-        graphics.multilineText(messageLines, getTextOffset(), 18, -1);
+        graphics.text(getTitle(), getTextLeftPadding(), 8 - alignment, TITLE_COLOR);
+        graphics.multilineText(messageLines, getTextLeftPadding(), 18, -1);
         graphics.icon(getIcon(), 6, getCenterY() - 10);
     }
 

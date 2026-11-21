@@ -93,14 +93,14 @@ public class NotificationEngineImpl implements NotificationEngine {
             int width = holderEntry.getWidth();
             int height = holderEntry.getHeight();
 
-            int xOffset = anchor.isLeft() ? (isVertical ? 0 : -width) : (isVertical ? -width : 0);
-            int yOffset = anchor.isTop() ? (isVertical ? -height : 0) : (isVertical ? 0 : -height);
+            int offsetX = anchor.isLeft() ? (isVertical ? 0 : -width) : (isVertical ? -width : 0);
+            int offsetY = anchor.isTop() ? (isVertical ? -height : 0) : (isVertical ? 0 : -height);
 
             x += isVertical ? 0 : (anchor.isLeft() ? width : -width);
             y += isVertical ? (anchor.isTop() ? height : -height) : 0;
 
-            holder.setOffsetX(x + xOffset);
-            holder.setOffsetY(y + yOffset);
+            holder.setOffsetX(x + offsetX);
+            holder.setOffsetY(y + offsetY);
 
             if (isVertical) {
                 y += anchor.isTop() ? padding : -padding;

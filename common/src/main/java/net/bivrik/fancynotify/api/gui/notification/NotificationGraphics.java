@@ -110,7 +110,7 @@ public interface NotificationGraphics {
     }
 
     /**
-     * Draws several lines from top to bottom. You can wrap lines using {@link Font#split(FormattedText, int)}, or just use {@link Notification#getWrappedMessage()}
+     * Draws several lines from top to bottom. You can wrap lines using {@link Font#split(FormattedText, int)}, or just use {@link Notification#getMessageLines()}
      *
      * @param wrappedText the lines to draw
      * @param x left edge

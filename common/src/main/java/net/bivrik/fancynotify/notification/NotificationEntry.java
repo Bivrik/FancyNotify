@@ -32,7 +32,7 @@ public class NotificationEntry implements NotificationStateMachine.Listener {
         this.config = configManager.getGeneralConfig();
 
         this.content = content;
-        this.content.setPreferableWidth(this.config.notificationsWidth.get());
+        this.content.setPreferredWidth(this.config.notificationsWidth.get());
 
         this.stateMachine = new NotificationStateMachine(this);
         this.animator = this.config.animation.get().getAnimator();
@@ -40,7 +40,7 @@ public class NotificationEntry implements NotificationStateMachine.Listener {
 
     @SubscribeEvent
     public void onNotificationWidthChanged(NotificationWidthChangedEvent event) {
-        content.setPreferableWidth(event.getWidth());
+        content.setPreferredWidth(event.getWidth());
     }
 
     public final Notification getContent() {

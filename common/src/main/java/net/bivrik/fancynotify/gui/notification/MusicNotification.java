@@ -23,10 +23,10 @@ public class MusicNotification extends FancyNotification {
     }
 
     @Override
-    public void render(NotificationGraphics graphics) {
+    public void onRender(NotificationGraphics graphics) {
         graphics.sprite(BACKGROUND, 0, 0, getWidth(), getHeight());
-        graphics.text(getTitle(), getTextOffset(), 7, TITLE_COLOR);
-        graphics.multilineText(getWrappedMessage(), getTextOffset(), 18, -1);
+        graphics.text(getTitle(), getTextLeftPadding(), 7, TITLE_COLOR);
+        graphics.multilineText(getMessageLines(), getTextLeftPadding(), 18, -1);
         graphics.icon(getIcon(), 4, getCenterY() - 10);
     }
 }

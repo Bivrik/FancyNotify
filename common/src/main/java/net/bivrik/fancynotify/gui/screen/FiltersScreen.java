@@ -40,6 +40,7 @@ public class FiltersScreen extends UniversalScreen {
     private CycleButton<Boolean> systemButton;
     private CycleButton<Boolean> weatherButton;
     private CycleButton<Boolean> biomeButton;
+    private CycleButton<Boolean> dayCounterButton;
     private CycleButton<Boolean> playerLoginButton;
     private CycleButton<Boolean> fieldGuideButton;
     private CycleButton<Boolean> spectrumMessageButton;
@@ -75,6 +76,8 @@ public class FiltersScreen extends UniversalScreen {
         list.addElement(weatherButton);
         biomeButton = createCycleButton(configManager.getFiltersConfig().isBiomeNotificationEnabled, BIOME_NOTIFICATION_TITLE);
         list.addElement(biomeButton);
+        dayCounterButton = createCycleButton(configManager.getFiltersConfig().isDayCounterNotificationEnabled, Component.literal("Day Counter"));
+        list.addElement(dayCounterButton);
         playerLoginButton = createCycleButtonWithTooltip(configManager.getFiltersConfig().isLoginPlayerNotificationEnabled, PLAYER_LOGIN_NOTIFICATION_TITLE, PLAYER_LOGIN_NOTIFICATION_TOOLTIP);
         list.addElement(playerLoginButton);
 

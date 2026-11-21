@@ -17,6 +17,7 @@ public class FiltersConfig extends Config {
     public Setting<Boolean> isSystemNotificationEnabled = new Setting<>(true);
     public Setting<Boolean> isWeatherNotificationEnabled = new Setting<>(false);
     public Setting<Boolean> isBiomeNotificationEnabled = new Setting<>(false);
+    public Setting<Boolean> isDayCounterNotificationEnabled = new Setting<>(false);
     public Setting<Boolean> isLoginPlayerNotificationEnabled = new Setting<>(false);
     public Setting<Boolean> isFieldGuideNotificationEnabled = new Setting<>(true);
     public Setting<Boolean> isSpectrumMessageNotificationEnabled = new Setting<>(true);
@@ -33,6 +34,7 @@ public class FiltersConfig extends Config {
                 .append("isSystemNotificationEnabled", isSystemNotificationEnabled.get())
                 .append("isWeatherNotificationEnabled", isWeatherNotificationEnabled.get())
                 .append("isBiomeNotificationEnabled", isBiomeNotificationEnabled.get())
+                .append("isDayCounterNotificationEnabled", isDayCounterNotificationEnabled.get())
                 .append("isLoginPlayerNotificationEnabled", isLoginPlayerNotificationEnabled.get())
                 .append("isFieldGuideNotificationEnabled", isFieldGuideNotificationEnabled.get())
                 .append("isSpectrumMessageNotificationEnabled", isSpectrumMessageNotificationEnabled.get())
