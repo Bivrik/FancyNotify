@@ -4,21 +4,21 @@ import net.bivrik.fancynotify.api.gui.icon.Icon;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.FormattedCharSequence;
+import org.jetbrains.annotations.ApiStatus;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Notification {
     protected final Minecraft minecraft = Minecraft.getInstance();
 
-    private List<FormattedCharSequence> messageLines = List.of();
+    private List<FormattedCharSequence> messageLines;
 
-    private Component title;
-    private Component message;
+    private Component title = Component.empty();
+    private Component message = Component.empty();
     private Icon icon;
 
-    private int preferredWidth;
-    private int minWidth;
+    private int titleWidth = -1;
+    private int userPreferredWidth;
 
     protected Notification(Component title, Component message) {
         setDisplay(title, message);
@@ -28,25 +28,26 @@ public abstract class Notification {
         this.title = title == null ? Component.empty() : title;
         this.message = message == null ? Component.empty() : message;
 
-        minWidth = minecraft.font.width(this.title) + getTextLeftPadding() + getTextRightPadding();
+        clearDisplayCache();
     }
 
     protected final void setIcon(Icon icon) {
         this.icon = icon;
     }
 
-    public final void setPreferredWidth(int preferredWidth) {
-        this.preferredWidth = preferredWidth;
+    @ApiStatus.Internal
+    public final void setUserPreferredWidth(int userPreferredWidth) {
+        this.userPreferredWidth = userPreferredWidth;
 
-        messageLines = List.copyOf(splitIntoLines(message));
+        clearDisplayCache();
     }
 
     private List<FormattedCharSequence> splitIntoLines(Component text) {
-        return minecraft.font.split(text, getTextMaxWidth());
+        return List.copyOf(minecraft.font.split(text, getTextMaxWidth()));
     }
 
     protected int getTextMaxWidth() {
-        return getWidth() - getTextLeftPadding() - getTextRightPadding();
+        return Math.max(0, getWidth() - getTextLeftPadding() - getTextRightPadding());
     }
 
     protected int getTextLeftPadding() {
@@ -70,7 +71,17 @@ public abstract class Notification {
     }
 
     protected final List<FormattedCharSequence> getMessageLines() {
+        if (messageLines == null) {
+            messageLines = splitIntoLines(message);
+        }
+
         return messageLines;
+    }
+
+    protected final void clearDisplayCache() {
+        messageLines = null;
+
+        titleWidth = -1;
     }
 
     protected final int getCenterX() {
@@ -81,12 +92,28 @@ public abstract class Notification {
         return getHeight() / 2;
     }
 
-    public int getWidth() {
-        return Math.max(minWidth, preferredWidth);
+    public final int getWidth() {
+        return Math.max(getMinWidth(), userPreferredWidth);
+    }
+
+    protected int getMinWidth() {
+        return getTitleWidth() + getTextLeftPadding() + getTextRightPadding();
+    }
+
+    protected final int getTitleWidth() {
+        if (titleWidth == -1) {
+            titleWidth = minecraft.font.width(title);
+        }
+
+        return titleWidth;
     }
 
     public int getHeight() {
-        return 23 + messageLines.size() * 9;
+        return getBaseHeight() + getMessageLines().size() * minecraft.font.lineHeight;
+    }
+
+    protected int getBaseHeight() {
+        return 23;
     }
 
     public NotificationIdentifier getId() {
@@ -101,10 +128,12 @@ public abstract class Notification {
         return 140;
     }
 
+    @ApiStatus.Internal
     public final void update(NotificationContext context) {
         onUpdate(context);
     }
 
+    @ApiStatus.Internal
     public final void render(NotificationGraphics graphics) {
         onRender(graphics);
     }

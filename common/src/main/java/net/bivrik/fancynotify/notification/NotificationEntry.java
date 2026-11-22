@@ -32,7 +32,6 @@ public class NotificationEntry implements NotificationStateMachine.Listener {
         this.config = configManager.getGeneralConfig();
 
         this.content = content;
-        this.content.setPreferredWidth(this.config.notificationsWidth.get());
 
         this.stateMachine = new NotificationStateMachine(this);
         this.animator = this.config.animation.get().getAnimator();
@@ -40,7 +39,7 @@ public class NotificationEntry implements NotificationStateMachine.Listener {
 
     @SubscribeEvent
     public void onNotificationWidthChanged(NotificationWidthChangedEvent event) {
-        content.setPreferredWidth(event.getWidth());
+        content.setUserPreferredWidth(event.getWidth());
     }
 
     public final Notification getContent() {
@@ -77,6 +76,7 @@ public class NotificationEntry implements NotificationStateMachine.Listener {
 
     @Override
     public void onShowing() {
+        content.setUserPreferredWidth(config.notificationsWidth.get());
         FancyNotify.EVENT_BUS.register(this);
         minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_TOAST_IN, 1.0f, 1.0f));
         content.onShowing();
