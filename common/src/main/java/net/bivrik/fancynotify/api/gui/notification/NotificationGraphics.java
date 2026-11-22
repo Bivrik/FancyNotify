@@ -9,14 +9,17 @@ import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.util.List;
 
 /**
- * Wrapper around {@link GuiGraphics} with helper methods to simplify draw calls, as well as handling animation transformations
+ * Wrapper around {@link GuiGraphics} with helper methods to simplify draw calls, as well as handling animation transformations. Not meant to be implemented by API users
  * <br>
  * Created fresh every frame, do not cache it
  */
+@ApiStatus.NonExtendable
+@ApiStatus.Experimental
 public interface NotificationGraphics {
 
     /**

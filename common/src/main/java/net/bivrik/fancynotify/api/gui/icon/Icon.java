@@ -1,12 +1,14 @@
 package net.bivrik.fancynotify.api.gui.icon;
 
 import net.bivrik.fancynotify.api.gui.notification.NotificationGraphics;
+import org.jetbrains.annotations.ApiStatus;
 
 /**
  * Icon representable, whether it's an item {@link ItemIcon}, sprite {@link SpriteIcon}, or anything else you want to draw as an icon
  * <br>
  * No heavy calculations here because {@link #draw(NotificationGraphics, int, int)} is called every frame when notification is rendered
  */
+@ApiStatus.Experimental
 public interface Icon {
 
     /**

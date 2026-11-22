@@ -8,6 +8,7 @@ import org.jetbrains.annotations.ApiStatus;
 
 import java.util.List;
 
+@ApiStatus.Experimental
 public abstract class Notification {
     protected final Minecraft minecraft = Minecraft.getInstance();
 

@@ -1,7 +1,10 @@
 package net.bivrik.fancynotify.api.gui.notification;
 
+import org.jetbrains.annotations.ApiStatus;
+
 import java.util.Objects;
 
+@ApiStatus.Experimental
 public final class NotificationIdentifier {
     public static final NotificationIdentifier NONE = of("fancynotify", "none");
 

@@ -1,12 +1,14 @@
 package net.bivrik.fancynotify.api.gui.notification;
 
 import net.bivrik.fancynotify.api.FancyNotifyApi;
+import org.jetbrains.annotations.ApiStatus;
 
 /**
  * Entry point for showing and managing notifications from other mods
  * <br>
  * Get an instance via {@link FancyNotifyApi#getNotificationManager()}
  */
+@ApiStatus.Experimental
 public interface NotificationManager {
 
     /**

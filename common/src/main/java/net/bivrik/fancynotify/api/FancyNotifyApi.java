@@ -1,7 +1,9 @@
 package net.bivrik.fancynotify.api;
 
 import net.bivrik.fancynotify.api.gui.notification.NotificationManager;
+import org.jetbrains.annotations.ApiStatus;
 
+@ApiStatus.Experimental
 public final class FancyNotifyApi {
     private FancyNotifyApi() {}
 
