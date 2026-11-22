@@ -17,7 +17,7 @@ public abstract class Notification {
     private Component message = Component.empty();
     private Icon icon;
 
-    private int titleWidth = -1;
+    private int titleWidth;
     private int userPreferredWidth;
 
     protected Notification(Component title, Component message) {
@@ -27,6 +27,8 @@ public abstract class Notification {
     protected final void setDisplay(Component title, Component message) {
         this.title = title == null ? Component.empty() : title;
         this.message = message == null ? Component.empty() : message;
+
+        titleWidth = minecraft.font.width(this.title);
 
         clearDisplayCache();
     }
@@ -80,8 +82,6 @@ public abstract class Notification {
 
     protected final void clearDisplayCache() {
         messageLines = null;
-
-        titleWidth = -1;
     }
 
     protected final int getCenterX() {
@@ -97,15 +97,7 @@ public abstract class Notification {
     }
 
     protected int getMinWidth() {
-        return getTitleWidth() + getTextLeftPadding() + getTextRightPadding();
-    }
-
-    protected final int getTitleWidth() {
-        if (titleWidth == -1) {
-            titleWidth = minecraft.font.width(title);
-        }
-
-        return titleWidth;
+        return titleWidth + getTextLeftPadding() + getTextRightPadding();
     }
 
     public int getHeight() {
