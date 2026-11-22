@@ -35,7 +35,7 @@ public class DayCounterManager {
                 Log.warn("New day: {}", dayCount);
                 if (dayCount % 5 == 0) {
                     Log.warn("[!] Daymn {}!", dayCount);
-                    notificationManager.add(new DayCounterNotification(Component.literal("New milestone achieved!"), Component.literal("Welcome to " + dayCount + "th day!")));
+                    notificationManager.add(new DayCounterNotification(dayCount));
                 }
             }
 
